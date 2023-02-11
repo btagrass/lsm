@@ -1,0 +1,427 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "通用数据格式: {\"code\": \"200\", msg: \"\", data: object}, 其中 data 对应接口调用成功时数据格式.",
+        "title": "管理接口",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/mgt/cameras": {
+            "get": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "分页摄像头集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Camera"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "保存摄像头",
+                "parameters": [
+                    {
+                        "description": "摄像头",
+                        "name": "camera",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Camera"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/cameras/{code}/ptz/{command}/{speed}": {
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "控制云台",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "摄像头代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "命令: Left-左, Right-右, Up-上, Down-下, LeftUp-左上, LeftDown-左下, RightUp-右上, RightDown-右下, ZoomIn-放大, ZoomOut-缩小",
+                        "name": "command",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "速度: 1-慢, 2-中, 3-快",
+                        "name": "speed",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/cameras/{code}/streams/{type}/start": {
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "开始流",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "摄像头代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "类型: 1-主码流, 2-子码流",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/cameras/{code}/streams/{type}/stop": {
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "停止流",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "摄像头代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "类型: 1-主码流, 2-子码流",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/cameras/{ids}": {
+            "delete": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "移除摄像头集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/cameras/{id}": {
+            "get": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "获取摄像头",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Camera"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/screens/{id}": {
+            "get": {
+                "tags": [
+                    "视频墙"
+                ],
+                "summary": "获取视频墙",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.VideoWall"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/videowalls": {
+            "get": {
+                "tags": [
+                    "视频墙"
+                ],
+                "summary": "分页视频墙集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.VideoWall"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "视频墙"
+                ],
+                "summary": "保存视频墙",
+                "parameters": [
+                    {
+                        "description": "视频墙",
+                        "name": "videoWall",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.VideoWall"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/videowalls/default": {
+            "get": {
+                "tags": [
+                    "视频墙"
+                ],
+                "summary": "默认视频墙",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/videowalls/{ids}": {
+            "delete": {
+                "tags": [
+                    "视频墙"
+                ],
+                "summary": "移除视频墙集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "mdl.Camera": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "代码",
+                    "type": "string"
+                },
+                "firmware": {
+                    "description": "固件",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "mfr": {
+                    "description": "厂商",
+                    "type": "string"
+                },
+                "models": {
+                    "description": "型号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "mdl.VideoWall": {
+            "type": "object",
+            "properties": {
+                "cameras": {
+                    "description": "摄像头集合",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

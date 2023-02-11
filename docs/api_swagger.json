@@ -1,0 +1,10 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "通用数据格式: {\"code\": \"200\", msg: \"\", data: object}, 其中 data 对应接口调用成功时数据格式.",
+        "title": "应用接口",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {}
+}

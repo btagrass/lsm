@@ -1,0 +1,191 @@
+@background: #545c64;
+@border: solid 1px #ebeef5;
+@color: white;
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+div {
+  &.center {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+  }
+
+  &.row {
+    align-items: baseline;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+
+    :nth-child(odd) {
+      margin: 2px;
+    }
+
+    :nth-child(even) {
+      margin: 2px;
+    }
+  }
+
+  &.row-center {
+    align-items: baseline;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: inherit;
+  }
+
+  &.row-side {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-between;
+  }
+}
+
+.background {
+  background: @background;
+}
+
+.cell {
+  padding-right: 10px !important;
+
+  &>.el-image {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+.el-aside {
+  background: @background;
+  border: @border;
+}
+
+.el-checkbox-group {
+  border: @border;
+  padding-left: 10px;
+
+  &>.el-checkbox {
+    width: 25%;
+  }
+}
+
+.el-collapse-item__header {
+  &>i {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+  }
+}
+
+.el-container {
+  height: auto;
+  min-height: 100%;
+}
+
+.el-date-editor--date {
+  width: 130px !important;
+}
+
+.el-drawer {
+  overflow: auto !important;
+  width: 60% !important;
+
+  &>.el-drawer__header {
+    margin-bottom: 15px;
+  }
+}
+
+.el-form-item {
+  align-items: center;
+  display: flex;
+
+  &>.el-form-item__label {
+    width: 150px;
+  }
+
+  &>.el-form-item__content {
+    margin-right: 20px;
+    width: 100%;
+
+    &>.el-image {
+      height: 100px;
+      width: 100px;
+    }
+
+    &>.el-input-number {
+      width: 50% !important;
+    }
+  }
+}
+
+.el-header {
+  background: @background;
+  color: @color;
+
+  & .el-dropdown {
+    color: @color;
+  }
+}
+
+.el-input--mini {
+  width: 150px !important;
+}
+
+.el-main {
+  padding: 5px;
+}
+
+.el-menu {
+  border-right: none;
+  width: 70px;
+
+  &:not(.el-menu--collapse) {
+    width: 300px;
+  }
+}
+
+.el-table {
+  .el-table__header {
+    th {
+      text-align: center !important;
+    }
+  }
+
+  .el-table__body {
+    td {
+      &.el-table-column--selection {
+        text-align: center;
+      }
+
+      &:last-child {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.el-tabs__header {
+  margin-bottom: 5px;
+}
+
+.el-tree {
+  border: @border;
+
+  &.el-tree--highlight-current {
+    width: 40%;
+  }
+}
+
+.hover {
+  cursor: pointer;
+  margin: 5px;
+}
