@@ -53,7 +53,6 @@ export function useList(api, state, mounted) {
     select(row)
   }
   const select = (selection) => {
-    console.log("select", selection)
     if (selection instanceof Array) {
       s.ids = selection.map((i) => i.id)
     } else if (selection instanceof Object) {
@@ -71,9 +70,7 @@ export function useList(api, state, mounted) {
     })
   }
   const remove = (id) => {
-    if (id instanceof PointerEvent) {
-      s.ids = []
-    } else {
+    if (!(id instanceof PointerEvent)) {
       s.ids = [id]
     }
     if (s.ids.length > 0) {
@@ -120,25 +117,23 @@ export function useEdit(context, state, mounted) {
 
   const edit = async (id) => {
     id = id ?? s.id
-    if (id) {
+    if (id > 0) {
       s.data = await useGet(`${api}/${id}`)
       if (!s.data) {
         ElMessage.error("该记录不存在")
       }
     } else {
-      s.data = state
-      console.log("id:" + id)
-      console.log(state)
+      s.data = { ...state, id: 0 }
     }
   }
-  const save = (continued) => {
+  const save = (id) => {
     s.form.validate(async (valid) => {
       if (valid) {
         await usePost(api, s.data)
-        if (continued) {
-          edit(0)
-        } else {
+        if (id instanceof PointerEvent) {
           context.emit("close")
+        } else {
+          edit(id)
         }
       }
     })

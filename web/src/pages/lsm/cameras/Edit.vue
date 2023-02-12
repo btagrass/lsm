@@ -34,11 +34,11 @@
       <div class="row-center">
         <el-tooltip placement="top">
           <template #content>Onvif协议：填写地址，用户名，密码等信息<br />28181协议：自动保存摄像头信息</template>
-          <el-button type="primary" @click="save()">保存</el-button>
+          <el-button type="primary" @click="save">保存</el-button>
         </el-tooltip>
         <el-tooltip placement="top">
           <template #content>Onvif协议：填写地址，用户名，密码等信息<br />28181协议：自动保存摄像头信息</template>
-          <el-button type="primary" @click="save(true)">保存增加</el-button>
+          <el-button type="primary" @click="save(0)">保存增加</el-button>
         </el-tooltip>
       </div>
     </el-form-item>

@@ -7,7 +7,7 @@
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
-      <el-table-column label="编码" prop="id"></el-table-column>
+      <el-table-column label="编码" prop="id" width="120"></el-table-column>
       <el-table-column label="代码" prop="code"></el-table-column>
       <el-table-column label="名称" prop="name"></el-table-column>
       <el-table-column label="类型" prop="type"></el-table-column>

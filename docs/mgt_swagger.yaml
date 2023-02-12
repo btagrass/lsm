@@ -16,7 +16,7 @@ definitions:
       mfr:
         description: 厂商
         type: string
-      models:
+      model:
         description: 型号
         type: string
       name:
@@ -120,6 +120,28 @@ paths:
           schema:
             type: boolean
       summary: 控制云台
+      tags:
+      - 摄像头
+  /mgt/cameras/{code}/streams/{type}/snapshot:
+    post:
+      parameters:
+      - description: 摄像头代码
+        in: path
+        name: code
+        required: true
+        type: string
+      - default: 2
+        description: '类型: 1-主码流, 2-子码流'
+        in: path
+        name: type
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+      summary: 抓取快照
       tags:
       - 摄像头
   /mgt/cameras/{code}/streams/{type}/start:

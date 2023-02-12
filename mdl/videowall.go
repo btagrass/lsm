@@ -16,14 +16,12 @@ type VideoWall struct {
 	CameraCodes string   `gorm:"size:200;not null;comment:摄像头代码集合" json:"-"` // 摄像头代码集合
 }
 
-func (m VideoWall) AfterFind(tx *gorm.DB) error {
+func (m *VideoWall) AfterFind(tx *gorm.DB) error {
 	m.Cameras = utl.Split(m.CameraCodes, ',')
-
 	return nil
 }
 
-func (m VideoWall) BeforeSave(tx *gorm.DB) error {
+func (m *VideoWall) BeforeSave(tx *gorm.DB) error {
 	m.CameraCodes = strings.Join(m.Cameras, ",")
-
 	return nil
 }

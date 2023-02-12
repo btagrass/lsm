@@ -115,6 +115,39 @@ const docTemplatemgt = `{
                 }
             }
         },
+        "/mgt/cameras/{code}/streams/{type}/snapshot": {
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "抓取快照",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "摄像头代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "类型: 1-主码流, 2-子码流",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
         "/mgt/cameras/{code}/streams/{type}/start": {
             "post": {
                 "tags": [
@@ -385,7 +418,7 @@ const docTemplatemgt = `{
                     "description": "厂商",
                     "type": "string"
                 },
-                "models": {
+                "model": {
                     "description": "型号",
                     "type": "string"
                 },

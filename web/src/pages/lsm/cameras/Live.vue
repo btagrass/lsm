@@ -34,7 +34,7 @@ import { usePost } from "@/http"
 
 export default {
   props: {
-    id: {
+    code: {
       type: String,
       required: true,
     },
@@ -43,7 +43,7 @@ export default {
     const api = inject("api")
 
     const state = reactive({
-      id: props.id,
+      code: props.code,
       data: {
         player: "",
         url: "",
@@ -51,13 +51,13 @@ export default {
     })
 
     const start = async () => {
-      state.data.url = await usePost(`${api}/${state.id}/streams/1/start`)
+      state.data.url = await usePost(`${api}/${state.code}/streams/1/start`)
     }
     const control = async (command) => {
-      await usePost(`${api}/${state.id}/ptz/${command}/2`)
+      await usePost(`${api}/${state.code}/ptz/${command}/2`)
     }
     const snapshot = async () => {
-      window.open(await usePost(`${api}/${state.id}/streams/1/snapshot`), "_blank")
+      window.open(await usePost(`${api}/${state.code}/streams/1/snapshot`), "_blank")
     }
     onMounted(async () => {
       await start()

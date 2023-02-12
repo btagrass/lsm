@@ -17,7 +17,7 @@ type VideoWallSvc struct {
 // 构造函数
 func NewVideoWallSvc(ipcSvc ipc.IIpcSvc) *VideoWallSvc {
 	return &VideoWallSvc{
-		Svc:     svc.NewSvc[mdl.VideoWall]("lsm:videoWalls"),
+		Svc:     svc.NewSvc[mdl.VideoWall]("lsm:videowalls"),
 		IIpcSvc: ipcSvc,
 	}
 }
@@ -30,13 +30,12 @@ func (s *VideoWallSvc) DefaultVideoWall() ([]string, error) {
 		return urls, err
 	}
 	for _, c := range videoWall.Cameras {
-		url, err := s.IIpcSvc.StartStream(c, 1, "flv")
+		url, err := s.IIpcSvc.StartStream(c, 1, "rtsp")
 		if err != nil {
 			logrus.Error(err)
 			continue
 		}
 		urls = append(urls, url)
 	}
-
 	return urls, nil
 }

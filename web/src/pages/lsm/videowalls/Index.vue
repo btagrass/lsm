@@ -1,18 +1,21 @@
 <template>
   <div>
     <div class="row">
-      <el-button type="danger" icon="Delete" @click="remove()">删除</el-button>
+      <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
       <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
-      <el-button type="warning" icon="Refresh" @click="list()">刷新</el-button>
+      <el-button type="warning" icon="Refresh" @click="list">刷新</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
-      <el-table-column label="编码" prop="id"></el-table-column>
+      <el-table-column label="编码" prop="id" width="120"></el-table-column>
       <el-table-column label="名称" prop="name"></el-table-column>
-      <el-table-column label="操作" width="150px" align="center">
+      <el-table-column label="摄像头集合" prop="cameras"></el-table-column>
+      <el-table-column label="操作" width="150">
         <template #default="scope">
-          <el-button type="primary" circle icon="edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
-          <el-button type="danger" circle icon="delete" title="删除" @click="remove([scope.row.id])"></el-button>
+          <el-button-group>
+            <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
+            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row.id)"></el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
