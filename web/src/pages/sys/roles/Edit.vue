@@ -4,12 +4,12 @@
       <el-input v-model="data.id" disabled></el-input>
     </el-form-item>
     <el-form-item label="名称" prop="name">
-      <el-input v-model="data.name" maxlength="50" clearable></el-input>
+      <el-input v-model="data.name" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item>
       <div class="row-center">
-        <el-button type="primary" @click="save()">保存</el-button>
-        <el-button type="primary" @click="save(true)">保存增加</el-button>
+        <el-button type="primary" @click="save">保存</el-button>
+        <el-button type="primary" @click="save(0)">保存增加</el-button>
       </div>
     </el-form-item>
   </el-form>

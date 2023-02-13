@@ -13,7 +13,7 @@
         <template #default="scope">
           <el-button-group>
             <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
-            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row.id)"></el-button>
+            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
             <el-button type="warning" icon="Setting" title="资源" @click="open(scope.row.id, 'RoleResource')">
             </el-button>
           </el-button-group>

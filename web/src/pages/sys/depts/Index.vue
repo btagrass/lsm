@@ -1,34 +1,32 @@
 <template>
   <div>
     <div class="row">
-      <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
       <el-button type="warning" icon="Refresh" @click="list">刷新</el-button>
     </div>
-    <div class="row">
-      <el-table ref="table" :data="data.records" :tree-props="{ children: 'children' }" border default-expand-all
-        row-key="id" @current-change="change">
-        <el-table-column label="编码" prop="id" header-align="center"></el-table-column>
-        <el-table-column label="名称" prop="name" header-align="center"></el-table-column>
-        <el-table-column label="电话" prop="phone" header-align="center"></el-table-column>
-        <el-table-column label="地址" prop="addr" header-align="center"></el-table-column>
-        <el-table-column label="次序" prop="sequence" header-align="center"></el-table-column>
-        <el-table-column label="操作" width="180">
-          <template #default="scope">
-            <el-button-group>
-              <el-button type="warning" icon="DocumentAdd" title="增加下级" @click="open(0, 'Edit', scope.row.id)">
-              </el-button>
-              <el-button type="primary" icon="DocumentAdd" title="增加同级" @click="open(0, 'Edit', scope.row.parentId)">
-              </el-button>
-              <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
-              <el-button type="danger" icon="Delete" title="删除" @click="remove()"></el-button>
-            </el-button-group>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-drawer v-model="component.visible" destroy-on-close @close="list">
-        <component :id="component.id" :parentId="component.parentId" :is="component.name" @close="close"></component>
-      </el-drawer>
-    </div>
+    <el-table ref="table" :data="data.records" :tree-props="{ children: 'children' }" border default-expand-all
+      row-key="id">
+      <el-table-column label="编码" prop="id" width="150"></el-table-column>
+      <el-table-column label="名称" prop="name"></el-table-column>
+      <el-table-column label="电话" prop="phone"></el-table-column>
+      <el-table-column label="地址" prop="addr"></el-table-column>
+      <el-table-column label="次序" prop="sequence" align="center"></el-table-column>
+      <el-table-column label="操作" width="170">
+        <template #default="scope">
+          <el-button-group>
+            <el-button type="primary" icon="Edit" title="编辑"
+              @click="open(scope.row.id, 'Edit', scope.row.parentId)"></el-button>
+            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
+            <el-button type="primary" icon="DocumentAdd" title="增加同级" @click="open(0, 'Edit', scope.row.parentId)">
+            </el-button>
+            <el-button type="warning" icon="DocumentAdd" title="增加下级" @click="open(0, 'Edit', scope.row.id)">
+            </el-button>
+          </el-button-group>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-drawer v-model="component.visible" destroy-on-close @close="list">
+      <component :id="component.id" :parentId="component.parentId" :is="component.name" @close="close"></component>
+    </el-drawer>
   </div>
 </template>
 

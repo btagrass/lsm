@@ -9,24 +9,24 @@
       </el-tree-select>
     </el-form-item>
     <el-form-item label="用户名" prop="userName">
-      <el-input v-model="data.userName" maxlength="20" clearable></el-input>
+      <el-input v-model="data.userName" clearable maxlength="20" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="姓名" prop="fullName">
-      <el-input v-model="data.fullName" maxlength="20" clearable></el-input>
+      <el-input v-model="data.fullName" clearable maxlength="20" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="手机号码" prop="mobile">
-      <el-input v-model="data.mobile" maxlength="20" clearable></el-input>
+      <el-input v-model="data.mobile" clearable maxlength="20" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="data.password" maxlength="50" clearable show-password></el-input>
+      <el-input v-model="data.password" clearable maxlength="50" show-password show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="冻结" prop="frozen">
       <el-switch v-model="data.frozen"></el-switch>
     </el-form-item>
     <el-form-item>
       <div class="row-center">
-        <el-button type="primary" @click="save()">保存</el-button>
-        <el-button type="primary" @click="save(true)">保存增加</el-button>
+        <el-button type="primary" @click="save">保存</el-button>
+        <el-button type="primary" @click="save(0)">保存增加</el-button>
       </div>
     </el-form-item>
   </el-form>
@@ -45,41 +45,37 @@ export default {
     },
   },
   setup(props, context) {
-    const { state, save } = useEdit(
-      context,
-      {
-        id: props.id,
-        rules: {
-          deptId: {
-            required: true,
-            message: "请选择部门",
-            trigger: "blur",
-          },
-          userName: {
-            required: true,
-            message: "请输入用户名",
-            trigger: "blur",
-          },
-          mobile: {
-            required: true,
-            pattern: "^[1][3-9][0-9]{9}$",
-            message: "请输入正确的手机号码",
-            trigger: "blur",
-          },
-          password: {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur",
-          },
+    const { state, save } = useEdit(context, {
+      id: props.id,
+      rules: {
+        deptId: {
+          required: true,
+          message: "请选择部门",
+          trigger: "blur",
         },
-        depts: [],
+        userName: {
+          required: true,
+          message: "请输入用户名",
+          trigger: "blur",
+        },
+        mobile: {
+          required: true,
+          pattern: "^[1][3-9][0-9]{9}$",
+          message: "请输入正确的手机号码",
+          trigger: "blur",
+        },
+        password: {
+          required: true,
+          message: "请输入密码",
+          trigger: "blur",
+        },
       },
-      async () => {
-        state.depts = (
-          await useGet("/mgt/sys/depts")
-        ).records
-      }
-    )
+      depts: [],
+    }, async () => {
+      state.depts = (
+        await useGet("/mgt/sys/depts")
+      ).records
+    })
 
     return {
       ...toRefs(state),

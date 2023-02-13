@@ -48,10 +48,6 @@ export function useList(api, state, mounted) {
   Object.assign(o, state)
   const s = reactive(o)
 
-  const change = (row) => {
-    s.ids = []
-    select(row)
-  }
   const select = (selection) => {
     if (selection instanceof Array) {
       s.ids = selection.map((i) => i.id)
@@ -69,9 +65,9 @@ export function useList(api, state, mounted) {
       params: s.params,
     })
   }
-  const remove = (id) => {
-    if (!(id instanceof PointerEvent)) {
-      s.ids = [id]
+  const remove = (selection) => {
+    if (!(selection instanceof PointerEvent)) {
+      select(selection)
     }
     if (s.ids.length > 0) {
       ElMessageBox.confirm("确定要删除吗？")
@@ -82,6 +78,7 @@ export function useList(api, state, mounted) {
         })
         .catch(() => {
           s.table.clearSelection()
+          s.ids = []
         })
     } else {
       ElMessage.error("请选择记录")
@@ -97,7 +94,6 @@ export function useList(api, state, mounted) {
 
   return {
     state: s,
-    change,
     select,
     list,
     remove,

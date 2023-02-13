@@ -8,7 +8,7 @@
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
       <el-table-column label="编码" prop="id" width="120"></el-table-column>
-      <el-table-column label="代码" prop="code"></el-table-column>
+      <el-table-column label="代码" prop="code" width="150"></el-table-column>
       <el-table-column label="名称" prop="name"></el-table-column>
       <el-table-column label="类型" prop="type"></el-table-column>
       <el-table-column label="厂商" prop="mfr"></el-table-column>
@@ -22,7 +22,7 @@
         <template #default="scope">
           <el-button-group>
             <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
-            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row.id)"></el-button>
+            <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
             <el-button type="warning" icon="VideoPlay" title="实况" @click="open(scope.row.code, 'Live')">
             </el-button>
           </el-button-group>

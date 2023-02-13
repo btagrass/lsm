@@ -44,7 +44,7 @@ func (s *OnvSvc) keepaliveCameras() error {
 			}},
 			DoUpdates: clause.AssignmentColumns([]string{
 				"mfr",
-				"models",
+				"model",
 				"firmware",
 				"state",
 				"updated_at",
