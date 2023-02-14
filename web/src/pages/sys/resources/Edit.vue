@@ -89,9 +89,7 @@ export default {
         dicts: [],
       },
       async () => {
-        state.dicts = (
-          await useGet("/mgt/sys/dicts?type=Resource")
-        ).records
+        state.dicts = await useGet("/mgt/sys/dicts?type=Resource")
       }
     )
 
