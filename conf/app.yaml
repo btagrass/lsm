@@ -3,6 +3,8 @@ dsn: root:123456@(localhost:3306)/lsm?charset=utf8mb4&parseTime=True&loc=Local
 http:
   port: 3080
   timeout: 15s
+log:
+  level: debug
 svc:
   ipc:
-    type: onv # gbt,onv
+    type: onv

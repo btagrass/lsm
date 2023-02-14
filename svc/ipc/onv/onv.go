@@ -1,8 +1,7 @@
 package onv
 
 import (
-	"lsm/svc/ipc/camera"
-	"lsm/svc/ipc/lal"
+	"lsm/svc/ipc/internal"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -10,12 +9,12 @@ import (
 
 // 开放网络视频服务
 type OnvSvc struct {
-	*camera.CameraSvc
-	*lal.LalSvc
+	*internal.CameraSvc
+	*internal.LalSvc
 }
 
 // 构造函数
-func NewOnvSvc(cameraSvc *camera.CameraSvc, lalSvc *lal.LalSvc) *OnvSvc {
+func NewOnvSvc(cameraSvc *internal.CameraSvc, lalSvc *internal.LalSvc) *OnvSvc {
 	s := &OnvSvc{
 		CameraSvc: cameraSvc,
 		LalSvc:    lalSvc,

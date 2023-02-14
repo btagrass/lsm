@@ -10,16 +10,16 @@ export function useComponent() {
       visible: false,
     },
   })
-  const open = (id, name, parentId) => {
+
+  const open = (id, name, props) => {
+    Object.assign(state.component, props)
     state.component.id = id
     state.component.name = name
-    state.component.parentId = parentId
     state.component.visible = true
   }
   const close = () => {
     state.component.id = 0
     state.component.name = null
-    state.component.parentId = 0
     state.component.visible = false
   }
 

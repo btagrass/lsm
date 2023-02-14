@@ -4,7 +4,7 @@ import store from "@/store"
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_MGT_URL,
-  timeout: 5000,
+  timeout: 15000,
 })
 http.interceptors.request.use((config) => {
   config.headers.Authorization = store.state.user.token

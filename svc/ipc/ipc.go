@@ -2,8 +2,7 @@ package ipc
 
 import (
 	"lsm/mdl"
-	"lsm/svc/ipc/camera"
-	"lsm/svc/ipc/lal"
+	"lsm/svc/ipc/internal"
 	"lsm/svc/ipc/onv"
 
 	"github.com/spf13/viper"
@@ -28,13 +27,13 @@ type IIpcSvc interface {
 
 // 构造函数
 func NewIpcSvc() IIpcSvc {
-	cameraSvc := camera.NewCameraSvc()
-	lalSvc := lal.NewLalSvc()
-	var ipcSvc IIpcSvc
-	ipcType := viper.GetString("svc.ipc.type")
-	if ipcType == "onv" {
-		ipcSvc = onv.NewOnvSvc(cameraSvc, lalSvc)
+	cameraSvc := internal.NewCameraSvc()
+	lalSvc := internal.NewLalSvc()
+	var s IIpcSvc
+	typ := viper.GetString("svc.ipc.type")
+	if typ == "onv" {
+		s = onv.NewOnvSvc(cameraSvc, lalSvc)
 	}
 
-	return ipcSvc
+	return s
 }

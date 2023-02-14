@@ -23,9 +23,9 @@ func init() {
 			&mdl.Camera{},
 			&mdl.VideoWall{},
 		},
-		"INSERT INTO `sys_resource` VALUES (300000000000007, '2023-01-29 00:00:00.000', NULL, NULL, NULL, 'lsm', '业务系统', 1, 'operation', '/lsm', NULL, 1)",
-		"INSERT INTO `sys_resource` VALUES (300000000000009, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000007, 'lsmVideoWalls', '视频墙管理', 1, 'monitor', '/lsm/videowalls', NULL, 1)",
-		"INSERT INTO `sys_resource` VALUES (300000000000008, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000007, 'lsmCameras', '摄像头管理', 1, 'camera', '/lsm/cameras', NULL, 2)",
+		"INSERT INTO `sys_resource` VALUES (300000000000007, '2023-01-29 00:00:00.000', NULL, NULL, 0, 'lsm', '业务系统', 1, 'Operation', '/lsm', NULL, 1)",
+		"INSERT INTO `sys_resource` VALUES (300000000000009, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000007, 'lsmVideoWalls', '视频墙管理', 1, 'Monitor', '/lsm/videowalls', NULL, 1)",
+		"INSERT INTO `sys_resource` VALUES (300000000000008, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000007, 'lsmCameras', '摄像头管理', 1, 'Camera', '/lsm/cameras', NULL, 2)",
 	)
 	if err != nil {
 		logrus.Fatal(err)

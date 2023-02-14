@@ -17,21 +17,21 @@
           <div class="hover" @click="clearPages">
             <el-tooltip content="清空">
               <el-icon>
-                <folder-delete></folder-delete>
+                <FolderDelete />
               </el-icon>
             </el-tooltip>
           </div>
           <div class="hover" @click="toggleScreen">
             <el-tooltip content="全屏">
               <el-icon>
-                <full-screen></full-screen>
+                <FullScreen />
               </el-icon>
             </el-tooltip>
           </div>
           <el-dropdown class="hover" @command="commandUser">
             <div>
               <el-icon>
-                <user></user>
+                <User />
               </el-icon>
               <span>{{ user.userName }}</span>
             </div>
@@ -73,14 +73,15 @@
       </el-aside>
       <el-main>
         <el-tabs v-model="fullPath" type="card" @tab-click="clickTab" @tab-remove="removeTab">
-          <el-tab-pane v-for="page in pages" :key="page.path" :label="page.title" :name="page.path" :closable="page.path != '/'"></el-tab-pane>
+          <el-tab-pane v-for="page in pages" :key="page.path" :label="page.title" :name="page.path"
+            :closable="page.path != '/'"></el-tab-pane>
         </el-tabs>
         <div id="content">
-        <router-view v-slot="{ Component }">
-          <!-- <keep-alive> -->
+          <router-view v-slot="{ Component }">
+            <!-- <keep-alive> -->
             <component :is="Component"></component>
-          <!-- </keep-alive> -->
-        </router-view>
+            <!-- </keep-alive> -->
+          </router-view>
         </div>
       </el-main>
     </el-container>

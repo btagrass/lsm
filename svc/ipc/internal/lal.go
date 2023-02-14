@@ -1,18 +1,12 @@
-package lal
+package internal
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
-	"time"
 
-	"github.com/btagrass/go.core/app"
 	"github.com/btagrass/go.core/htp"
-	"github.com/btagrass/go.core/utl"
 	"github.com/q191201771/lal/pkg/logic"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 )
 
@@ -102,16 +96,6 @@ func (s *LalSvc) ExistStream(code string) bool {
 	return err == nil
 }
 
-// 获取录像网址
-func (s *LalSvc) GetRecordUrl(code string, dateTime time.Time) (string, error) {
-	recordFile, err := s.getRecordFile(code, dateTime)
-	if err != nil {
-		return "", err
-	}
-
-	return htp.GetUrl(recordFile), nil
-}
-
 // 获取流网址
 func (s *LalSvc) GetStreamUrl(code, protocol string) string {
 	p, ok := s.protocols[protocol]
@@ -148,7 +132,6 @@ func (s *LalSvc) StartRtpStream(code string) (uint16, error) {
 	_, err := htp.Post(fmt.Sprintf("http://%s/api/ctrl/start_rtp_pub", s.addr), map[string]any{
 		"stream_name": code,
 		"port":        0,
-		// "debug_dump_packet": fmt.Sprintf("logs/%s.psdata", code),
 	}, &r)
 
 	return r.Data.Port, err
@@ -188,73 +171,4 @@ func (s *LalSvc) StopRtpStream(code string) error {
 	})
 
 	return err
-}
-
-// 抓取录像
-func (s *LalSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) {
-	var files []string
-	inf := gjson.Get(s.conf, "hls.fragment_duration_ms").Int()
-	beginTimestamp := beginDateTime.UnixMilli() - inf
-	endTimestamp := endDateTime.UnixMilli() + inf
-	recordFile, err := s.getRecordFile(code, beginDateTime)
-	if err != nil {
-		return "", err
-	}
-	data, err := os.ReadFile(recordFile)
-	if err != nil {
-		return "", err
-	}
-	lines := utl.Split(string(data), '\n')
-	for _, ln := range lines {
-		if filepath.Ext(ln) != ".ts" {
-			continue
-		}
-		ms := utl.Split(ln, '-')
-		if len(ms) != 3 {
-			continue
-		}
-		timestamp := cast.ToInt64(ms[1])
-		if timestamp < beginTimestamp {
-			continue
-		}
-		if timestamp > endTimestamp {
-			break
-		}
-		files = append(files, fmt.Sprintf("%s/%s", gjson.Get(s.conf, "hls.out_path").String(), ln))
-	}
-	input := fmt.Sprintf("concat:%s", strings.Join(files, "|"))
-	output := fmt.Sprintf(
-		"%s/%s-%d-%d.mp4",
-		gjson.Get(s.conf, "hls.out_path").String(),
-		code,
-		beginTimestamp,
-		endTimestamp,
-	)
-	err = utl.TakeStream(input, map[string]map[string]any{
-		output: {
-			"c:v": "libx264",
-		},
-	})
-	if err != nil {
-		return "", err
-	}
-
-	return htp.GetUrl(output), nil
-}
-
-// 获取录像文件
-func (s *LalSvc) getRecordFile(code string, dateTime time.Time) (string, error) {
-	fileName := fmt.Sprintf(
-		"%s%s/%s-%s.m3u8",
-		gjson.Get(s.conf, "hls.out_path").String(),
-		code,
-		code,
-		dateTime.Format("20060102"),
-	)
-	filePath := filepath.Join(app.Dir, fileName)
-	if !utl.Exist(filePath) {
-		return "", fmt.Errorf("录像网址不存在")
-	}
-
-	return fileName, nil
 }

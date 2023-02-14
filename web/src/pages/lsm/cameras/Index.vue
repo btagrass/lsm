@@ -3,7 +3,7 @@
     <div class="row">
       <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
       <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
-      <el-button type="warning" icon="Refresh" @click="list">刷新</el-button>
+      <el-button type="warning" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
@@ -23,7 +23,8 @@
           <el-button-group>
             <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
-            <el-button type="warning" icon="VideoPlay" title="实况" @click="open(scope.row.code, 'Live')">
+            <el-button type="warning" icon="VideoPlay" title="实况"
+              @click="open(scope.row.id, 'Live', { code: scope.row.code })">
             </el-button>
           </el-button-group>
         </template>
@@ -32,7 +33,7 @@
     <el-pagination v-model:current-page="params.current" v-model:page-size="params.size" :total="data.total" background
       layout="total,prev,pager,next,sizes"></el-pagination>
     <el-drawer v-model="component.visible" destroy-on-close @close="list">
-      <component :id="component.id" :is="component.name" @close="close"></component>
+      <component :id="component.id" :code="component.code" :is="component.name" @close="close"></component>
     </el-drawer>
   </div>
 </template>

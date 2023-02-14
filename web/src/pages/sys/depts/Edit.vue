@@ -20,8 +20,14 @@
     </el-form-item>
     <el-form-item>
       <div class="row-center">
-        <el-button type="primary" @click="save">保存</el-button>
-        <el-button type="primary" @click="save(0)">保存增加</el-button>
+        <el-tooltip placement="top">
+          <template #content>目前只支持三级部门</template>
+          <el-button type="primary" @click="save">保存</el-button>
+        </el-tooltip>
+        <el-tooltip placement="top">
+          <template #content>目前只支持三级部门</template>
+          <el-button type="primary" @click="save(0)">保存增加</el-button>
+        </el-tooltip>
       </div>
     </el-form-item>
   </el-form>

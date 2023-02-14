@@ -3,12 +3,12 @@
     <div class="row">
       <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
       <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
-      <el-button type="warning" icon="Refresh" @click="list">刷新</el-button>
+      <el-button type="warning" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
       <el-table-column label="编码" prop="id" width="120"></el-table-column>
-      <el-table-column label="公司" prop="dept.name"></el-table-column>
+      <el-table-column label="部门" prop="dept.name"></el-table-column>
       <el-table-column label="用户名" prop="userName"></el-table-column>
       <el-table-column label="姓名" prop="fullName"></el-table-column>
       <el-table-column label="手机号码" prop="mobile"></el-table-column>

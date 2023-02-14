@@ -1,4 +1,4 @@
-package camera
+package internal
 
 import (
 	"fmt"
