@@ -26,6 +26,8 @@ bash build.sh
 1. 安装mysql和redis服务
 2. 修改conf/app.yaml配置文件
 3. 启动./lsm run
-4. 管理地址http://localhost:3082
+4. [管理地址](http://localhost:3082)
+    * 用户名：admin
+    * 密码：admin
 ## 联系
 vx: btagrass
