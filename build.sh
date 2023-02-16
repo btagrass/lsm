@@ -17,7 +17,7 @@ yarn --cwd web install
 yarn --cwd web build
 for dir in {api,mgt}; do
     if [[ -d $dir ]]; then
-        swag i -g $dir.go -d $dir --instanceName $dir --parseDependency
+        swag i -d $dir -g $dir.go --instanceName $dir --pd -q
     fi
 done
 CGO_ENABLED=1 GOOS=$os GOARCH=$arch go build -ldflags "-s -w" -o build/$os-$arch/ $name

@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"lsm/mdl"
 
 	"github.com/btagrass/go.core/svc"
@@ -32,18 +31,11 @@ func (s *CameraSvc) GetCameraByCode(code string) (*mdl.Camera, error) {
 }
 
 // 获取摄像头集合
-func (s *CameraSvc) ListCameras(name string) ([]mdl.Camera, error) {
-	cameras, err := s.List("name like ?", fmt.Sprintf("%%%s%%", name))
-
-	return cameras, err
+func (s *CameraSvc) ListCameras(conds ...any) ([]mdl.Camera, int64, error) {
+	return s.List(conds...)
 }
 
-// 分页摄像头集合
-func (s *CameraSvc) PageCameras(conds map[string]any) ([]mdl.Camera, int64, error) {
-	return s.Page(conds)
-}
-
-// 获取摄像头集合
+// 移除摄像头集合
 func (s *CameraSvc) RemoveCameras(ids []string) error {
 	return s.Remove(ids)
 }

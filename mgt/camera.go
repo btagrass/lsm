@@ -16,19 +16,18 @@ import (
 // @success 200 {object} mdl.Camera
 // @router /mgt/cameras/{id} [get]
 func GetCamera(c *gin.Context) {
-	id := cast.ToInt64(c.Param("id"))
-	camera, err := svc.IpcSvc.GetCamera(id)
+	camera, err := svc.IpcSvc.GetCamera(cast.ToInt64(c.Param("id")))
 	r.J(c, camera, err)
 }
 
-// @summary 分页摄像头集合
+// @summary 获取摄像头集合
 // @tags 摄像头
 // @param current query int false "当前页" default(1)
 // @param size query int false "页大小" default(10)
 // @success 200 {object} []mdl.Camera
 // @router /mgt/cameras [get]
-func PageCameras(c *gin.Context) {
-	cameras, count, err := svc.IpcSvc.PageCameras(r.Q(c))
+func ListCameras(c *gin.Context) {
+	cameras, count, err := svc.IpcSvc.ListCameras(r.Q(c))
 	r.J(c, cameras, count, err)
 }
 
@@ -38,26 +37,24 @@ func PageCameras(c *gin.Context) {
 // @success 200 {object} bool
 // @router /mgt/cameras/{ids} [delete]
 func RemoveCameras(c *gin.Context) {
-	var err error
-	ids := utl.Split(c.Param("ids"), ' ', ',')
-	if len(ids) > 0 {
-		err = svc.IpcSvc.RemoveCameras(ids)
-	}
+	err := svc.IpcSvc.RemoveCameras(utl.Split(c.Param("ids"), ','))
 	r.J(c, true, err)
 }
 
 // @summary 保存摄像头
 // @tags 摄像头
 // @param camera body mdl.Camera true "摄像头"
-// @success 200 {object} bool
+// @success 200 {object} int
 // @router /mgt/cameras [post]
 func SaveCamera(c *gin.Context) {
 	var camera mdl.Camera
 	err := c.ShouldBind(&camera)
-	if err == nil {
-		err = svc.IpcSvc.SaveCamera(camera)
+	if err != nil {
+		r.J(c, err)
+		return
 	}
-	r.J(c, camera.Id, err)
+	err = svc.IpcSvc.SaveCamera(camera)
+	r.J(c, camera.GetId(), err)
 }
 
 // @summary 开始流
@@ -73,7 +70,7 @@ func StartStream(c *gin.Context) {
 	}
 	err := c.ShouldBindUri(&p)
 	if err != nil {
-		r.J(c, nil, err)
+		r.J(c, "", err)
 		return
 	}
 	url, err := svc.IpcSvc.StartStream(p.Code, p.Type, "flv")
@@ -126,7 +123,7 @@ func ControlPtz(c *gin.Context) {
 // @tags 摄像头
 // @param code path string true "摄像头代码"
 // @param type path int true "类型: 1-主码流, 2-子码流" default(2)
-// @success 200 {object} bool
+// @success 200 {object} string
 // @router /mgt/cameras/{code}/streams/{type}/snapshot [post]
 func TakeSnapshot(c *gin.Context) {
 	var p struct {

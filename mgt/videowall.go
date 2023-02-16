@@ -21,14 +21,14 @@ func GetVideoWall(c *gin.Context) {
 	r.J(c, videoWall, err)
 }
 
-// @summary 分页视频墙集合
+// @summary 获取视频墙集合
 // @tags 视频墙
 // @param current query int false "当前页" default(1)
 // @param size query int false "页大小" default(10)
 // @success 200 {object} []mdl.VideoWall
 // @router /mgt/videowalls [get]
-func PageVideoWalls(c *gin.Context) {
-	videoWalls, count, err := svc.VideoWallSvc.Page(r.Q(c))
+func ListVideoWalls(c *gin.Context) {
+	videoWalls, count, err := svc.VideoWallSvc.List(r.Q(c))
 	r.J(c, videoWalls, count, err)
 }
 

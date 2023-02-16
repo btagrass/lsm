@@ -23,7 +23,7 @@ bash build.sh
 ```
 ## 部署
 目前只支持linux平台
-1. 安装mysql和redis服务
+1. 安装mysql
 2. 修改conf/app.yaml配置文件
 3. 启动./lsm run
 4. [管理地址](http://localhost:3082)

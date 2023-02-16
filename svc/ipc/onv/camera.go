@@ -10,7 +10,7 @@ import (
 
 // 保活摄像头集合
 func (s *OnvSvc) keepaliveCameras() error {
-	cameras, err := s.ListCameras("")
+	cameras, _, err := s.ListCameras()
 	if err != nil {
 		return err
 	}

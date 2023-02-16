@@ -49,12 +49,7 @@ export default {
       },
       cameras: [],
     }, async () => {
-      state.cameras = (await useGet("/mgt/cameras", {
-        params: {
-          current: 1,
-          size: 1000,
-        },
-      })).records
+      state.cameras = await useGet("/mgt/cameras")
     })
 
     return {

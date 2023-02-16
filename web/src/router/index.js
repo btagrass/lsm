@@ -5,7 +5,7 @@ const dynamicRoutes = (router) => {
   store.state.resources.forEach((r) => {
     r.children.forEach((c) => {
       router.addRoute("index", {
-        name: c.code,
+        name: c.id,
         path: c.url,
         meta: {
           title: c.name,

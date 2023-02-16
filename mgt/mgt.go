@@ -17,26 +17,25 @@ func Mgt() *gin.Engine {
 	m.Use(cmw.Auth(svc.UserSvc.Perm, svc.UserSvc.SignedKey))
 	{
 		// 摄像头
-		m.GET("/cameras", PageCameras)
 		m.GET("/cameras/:id", GetCamera)
-		m.POST("/cameras", SaveCamera)
+		m.GET("/cameras", ListCameras)
 		m.DELETE("/cameras/:ids", RemoveCameras)
+		m.POST("/cameras", SaveCamera)
+		m.POST("/cameras/:code/ptz/:command/:speed", ControlPtz)
 		m.POST("/cameras/:code/streams/:type/start", StartStream)
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)
-		m.POST("/cameras/:code/ptz/:command/:speed", ControlPtz)
 		// 视频墙
-		m.GET("/videowalls", PageVideoWalls)
 		m.GET("/videowalls/:id", func(c *gin.Context) {
-			id := c.Param("id")
-			if id == "default" {
+			if c.Param("id") == "default" {
 				DefaultScreen(c)
 			} else {
 				GetVideoWall(c)
 			}
 		})
-		m.POST("/videowalls", SaveVideoWall)
+		m.GET("/videowalls", ListVideoWalls)
 		m.DELETE("/videowalls/:ids", RemoveVideoWalls)
+		m.POST("/videowalls", SaveVideoWall)
 	}
 
 	return e

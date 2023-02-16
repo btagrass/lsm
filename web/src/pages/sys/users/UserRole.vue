@@ -30,14 +30,7 @@ export default {
       roles: [],
     })
     const list = async () => {
-      state.roles = (
-        await useGet("/mgt/sys/roles", {
-          params: {
-            current: 1,
-            size: 1000,
-          },
-        })
-      ).records
+      state.roles = await useGet("/mgt/sys/roles")
     }
     const save = async () => {
       await usePost(`/mgt/sys/users/${props.id}/roles`, state.data)

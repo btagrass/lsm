@@ -47,7 +47,7 @@
     <el-container>
       <el-aside :width="collapse ? '75px' : '302px'">
         <el-menu :collapse="collapse" :default-active="fullPath" unique-opened router>
-          <template v-for="r in resources" :key="r.code">
+          <template v-for="r in resources" :key="r.id">
             <el-sub-menu v-if="r.children.length" :index="r.url">
               <template #title>
                 <el-icon>
@@ -55,7 +55,7 @@
                 </el-icon>
                 <span>{{ r.name }}</span>
               </template>
-              <el-menu-item v-for="c in r.children" :key="c.code" :index="c.url">
+              <el-menu-item v-for="c in r.children" :key="c.id" :index="c.url">
                 <el-icon>
                   <component :is="c.icon"></component>
                 </el-icon>

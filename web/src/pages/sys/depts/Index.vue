@@ -45,6 +45,7 @@ export default {
   setup() {
     const { component, open, close } = useComponent()
     const { state, list, remove } = useList("/mgt/sys/depts")
+    state.params.size = 1
 
     return {
       component,

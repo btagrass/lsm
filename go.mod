@@ -2,11 +2,11 @@ module lsm
 
 go 1.20
 
-replace github.com/btagrass/go.core v0.9.2 => ../go.core
+replace github.com/btagrass/go.core v0.9.4 => ../go.core
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/btagrass/go.core v0.9.3
+	github.com/btagrass/go.core v0.9.4
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-resty/resty/v2 v2.7.0
@@ -22,7 +22,7 @@ require (
 	github.com/tidwall/gjson v1.14.4
 	github.com/use-go/onvif v0.0.9
 	github.com/yitter/idgenerator-go v1.3.2
-	golang.org/x/net v0.6.0
+	golang.org/x/net v0.7.0
 	golang.org/x/sync v0.1.0
 	gorm.io/gorm v1.24.5
 )
@@ -30,8 +30,8 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.200 // indirect
-	github.com/casbin/casbin/v2 v2.61.1 // indirect
+	github.com/aws/aws-sdk-go v1.44.202 // indirect
+	github.com/casbin/casbin/v2 v2.63.0 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect

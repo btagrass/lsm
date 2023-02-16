@@ -6,9 +6,6 @@
     <el-form-item label="父编码" prop="parentId">
       <el-input-number v-model="data.parentId" :min="0"></el-input-number>
     </el-form-item>
-    <el-form-item label="代码" prop="code">
-      <el-input v-model="data.code" clearable maxlength="20" show-word-limit></el-input>
-    </el-form-item>
     <el-form-item label="名称" prop="name">
       <el-input v-model="data.name" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
@@ -23,6 +20,9 @@
     <el-form-item label="链接" prop="url">
       <el-input v-model="data.url" clearable maxlength="100" placeholder="/user 或 /https://www.baidu.com"
         show-word-limit></el-input>
+    </el-form-item>
+    <el-form-item label="动作" prop="act">
+      <el-input v-model="data.act" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="次序" prop="sequence">
       <el-input-number v-model="data.sequence" :min="0"></el-input-number>

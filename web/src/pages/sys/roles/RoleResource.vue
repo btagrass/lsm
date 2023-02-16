@@ -1,7 +1,8 @@
 <template>
   <el-form>
     <el-form-item label="资源集合">
-      <el-tree ref="tree" :data="resources" node-key="id" :props="treeProps" default-expand-all show-checkbox></el-tree>
+      <el-tree ref="tree" :data="resources" :props="{ label: 'name' }" default-expand-all node-key="id"
+        show-checkbox></el-tree>
     </el-form-item>
     <el-form-item>
       <div class="row-center">
@@ -25,11 +26,9 @@ export default {
   setup(props, context) {
     const state = reactive({
       tree: null,
-      treeProps: {
-        label: "name",
-      },
       resources: [],
     })
+
     const list = async () => {
       state.resources = await useGet("/mgt/sys/resources")
     }

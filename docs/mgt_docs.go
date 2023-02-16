@@ -20,7 +20,7 @@ const docTemplatemgt = `{
                 "tags": [
                     "摄像头"
                 ],
-                "summary": "分页摄像头集合",
+                "summary": "获取摄像头集合",
                 "parameters": [
                     {
                         "type": "integer",
@@ -69,7 +69,7 @@ const docTemplatemgt = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "boolean"
+                            "type": "integer"
                         }
                     }
                 }
@@ -142,7 +142,7 @@ const docTemplatemgt = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "boolean"
+                            "type": "string"
                         }
                     }
                 }
@@ -264,6 +264,38 @@ const docTemplatemgt = `{
                 }
             }
         },
+        "/mgt/login": {
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "userName",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.User"
+                        }
+                    }
+                }
+            }
+        },
         "/mgt/screens/{id}": {
             "get": {
                 "tags": [
@@ -289,12 +321,679 @@ const docTemplatemgt = `{
                 }
             }
         },
+        "/mgt/sys/depts": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取部门集合",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Dept"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存部门",
+                "parameters": [
+                    {
+                        "description": "部门",
+                        "name": "dept",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Dept"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/depts/{ids}": {
+            "delete": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "移除部门集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/depts/{id}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取部门",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Dept"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/dicts": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取字典集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Dict"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存字典",
+                "parameters": [
+                    {
+                        "description": "字典",
+                        "name": "dict",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Dict"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/dicts/{ids}": {
+            "delete": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "移除字典集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/dicts/{id}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取字典",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Dict"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/resources": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取资源集合",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Resource"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存资源",
+                "parameters": [
+                    {
+                        "description": "资源",
+                        "name": "resource",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Resource"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/resources/menu": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取菜单集合",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Resource"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/resources/{ids}": {
+            "delete": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "移除资源集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/resources/{id}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取资源",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Resource"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/roles": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取角色集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.Role"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存角色",
+                "parameters": [
+                    {
+                        "description": "角色",
+                        "name": "role",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Role"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/roles/{ids}": {
+            "delete": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "移除角色集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/roles/{id}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Role"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/roles/{id}/resources": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取角色资源集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存角色资源集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/users": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取取用户集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "当前页",
+                        "name": "current",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mdl.User"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存用户",
+                "parameters": [
+                    {
+                        "description": "用户",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mdl.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/users/{ids}": {
+            "delete": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "移除用户集合",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "编码集合",
+                        "name": "ids",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/users/{id}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/sys/users/{id}/roles": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取用户角色集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "保存用户角色集合",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "编码",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgt/upgrades/{ver}": {
+            "get": {
+                "tags": [
+                    "系统"
+                ],
+                "summary": "升级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "版本",
+                        "name": "ver",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/mgt/videowalls": {
             "get": {
                 "tags": [
                     "视频墙"
                 ],
-                "summary": "分页视频墙集合",
+                "summary": "获取视频墙集合",
                 "parameters": [
                     {
                         "type": "integer",
@@ -436,6 +1135,173 @@ const docTemplatemgt = `{
                 },
                 "type": {
                     "description": "类型",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "mdl.Dept": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "children": {
+                    "description": "子部门集合",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mdl.Dept"
+                    }
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "parentId": {
+                    "description": "父编码",
+                    "type": "integer"
+                },
+                "phone": {
+                    "description": "电话",
+                    "type": "string"
+                },
+                "sequence": {
+                    "description": "次序",
+                    "type": "integer"
+                }
+            }
+        },
+        "mdl.Dict": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "sequence": {
+                    "description": "次序",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型",
+                    "type": "string"
+                }
+            }
+        },
+        "mdl.Resource": {
+            "type": "object",
+            "properties": {
+                "act": {
+                    "description": "动作",
+                    "type": "string"
+                },
+                "children": {
+                    "description": "子资源集合",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/mdl.Resource"
+                    }
+                },
+                "code": {
+                    "description": "代码",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "parentId": {
+                    "description": "父编码",
+                    "type": "integer"
+                },
+                "sequence": {
+                    "description": "次序",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "网址",
+                    "type": "string"
+                }
+            }
+        },
+        "mdl.Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
+        "mdl.User": {
+            "type": "object",
+            "properties": {
+                "dept": {
+                    "description": "部门",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/mdl.Dept"
+                        }
+                    ]
+                },
+                "deptId": {
+                    "description": "部门编码",
+                    "type": "integer"
+                },
+                "frozen": {
+                    "description": "是否冻结",
+                    "type": "boolean"
+                },
+                "fullName": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "mobile": {
+                    "description": "手机",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "令牌",
                     "type": "string"
                 },
                 "userName": {

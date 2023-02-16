@@ -18,7 +18,7 @@
       <el-input v-model="data.mobile" clearable maxlength="20" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="data.password" clearable maxlength="50" show-password show-word-limit></el-input>
+      <el-input v-model="data.password" clearable maxlength="50" show-password></el-input>
     </el-form-item>
     <el-form-item label="冻结" prop="frozen">
       <el-switch v-model="data.frozen"></el-switch>
@@ -72,9 +72,7 @@ export default {
       },
       depts: [],
     }, async () => {
-      state.depts = (
-        await useGet("/mgt/sys/depts")
-      ).records
+      state.depts = await useGet("/mgt/sys/depts")
     })
 
     return {
