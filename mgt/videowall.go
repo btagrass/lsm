@@ -38,26 +38,24 @@ func ListVideoWalls(c *gin.Context) {
 // @success 200 {object} bool
 // @router /mgt/videowalls/{ids} [delete]
 func RemoveVideoWalls(c *gin.Context) {
-	var err error
-	ids := utl.Split(c.Param("ids"), ' ', ',')
-	if len(ids) > 0 {
-		err = svc.VideoWallSvc.Remove(ids)
-	}
+	err := svc.VideoWallSvc.Remove(utl.Split(c.Param("ids"), ','))
 	r.J(c, true, err)
 }
 
 // @summary 保存视频墙
 // @tags 视频墙
 // @param videoWall body mdl.VideoWall true "视频墙"
-// @success 200 {object} bool
+// @success 200 {object} int
 // @router /mgt/videowalls [post]
 func SaveVideoWall(c *gin.Context) {
 	var videoWall mdl.VideoWall
 	err := c.ShouldBind(&videoWall)
-	if err == nil {
-		err = svc.VideoWallSvc.Save(videoWall)
+	if err != nil {
+		r.J(c, err)
+		return
 	}
-	r.J(c, videoWall.Id, err)
+	err = svc.VideoWallSvc.Save(videoWall)
+	r.J(c, videoWall.GetId(), err)
 }
 
 // @summary 默认视频墙

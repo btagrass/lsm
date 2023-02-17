@@ -3,6 +3,7 @@ package svc
 import (
 	"lsm/mdl"
 	"lsm/svc/ipc"
+	"lsm/svc/stream"
 	"lsm/svc/videowall"
 
 	"github.com/btagrass/go.core/svc"
@@ -12,6 +13,7 @@ import (
 
 var (
 	IpcSvc       ipc.IIpcSvc             // 网络摄像头服务
+	StreamSvc    *stream.StreamSvc       // 流服务
 	VideoWallSvc *videowall.VideoWallSvc // 视频墙服务
 )
 
@@ -21,6 +23,7 @@ func init() {
 	err := svc.Migrate(
 		[]any{
 			&mdl.Camera{},
+			&mdl.Stream{},
 			&mdl.VideoWall{},
 		},
 		"INSERT INTO sys_resource VALUES (300000000000002, '2023-01-29 00:00:00.000', NULL, NULL, 0, '业务系统', 1, 'Operation', '/mgt', NULL, 1)",
@@ -40,5 +43,6 @@ func init() {
 	}
 	// 服务
 	IpcSvc = ipc.NewIpcSvc()
+	StreamSvc = stream.NewStreamSvc()
 	VideoWallSvc = videowall.NewVideoWallSvc(IpcSvc)
 }

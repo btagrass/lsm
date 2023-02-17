@@ -14,6 +14,14 @@ func Mgt() *gin.Engine {
 	e := mgt.Mgt()
 	// 业务
 	m := e.Group("/mgt")
+	{
+		// Lal
+		m.POST("/lal/records", SaveRecord)
+		m.POST("/lal/streams/startPull", StartPullStream)
+		m.POST("/lal/streams/stopPull", StopPullStream)
+		m.POST("/lal/streams/startPush", StartPushStream)
+		m.POST("/lal/streams/stopPush", StopPushStream)
+	}
 	m.Use(cmw.Auth(svc.UserSvc.Perm, svc.UserSvc.SignedKey))
 	{
 		// 摄像头
@@ -22,6 +30,7 @@ func Mgt() *gin.Engine {
 		m.DELETE("/cameras/:ids", RemoveCameras)
 		m.POST("/cameras", SaveCamera)
 		m.POST("/cameras/:code/ptz/:command/:speed", ControlPtz)
+		m.GET("/cameras/:id/records/:date", GetRecordUrl)
 		m.POST("/cameras/:code/streams/:type/start", StartStream)
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)

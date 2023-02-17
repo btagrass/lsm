@@ -2,9 +2,13 @@ package internal
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/btagrass/go.core/app"
 	"github.com/btagrass/go.core/htp"
+	"github.com/btagrass/go.core/utl"
 	"github.com/q191201771/lal/pkg/logic"
 	"github.com/sirupsen/logrus"
 	"github.com/tidwall/gjson"
@@ -31,7 +35,12 @@ func NewLalSvc() *LalSvc {
 	},
 	"http_notify": {
 		"enable": true,
-		"on_hls_make_ts": "http://127.0.0.1:%d/api/lal/records"
+		"on_update": "http://127.0.0.1:%d/mgt/lal/streams",
+		"on_pub_start": "http://127.0.0.1:%d/mgt/lal/streams/startPush",
+		"on_pub_stop": "http://127.0.0.1:%d/mgt/lal/streams/stopPush",
+		"on_relay_pull_start": "http://127.0.0.1:%d/mgt/lal/streams/startPull",
+		"on_relay_pull_stop": "http://127.0.0.1:%d/mgt/lal/streams/stopPull",
+		"on_hls_make_ts": "http://127.0.0.1:%d/mgt/lal/records"
 	},
 	"in_session": {
 		"add_dummy_audio_enable": true,
@@ -68,7 +77,7 @@ func NewLalSvc() *LalSvc {
 		"addr": ":5544",
 		"out_wait_key_frame_flag": true
 	}
-}`, htp.Port),
+}`, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1),
 	}
 	s.addr = fmt.Sprintf("127.0.0.1%s", gjson.Get(s.conf, "http_api.addr").String())
 	s.protocols = map[string]string{
@@ -94,6 +103,16 @@ func (s *LalSvc) ExistStream(code string) bool {
 	_, err := htp.Get(fmt.Sprintf("http://%s/api/stat/group?stream_name=%s", s.addr, code))
 
 	return err == nil
+}
+
+// 获取录像网址
+func (s *LalSvc) GetRecordUrl(code string, dateTime time.Time) (string, error) {
+	recordFile, err := s.getRecordFile(code, dateTime)
+	if err != nil {
+		return "", err
+	}
+
+	return htp.GetUrl(recordFile), nil
 }
 
 // 获取流网址
@@ -171,4 +190,21 @@ func (s *LalSvc) StopRtpStream(code string) error {
 	})
 
 	return err
+}
+
+// 获取录像文件
+func (s *LalSvc) getRecordFile(code string, dateTime time.Time) (string, error) {
+	fileName := fmt.Sprintf(
+		"%s%s/%s-%s.m3u8",
+		gjson.Get(s.conf, "hls.out_path").String(),
+		code,
+		code,
+		dateTime.Format("20060102"),
+	)
+	filePath := filepath.Join(app.Dir, fileName)
+	if !utl.Exist(filePath) {
+		return "", fmt.Errorf("录像文件不存在")
+	}
+
+	return fileName, nil
 }

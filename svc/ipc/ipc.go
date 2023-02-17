@@ -4,6 +4,7 @@ import (
 	"lsm/mdl"
 	"lsm/svc/ipc/internal"
 	"lsm/svc/ipc/onv"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -17,6 +18,7 @@ type IIpcSvc interface {
 	RemoveCameras(ids []string) error                      // 移除摄像头集合
 	SaveCamera(camera mdl.Camera) error                    // 保存摄像头
 	// 媒体
+	GetRecordUrl(code string, date time.Time) (string, error)          // 获取录像网址
 	StartStream(code string, typ int, protocol string) (string, error) // 开始流
 	StopStream(code string, typ int) error                             // 停止流
 	TakeSnapshot(code string, typ int) (string, error)                 // 抓取快照

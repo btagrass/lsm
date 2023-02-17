@@ -3,6 +3,7 @@ package mgt
 import (
 	"lsm/mdl"
 	"lsm/svc"
+	"time"
 
 	"github.com/btagrass/go.core/r"
 	"github.com/btagrass/go.core/utl"
@@ -57,6 +58,31 @@ func SaveCamera(c *gin.Context) {
 	r.J(c, camera.GetId(), err)
 }
 
+// @summary 获取录像网址
+// @tags 摄像头
+// @param code path string true "摄像头代码"
+// @param date path string true "日期"
+// @success 200 {object} string
+// @router /mgt/cameras/{code}/records/{date} [get]
+func GetRecordUrl(c *gin.Context) {
+	var p struct {
+		Code string `uri:"id" binding:"required"`   // 摄像头代码
+		Date string `uri:"date" binding:"required"` // 日期
+	}
+	err := c.ShouldBindUri(&p)
+	if err != nil {
+		r.J(c, err)
+		return
+	}
+	date, err := time.Parse(time.RFC3339, p.Date)
+	if err != nil {
+		r.J(c, err)
+		return
+	}
+	url, err := svc.IpcSvc.GetRecordUrl(p.Code, date)
+	r.J(c, url, err)
+}
+
 // @summary 开始流
 // @tags 摄像头
 // @param code path string true "摄像头代码"
@@ -70,7 +96,7 @@ func StartStream(c *gin.Context) {
 	}
 	err := c.ShouldBindUri(&p)
 	if err != nil {
-		r.J(c, "", err)
+		r.J(c, err)
 		return
 	}
 	url, err := svc.IpcSvc.StartStream(p.Code, p.Type, "flv")
@@ -90,11 +116,11 @@ func StopStream(c *gin.Context) {
 	}
 	err := c.ShouldBindUri(&p)
 	if err != nil {
-		r.J(c, false, err)
+		r.J(c, err)
 		return
 	}
-	svc.IpcSvc.StopStream(p.Code, p.Type)
-	r.J(c, true, nil)
+	err = svc.IpcSvc.StopStream(p.Code, p.Type)
+	r.J(c, true, err)
 }
 
 // @summary 控制云台
@@ -112,7 +138,7 @@ func ControlPtz(c *gin.Context) {
 	}
 	err := c.ShouldBindUri(&p)
 	if err != nil {
-		r.J(c, false, err)
+		r.J(c, err)
 		return
 	}
 	err = svc.IpcSvc.ControlPtz(p.Code, p.Command, p.Speed)
@@ -132,7 +158,7 @@ func TakeSnapshot(c *gin.Context) {
 	}
 	err := c.ShouldBindUri(&p)
 	if err != nil {
-		r.J(c, "", err)
+		r.J(c, err)
 		return
 	}
 	url, err := svc.IpcSvc.TakeSnapshot(p.Code, p.Type)
