@@ -15,11 +15,10 @@
       </el-select>
     </el-form-item>
     <el-form-item label="图标" prop="icon">
-      <el-input v-model="data.icon" clearable maxlength="50" placeholder="Element图标" show-word-limit></el-input>
+      <el-input v-model="data.icon" clearable maxlength="50" placeholder="ElementPlus 图标" show-word-limit></el-input>
     </el-form-item>
-    <el-form-item label="链接" prop="url">
-      <el-input v-model="data.url" clearable maxlength="100" placeholder="/user 或 /https://www.baidu.com"
-        show-word-limit></el-input>
+    <el-form-item label="统一资源标识符" prop="uri">
+      <el-input v-model="data.uri" clearable maxlength="100" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="动作" prop="act">
       <el-input v-model="data.act" clearable maxlength="50" show-word-limit></el-input>
@@ -59,39 +58,25 @@ export default {
     },
   },
   setup(props, context) {
-    const { state, save } = useEdit(
-      context,
-      {
-        id: props.id,
-        parentId: props.parentId,
-        rules: {
-          code: {
-            required: true,
-            message: "请输入代码",
-            trigger: "blur",
-          },
-          name: {
-            required: true,
-            message: "请输入名称",
-            trigger: "blur",
-          },
-          type: {
-            required: true,
-            message: "请选择类型",
-            trigger: "blur",
-          },
-          url: {
-            pattern: "^/\\S*$",
-            message: "请输入正确的链接",
-            trigger: "blur",
-          },
+    const { state, save } = useEdit(context, {
+      id: props.id,
+      parentId: props.parentId,
+      rules: {
+        name: {
+          required: true,
+          message: "请输入名称",
+          trigger: "blur",
         },
-        dicts: [],
+        uri: {
+          required: true,
+          message: "请输入统一资源标识符",
+          trigger: "blur",
+        },
       },
-      async () => {
-        state.dicts = await useGet("/mgt/sys/dicts?type=Resource")
-      }
-    )
+      dicts: [],
+    }, async () => {
+      state.dicts = await useGet("/mgt/sys/dicts?type=Resource")
+    })
 
     return {
       ...toRefs(state),

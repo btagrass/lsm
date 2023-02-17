@@ -2,11 +2,11 @@ module lsm
 
 go 1.20
 
-replace github.com/btagrass/go.core v0.9.4 => ../go.core
+replace github.com/btagrass/go.core v0.9.5 => ../go.core
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/btagrass/go.core v0.9.4
+	github.com/btagrass/go.core v0.9.5
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-resty/resty/v2 v2.7.0
@@ -30,7 +30,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.202 // indirect
+	github.com/aws/aws-sdk-go v1.44.203 // indirect
 	github.com/casbin/casbin/v2 v2.63.0 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

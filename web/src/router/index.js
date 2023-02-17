@@ -6,11 +6,11 @@ const dynamicRoutes = (router) => {
     r.children.forEach((c) => {
       router.addRoute("index", {
         name: c.id,
-        path: c.url,
+        path: c.uri,
         meta: {
           title: c.name,
         },
-        component: pages[`/src/pages${c.url}/Index.vue`],
+        component: pages[`/src/pages${c.uri}/Index.vue`],
       })
     })
   })

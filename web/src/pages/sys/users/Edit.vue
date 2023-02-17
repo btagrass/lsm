@@ -9,16 +9,16 @@
       </el-tree-select>
     </el-form-item>
     <el-form-item label="用户名" prop="userName">
-      <el-input v-model="data.userName" clearable maxlength="20" show-word-limit></el-input>
+      <el-input v-model="data.userName" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="姓名" prop="fullName">
-      <el-input v-model="data.fullName" clearable maxlength="20" show-word-limit></el-input>
+      <el-input v-model="data.fullName" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
-    <el-form-item label="手机号码" prop="mobile">
-      <el-input v-model="data.mobile" clearable maxlength="20" show-word-limit></el-input>
+    <el-form-item label="手机" prop="mobile">
+      <el-input v-model="data.mobile" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="data.password" clearable maxlength="50" show-password></el-input>
+      <el-input v-model="data.password" clearable maxlength="30" show-password></el-input>
     </el-form-item>
     <el-form-item label="冻结" prop="frozen">
       <el-switch v-model="data.frozen"></el-switch>

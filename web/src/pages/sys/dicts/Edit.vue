@@ -4,7 +4,7 @@
       <el-input v-model="data.id" disabled></el-input>
     </el-form-item>
     <el-form-item label="类型" prop="type">
-      <el-input v-model="data.type" clearable maxlength="20" show-word-limit></el-input>
+      <el-input v-model="data.type" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="代码" prop="code">
       <el-input-number v-model="data.code" :min="0"></el-input-number>

@@ -28,7 +28,7 @@
       <el-input v-model="data.userName" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="data.password" clearable maxlength="50" show-word-limit></el-input>
+      <el-input v-model="data.password" clearable maxlength="50" show-password></el-input>
     </el-form-item>
     <el-form-item>
       <div class="row-center">

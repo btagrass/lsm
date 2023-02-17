@@ -48,21 +48,21 @@
       <el-aside :width="collapse ? '75px' : '302px'">
         <el-menu :collapse="collapse" :default-active="fullPath" unique-opened router>
           <template v-for="r in resources" :key="r.id">
-            <el-sub-menu v-if="r.children.length" :index="r.url">
+            <el-sub-menu v-if="r.children.length" :index="r.uri">
               <template #title>
                 <el-icon>
                   <component :is="r.icon"></component>
                 </el-icon>
                 <span>{{ r.name }}</span>
               </template>
-              <el-menu-item v-for="c in r.children" :key="c.id" :index="c.url">
+              <el-menu-item v-for="c in r.children" :key="c.id" :index="c.uri">
                 <el-icon>
                   <component :is="c.icon"></component>
                 </el-icon>
                 <span>{{ c.name }}</span>
               </el-menu-item>
             </el-sub-menu>
-            <el-menu-item v-else :index="r.url">
+            <el-menu-item v-else :index="r.uri">
               <el-icon>
                 <component :is="r.icon"></component>
               </el-icon>
