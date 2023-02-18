@@ -68,6 +68,23 @@ func SaveRecord(c *gin.Context) {
 	}
 }
 
+// 保存流
+func SaveStream(c *gin.Context) {
+	var p struct {
+		ServerId     string  `json:"server_id"`   // 服务器编码
+		Event        string  `json:"event"`       // 事件
+		StreamName   string  `json:"stream_name"` // 流名称
+		FileDir      string  `json:"cwd"`         // 文件目录
+		FileName     string  `json:"ts_file"`     // 文件名称
+		FileDuration float32 `json:"duration"`    // 文件时长
+	}
+	err := c.ShouldBind(&p)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+}
+
 // 开始拉流
 func StartPullStream(c *gin.Context) {
 	var p struct {
