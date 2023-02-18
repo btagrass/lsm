@@ -17,6 +17,7 @@ func Mgt() *gin.Engine {
 	{
 		// Lal
 		m.POST("/lal/records", SaveRecord)
+		m.POST("/lal/streams", SaveStream)
 		m.POST("/lal/streams/startPull", StartPullStream)
 		m.POST("/lal/streams/stopPull", StopPullStream)
 		m.POST("/lal/streams/startPush", StartPushStream)

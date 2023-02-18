@@ -30,7 +30,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.203 // indirect
+	github.com/aws/aws-sdk-go v1.44.204 // indirect
 	github.com/casbin/casbin/v2 v2.63.0 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -100,8 +100,8 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/mysql v1.4.6 // indirect
-	gorm.io/driver/postgres v1.4.7 // indirect
+	gorm.io/driver/mysql v1.4.7 // indirect
+	gorm.io/driver/postgres v1.4.8 // indirect
 	gorm.io/driver/sqlserver v1.4.2 // indirect
 	gorm.io/plugin/dbresolver v1.4.1 // indirect
 	modernc.org/libc v1.22.2 // indirect

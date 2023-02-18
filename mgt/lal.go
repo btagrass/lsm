@@ -71,12 +71,29 @@ func SaveRecord(c *gin.Context) {
 // 保存流
 func SaveStream(c *gin.Context) {
 	var p struct {
-		ServerId     string  `json:"server_id"`   // 服务器编码
-		Event        string  `json:"event"`       // 事件
-		StreamName   string  `json:"stream_name"` // 流名称
-		FileDir      string  `json:"cwd"`         // 文件目录
-		FileName     string  `json:"ts_file"`     // 文件名称
-		FileDuration float32 `json:"duration"`    // 文件时长
+		Groups []struct {
+			AppName     string `json:"app_name"`     // 应用名称
+			StreamName  string `json:"stream_name"`  // 流名称
+			AudioCodec  string `json:"audio_codec"`  // 音频解码器
+			VideoWidth  string `json:"video_width"`  // 视频宽
+			VideoHeight string `json:"video_height"` // 视频高
+			Pub         struct {
+				SessionId     string `json:"session_id"`      // 会话编码
+				Protocol      string `json:"protocol"`        // 协议
+				BaseType      string `json:"base_type"`       // 基础类型
+				RemoteAddr    string `json:"remotet_addr"`    // 远程地址
+				ReadBytesSum  int    `json:"read_bytes_sum"`  // 读取字节总数
+				WroteBytesSum int    `json:"wrote_bytes_sum"` // 写入字节总数
+			} `json:"pub"` // 推流
+			Pull struct {
+				SessionId     string `json:"session_id"`      // 会话编码
+				Protocol      string `json:"protocol"`        // 协议
+				BaseType      string `json:"base_type"`       // 基础类型
+				RemoteAddr    string `json:"remotet_addr"`    // 远程地址
+				ReadBytesSum  int    `json:"read_bytes_sum"`  // 读取字节总数
+				WroteBytesSum int    `json:"wrote_bytes_sum"` // 写入字节总数
+			} `json:"pull"` // 拉流
+		} `json:"groups"` // 组集合
 	}
 	err := c.ShouldBind(&p)
 	if err != nil {
@@ -89,6 +106,7 @@ func SaveStream(c *gin.Context) {
 func StartPullStream(c *gin.Context) {
 	var p struct {
 		SessionId     string `json:"session_id"`      // 会话编码
+		AppName       string `json:"app_name"`        // 应用名称
 		StreamName    string `json:"stream_name"`     // 流名称
 		Protocol      string `json:"protocol"`        // 协议
 		BaseType      string `json:"base_type"`       // 基础类型
