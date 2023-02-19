@@ -147,8 +147,9 @@ func StartPullStream(c *gin.Context) {
 		return
 	}
 	stream := mdl.Stream{
-		Code:          p.SessionId,
+		AppName:       p.AppName,
 		Name:          p.StreamName,
+		Session:       p.SessionId,
 		Protocol:      p.Protocol,
 		Type:          p.BaseType,
 		RemoteAddr:    p.RemoteAddr,

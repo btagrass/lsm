@@ -12,9 +12,10 @@ import (
 )
 
 var (
-	IpcSvc       ipc.IIpcSvc             // 网络摄像头服务
-	StreamSvc    *stream.StreamSvc       // 流服务
-	VideoWallSvc *videowall.VideoWallSvc // 视频墙服务
+	IpcSvc         ipc.IIpcSvc             // 网络摄像头服务
+	StreamSvc      *stream.StreamSvc       // 流服务
+	VideoStreamSvc *stream.VideoStreamSvc  // 视频流服务
+	VideoWallSvc   *videowall.VideoWallSvc // 视频墙服务
 )
 
 // 初始化
@@ -24,6 +25,7 @@ func init() {
 		[]any{
 			&mdl.Camera{},
 			&mdl.Stream{},
+			&mdl.VideoStream{},
 			&mdl.VideoWall{},
 		},
 		"INSERT INTO sys_resource VALUES (300000000000002, '2023-01-29 00:00:00.000', NULL, NULL, 0, '业务系统', 1, 'Operation', '/mgt', NULL, 1)",
@@ -44,5 +46,6 @@ func init() {
 	// 服务
 	IpcSvc = ipc.NewIpcSvc()
 	StreamSvc = stream.NewStreamSvc()
+	VideoStreamSvc = stream.NewVideoStreamSvc()
 	VideoWallSvc = videowall.NewVideoWallSvc(IpcSvc)
 }

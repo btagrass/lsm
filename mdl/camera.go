@@ -13,7 +13,7 @@ type Camera struct {
 	Mfr      string `gorm:"size:50;comment:厂商" json:"mfr"`                  // 厂商
 	Model    string `gorm:"size:50;comment:型号" json:"model"`                // 型号
 	Firmware string `gorm:"size:50;comment:固件" json:"firmware"`             // 固件
-	Addr     string `gorm:"size:50;comment:地址" json:"addr"`                 // 地址
+	Addr     string `gorm:"size:100;comment:地址" json:"addr"`                // 地址
 	UserName string `gorm:"size:50;comment:用户名" json:"userName"`            // 用户名
 	Password string `gorm:"size:50;comment:密码" json:"password"`             // 密码
 	State    int    `gorm:"comment:状态" json:"state"`                        // 状态

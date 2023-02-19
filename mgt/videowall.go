@@ -14,7 +14,7 @@ import (
 // @tags 视频墙
 // @param id path int true "编码"
 // @success 200 {object} mdl.VideoWall
-// @router /mgt/screens/{id} [get]
+// @router /mgt/videowalls/{id} [get]
 func GetVideoWall(c *gin.Context) {
 	id := cast.ToInt64(c.Param("id"))
 	videoWall, err := svc.VideoWallSvc.Get(id)
