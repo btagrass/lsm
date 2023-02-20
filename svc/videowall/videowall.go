@@ -37,5 +37,6 @@ func (s *VideoWallSvc) DefaultVideoWall() ([]string, error) {
 		}
 		urls = append(urls, url)
 	}
+
 	return urls, nil
 }

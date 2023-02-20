@@ -35,11 +35,13 @@ func Mgt() *gin.Engine {
 		m.POST("/cameras/:code/streams/:type/start", StartStream)
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)
-		// 视频流
-		m.GET("/videostreams/:id", GetVideoStream)
-		m.GET("/videostreams", ListVideoStreams)
-		m.DELETE("/videostreams/:ids", RemoveVideoStreams)
-		m.POST("/videostreams", SaveVideoStream)
+		// 视频
+		m.GET("/videos/:id", GetVideo)
+		m.GET("/videos", ListVideos)
+		m.DELETE("/videos/:ids", RemoveVideos)
+		m.POST("/videos", SaveVideo)
+		m.POST("/videos/:id/start", StartVideo)
+		m.POST("/videos/:id/stop", StopVideo)
 		// 视频墙
 		m.GET("/videowalls/:id", func(c *gin.Context) {
 			if c.Param("id") == "default" {

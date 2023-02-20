@@ -4,6 +4,7 @@ import (
 	"lsm/mdl"
 	"lsm/svc/ipc"
 	"lsm/svc/stream"
+	"lsm/svc/video"
 	"lsm/svc/videowall"
 
 	"github.com/btagrass/go.core/svc"
@@ -12,10 +13,10 @@ import (
 )
 
 var (
-	IpcSvc         ipc.IIpcSvc             // 网络摄像头服务
-	StreamSvc      *stream.StreamSvc       // 流服务
-	VideoStreamSvc *stream.VideoStreamSvc  // 视频流服务
-	VideoWallSvc   *videowall.VideoWallSvc // 视频墙服务
+	IpcSvc       ipc.IIpcSvc             // 网络摄像头服务
+	StreamSvc    *stream.StreamSvc       // 流服务
+	VideoSvc     *video.VideoSvc         // 视频服务
+	VideoWallSvc *videowall.VideoWallSvc // 视频墙服务
 )
 
 // 初始化
@@ -25,7 +26,7 @@ func init() {
 		[]any{
 			&mdl.Camera{},
 			&mdl.Stream{},
-			&mdl.VideoStream{},
+			&mdl.Video{},
 			&mdl.VideoWall{},
 		},
 		"INSERT INTO sys_resource VALUES (300000000000002, '2023-01-29 00:00:00.000', NULL, NULL, 0, '业务系统', 1, 'Operation', '/mgt', NULL, 1)",
@@ -39,6 +40,11 @@ func init() {
 		"INSERT INTO sys_resource VALUES (300000000020202, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000202, '删除', 2, '', '/mgt/cameras/*', 'DELETE', 2)",
 		"INSERT INTO sys_resource VALUES (300000000020203, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000202, '编辑', 2, '', '/mgt/cameras/*', 'GET', 3)",
 		"INSERT INTO sys_resource VALUES (300000000020204, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000202, '保存', 2, '', '/mgt/cameras', 'POST', 4)",
+		"INSERT INTO sys_resource VALUES (300000000000203, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000002, '视频管理', 1, 'VideoCamera', '/mgt/videos', NULL, 3)",
+		"INSERT INTO sys_resource VALUES (300000000020301, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '查询', 2, '', '/mgt/videos', 'GET', 1)",
+		"INSERT INTO sys_resource VALUES (300000000020302, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '删除', 2, '', '/mgt/videos/*', 'DELETE', 2)",
+		"INSERT INTO sys_resource VALUES (300000000020303, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '编辑', 2, '', '/mgt/videos/*', 'GET', 3)",
+		"INSERT INTO sys_resource VALUES (300000000020304, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '保存', 2, '', '/mgt/videos', 'POST', 4)",
 	)
 	if err != nil {
 		logrus.Fatal(err)
@@ -46,6 +52,6 @@ func init() {
 	// 服务
 	IpcSvc = ipc.NewIpcSvc()
 	StreamSvc = stream.NewStreamSvc()
-	VideoStreamSvc = stream.NewVideoStreamSvc()
+	VideoSvc = video.NewVideoSvc()
 	VideoWallSvc = videowall.NewVideoWallSvc(IpcSvc)
 }

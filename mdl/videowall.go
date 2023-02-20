@@ -18,10 +18,12 @@ type VideoWall struct {
 
 func (m *VideoWall) AfterFind(tx *gorm.DB) error {
 	m.Cameras = utl.Split(m.CameraCodes, ',')
+
 	return nil
 }
 
 func (m *VideoWall) BeforeSave(tx *gorm.DB) error {
 	m.CameraCodes = strings.Join(m.Cameras, ",")
+
 	return nil
 }
