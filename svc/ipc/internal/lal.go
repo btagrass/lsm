@@ -35,11 +35,8 @@ func NewLalSvc() *LalSvc {
 	},
 	"http_notify": {
 		"enable": true,
+		"update_interval_sec": 5,
 		"on_update": "http://127.0.0.1:%d/mgt/lal/streams",
-		"on_pub_start": "http://127.0.0.1:%d/mgt/lal/streams/startPush",
-		"on_pub_stop": "http://127.0.0.1:%d/mgt/lal/streams/stopPush",
-		"on_relay_pull_start": "http://127.0.0.1:%d/mgt/lal/streams/startPull",
-		"on_relay_pull_stop": "http://127.0.0.1:%d/mgt/lal/streams/stopPull",
 		"on_hls_make_ts": "http://127.0.0.1:%d/mgt/lal/records"
 	},
 	"in_session": {
@@ -77,7 +74,7 @@ func NewLalSvc() *LalSvc {
 		"addr": ":5544",
 		"out_wait_key_frame_flag": true
 	}
-}`, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1, htp.Port+1),
+}`, htp.Port+1, htp.Port+1),
 	}
 	s.addr = fmt.Sprintf("127.0.0.1%s", gjson.Get(s.conf, "http_api.addr").String())
 	s.protocols = map[string]string{

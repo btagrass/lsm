@@ -7,7 +7,6 @@ import (
 	"github.com/btagrass/go.core/r"
 	"github.com/btagrass/go.core/utl"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // @summary 获取视频墙
@@ -16,8 +15,7 @@ import (
 // @success 200 {object} mdl.VideoWall
 // @router /mgt/videowalls/{id} [get]
 func GetVideoWall(c *gin.Context) {
-	id := cast.ToInt64(c.Param("id"))
-	videoWall, err := svc.VideoWallSvc.Get(id)
+	videoWall, err := svc.VideoWallSvc.Get(c.Param("id"))
 	r.J(c, videoWall, err)
 }
 

@@ -16,8 +16,7 @@ import (
 // @success 200 {object} mdl.Video
 // @router /mgt/videos/{id} [get]
 func GetVideo(c *gin.Context) {
-	id := cast.ToInt64(c.Param("id"))
-	video, err := svc.VideoSvc.Get(id)
+	video, err := svc.VideoSvc.Get(c.Param("id"))
 	r.J(c, video, err)
 }
 

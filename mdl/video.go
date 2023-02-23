@@ -23,10 +23,9 @@ func (m *Video) AfterFind(tx *gorm.DB) error {
 		err := syscall.Kill(m.Process, 0)
 		if err != nil {
 			m.Process = 0
-			return nil
 		}
-		m.Url = fmt.Sprintf("rtsp://%s:5544/live/%d", htp.Ip, m.Id)
 	}
+	m.Url = fmt.Sprintf("rtsp://%s:5544/live/%d", htp.Ip, m.Id)
 
 	return nil
 }

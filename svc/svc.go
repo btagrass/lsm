@@ -25,7 +25,7 @@ func init() {
 	err := svc.Migrate(
 		[]any{
 			&mdl.Camera{},
-			&mdl.Stream{},
+			&mdl.StreamPush{},
 			&mdl.Video{},
 			&mdl.VideoWall{},
 		},
@@ -45,6 +45,7 @@ func init() {
 		"INSERT INTO sys_resource VALUES (300000000020302, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '删除', 2, '', '/mgt/videos/*', 'DELETE', 2)",
 		"INSERT INTO sys_resource VALUES (300000000020303, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '编辑', 2, '', '/mgt/videos/*', 'GET', 3)",
 		"INSERT INTO sys_resource VALUES (300000000020304, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000203, '保存', 2, '', '/mgt/videos', 'POST', 4)",
+		"INSERT INTO sys_resource VALUES (300000000000204, '2023-01-29 00:00:00.000', NULL, NULL, 300000000000002, '实时流管理', 1, 'Histogram', '/mgt/streams', NULL, 4)",
 	)
 	if err != nil {
 		logrus.Fatal(err)

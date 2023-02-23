@@ -18,10 +18,6 @@ func Mgt() *gin.Engine {
 		// Lal
 		m.POST("/lal/records", SaveRecord)
 		m.POST("/lal/streams", SaveStream)
-		m.POST("/lal/streams/startPull", StartPullStream)
-		m.POST("/lal/streams/stopPull", StopPullStream)
-		m.POST("/lal/streams/startPush", StartPushStream)
-		m.POST("/lal/streams/stopPush", StopPushStream)
 	}
 	m.Use(cmw.Auth(svc.UserSvc.Perm, svc.UserSvc.SignedKey))
 	{
@@ -35,6 +31,12 @@ func Mgt() *gin.Engine {
 		m.POST("/cameras/:code/streams/:type/start", StartStream)
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)
+		// 流
+		m.GET("/streams/:id", GetStream)
+		m.GET("/streams", ListStreams)
+		m.POST("/streams/start", StartPushStream)
+		m.POST("/streams/stop", StopPushStream)
+		m.GET("/streams/:id/push", GetStreamPush)
 		// 视频
 		m.GET("/videos/:id", GetVideo)
 		m.GET("/videos", ListVideos)
