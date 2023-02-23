@@ -20,7 +20,7 @@ for dir in {api,mgt}; do
         swag i -d $dir -g $dir.go --instanceName $dir --pd -q
     fi
 done
-CGO_ENABLED=1 GOOS=$os GOARCH=$arch go build -ldflags "-s -w" -o build/$os-$arch/ $name
+CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -ldflags "-s -w" -o build/$os-$arch/ $name
 echo [i] Copying files...
 cp -r conf build/$os-$arch
 echo

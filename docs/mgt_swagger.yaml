@@ -35,123 +35,119 @@ definitions:
         description: 用户名
         type: string
     type: object
-  mdl.Dept:
+  mdl.Stream:
     properties:
-      addr:
-        description: 地址
+      appName:
+        description: 应用名称
         type: string
-      children:
-        description: 子部门集合
-        items:
-          $ref: '#/definitions/mdl.Dept'
-        type: array
+      audioCodec:
+        description: 音频解码
+        type: string
+      codeRate:
+        description: 码率
+        type: integer
       id:
         description: 编码
         type: integer
       name:
         description: 名称
         type: string
-      parentId:
-        description: 父编码
-        type: integer
-      phone:
-        description: 电话
+      protocol:
+        description: 协议
         type: string
-      sequence:
-        description: 次序
+      pushs:
+        description: 推送集合
+        items:
+          $ref: '#/definitions/mdl.StreamPush'
+        type: array
+      receivedBytes:
+        description: 接收字节数
+        type: integer
+      remoteAddr:
+        description: 远程地址
+        type: string
+      sentBytes:
+        description: 发送字节数
+        type: integer
+      session:
+        description: 会话
+        type: string
+      subs:
+        description: 订阅集合
+        items:
+          $ref: '#/definitions/mdl.StreamSub'
+        type: array
+      type:
+        description: 类型
+        type: string
+      videoCodec:
+        description: 视频解码
+        type: string
+      videoHeight:
+        description: 视频高
+        type: integer
+      videoWidth:
+        description: 视频宽
         type: integer
     type: object
-  mdl.Dict:
+  mdl.StreamPush:
     properties:
-      code:
-        description: 代码
+      id:
+        description: 编码
+        type: integer
+      remoteAddr:
+        description: 远程地址
+        type: string
+      state:
+        description: 状态
+        type: integer
+      streamName:
+        description: 流名称
+        type: string
+    type: object
+  mdl.StreamSub:
+    properties:
+      codeRate:
+        description: 码率
         type: integer
       id:
         description: 编码
         type: integer
-      name:
-        description: 名称
+      protocol:
+        description: 协议
         type: string
-      sequence:
-        description: 次序
+      receivedBytes:
+        description: 接收字节数
         type: integer
+      remoteAddr:
+        description: 远程地址
+        type: string
+      sentBytes:
+        description: 发送字节数
+        type: integer
+      session:
+        description: 会话
+        type: string
       type:
         description: 类型
         type: string
     type: object
-  mdl.Resource:
+  mdl.Video:
     properties:
-      act:
-        description: 动作
-        type: string
-      children:
-        description: 子资源集合
-        items:
-          $ref: '#/definitions/mdl.Resource'
-        type: array
-      code:
-        description: 代码
-        type: string
-      icon:
-        description: 图标
-        type: string
       id:
         description: 编码
         type: integer
       name:
         description: 名称
         type: string
-      parentId:
-        description: 父编码
+      process:
+        description: 进程
         type: integer
-      sequence:
-        description: 次序
-        type: integer
-      type:
-        description: 类型
-        type: integer
+      source:
+        description: 来源
+        type: string
       url:
         description: 网址
-        type: string
-    type: object
-  mdl.Role:
-    properties:
-      id:
-        description: 编码
-        type: integer
-      name:
-        description: 名称
-        type: string
-    type: object
-  mdl.User:
-    properties:
-      dept:
-        allOf:
-        - $ref: '#/definitions/mdl.Dept'
-        description: 部门
-      deptId:
-        description: 部门编码
-        type: integer
-      frozen:
-        description: 是否冻结
-        type: boolean
-      fullName:
-        description: 姓名
-        type: string
-      id:
-        description: 编码
-        type: integer
-      mobile:
-        description: 手机
-        type: string
-      password:
-        description: 密码
-        type: string
-      token:
-        description: 令牌
-        type: string
-      userName:
-        description: 用户名
         type: string
     type: object
   mdl.VideoWall:
@@ -239,6 +235,27 @@ paths:
           schema:
             type: boolean
       summary: 控制云台
+      tags:
+      - 摄像头
+  /mgt/cameras/{code}/records/{date}:
+    get:
+      parameters:
+      - description: 摄像头代码
+        in: path
+        name: code
+        required: true
+        type: string
+      - description: 日期
+        in: path
+        name: date
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取录像网址
       tags:
       - 摄像头
   /mgt/cameras/{code}/streams/{type}/snapshot:
@@ -339,104 +356,7 @@ paths:
       summary: 移除摄像头集合
       tags:
       - 摄像头
-  /mgt/login:
-    post:
-      parameters:
-      - description: 用户名
-        in: formData
-        name: userName
-        required: true
-        type: string
-      - description: 密码
-        in: formData
-        name: password
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.User'
-      summary: 登录
-      tags:
-      - 系统
-  /mgt/screens/{id}:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.VideoWall'
-      summary: 获取视频墙
-      tags:
-      - 视频墙
-  /mgt/sys/depts:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/mdl.Dept'
-            type: array
-      summary: 获取部门集合
-      tags:
-      - 系统
-    post:
-      parameters:
-      - description: 部门
-        in: body
-        name: dept
-        required: true
-        schema:
-          $ref: '#/definitions/mdl.Dept'
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 保存部门
-      tags:
-      - 系统
-  /mgt/sys/depts/{id}:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.Dept'
-      summary: 获取部门
-      tags:
-      - 系统
-  /mgt/sys/depts/{ids}:
-    delete:
-      parameters:
-      - description: 编码集合
-        in: path
-        name: ids
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 移除部门集合
-      tags:
-      - 系统
-  /mgt/sys/dicts:
+  /mgt/streams:
     get:
       parameters:
       - default: 1
@@ -454,28 +374,12 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/mdl.Dict'
+              $ref: '#/definitions/mdl.Stream'
             type: array
-      summary: 获取字典集合
+      summary: 获取流集合
       tags:
-      - 系统
-    post:
-      parameters:
-      - description: 字典
-        in: body
-        name: dict
-        required: true
-        schema:
-          $ref: '#/definitions/mdl.Dict'
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 保存字典
-      tags:
-      - 系统
-  /mgt/sys/dicts/{id}:
+      - 流
+  /mgt/streams/{id}:
     get:
       parameters:
       - description: 编码
@@ -487,99 +391,61 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/mdl.Dict'
-      summary: 获取字典
+            $ref: '#/definitions/mdl.Stream'
+      summary: 获取流
       tags:
-      - 系统
-  /mgt/sys/dicts/{ids}:
-    delete:
+      - 流
+  /mgt/streams/{name}/push:
+    get:
       parameters:
-      - description: 编码集合
+      - description: 名称
         in: path
-        name: ids
+        name: name
         required: true
         type: string
       responses:
         "200":
           description: OK
           schema:
-            type: boolean
-      summary: 移除字典集合
+            $ref: '#/definitions/mdl.Stream'
+      summary: 获取流推送
       tags:
-      - 系统
-  /mgt/sys/resources:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/mdl.Resource'
-            type: array
-      summary: 获取资源集合
-      tags:
-      - 系统
+      - 流
+  /mgt/streams/start:
     post:
       parameters:
-      - description: 资源
+      - description: 流推送
         in: body
-        name: resource
+        name: streamPush
         required: true
         schema:
-          $ref: '#/definitions/mdl.Resource'
+          $ref: '#/definitions/mdl.StreamPush'
       responses:
         "200":
           description: OK
           schema:
-            type: boolean
-      summary: 保存资源
+            type: integer
+      summary: 开始转推流
       tags:
-      - 系统
-  /mgt/sys/resources/{id}:
-    get:
+      - 流
+  /mgt/streams/stop:
+    post:
       parameters:
-      - description: 编码
-        in: path
-        name: id
+      - description: 流推送
+        in: body
+        name: streamPush
         required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/mdl.StreamPush'
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/mdl.Resource'
-      summary: 获取资源
+            type: integer
+      summary: 停止转推流
       tags:
-      - 系统
-  /mgt/sys/resources/{ids}:
-    delete:
-      parameters:
-      - description: 编码集合
-        in: path
-        name: ids
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 移除资源集合
-      tags:
-      - 系统
-  /mgt/sys/resources/menu:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/mdl.Resource'
-            type: array
-      summary: 获取菜单集合
-      tags:
-      - 系统
-  /mgt/sys/roles:
+      - 流
+  /mgt/videos:
     get:
       parameters:
       - default: 1
@@ -597,28 +463,28 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/mdl.Role'
+              $ref: '#/definitions/mdl.Video'
             type: array
-      summary: 获取角色集合
+      summary: 获取视频集合
       tags:
-      - 系统
+      - 视频
     post:
       parameters:
-      - description: 角色
+      - description: 视频
         in: body
-        name: role
+        name: Video
         required: true
         schema:
-          $ref: '#/definitions/mdl.Role'
+          $ref: '#/definitions/mdl.Video'
       responses:
         "200":
           description: OK
           schema:
-            type: boolean
-      summary: 保存角色
+            type: integer
+      summary: 保存视频
       tags:
-      - 系统
-  /mgt/sys/roles/{id}:
+      - 视频
+  /mgt/videos/{id}:
     get:
       parameters:
       - description: 编码
@@ -630,12 +496,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/mdl.Role'
-      summary: 获取角色
+            $ref: '#/definitions/mdl.Video'
+      summary: 获取视频
       tags:
-      - 系统
-  /mgt/sys/roles/{id}/resources:
-    get:
+      - 视频
+  /mgt/videos/{id}/start:
+    post:
       parameters:
       - description: 编码
         in: path
@@ -646,12 +512,11 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              type: integer
-            type: array
-      summary: 获取角色资源集合
+            type: integer
+      summary: 开始视频
       tags:
-      - 系统
+      - 视频
+  /mgt/videos/{id}/stop:
     post:
       parameters:
       - description: 编码
@@ -664,10 +529,10 @@ paths:
           description: OK
           schema:
             type: boolean
-      summary: 保存角色资源集合
+      summary: 停止视频
       tags:
-      - 系统
-  /mgt/sys/roles/{ids}:
+      - 视频
+  /mgt/videos/{ids}:
     delete:
       parameters:
       - description: 编码集合
@@ -680,131 +545,9 @@ paths:
           description: OK
           schema:
             type: boolean
-      summary: 移除角色集合
+      summary: 移除视频集合
       tags:
-      - 系统
-  /mgt/sys/users:
-    get:
-      parameters:
-      - default: 1
-        description: 当前页
-        in: query
-        name: current
-        type: integer
-      - default: 10
-        description: 页大小
-        in: query
-        name: size
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/mdl.User'
-            type: array
-      summary: 获取取用户集合
-      tags:
-      - 系统
-    post:
-      parameters:
-      - description: 用户
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/mdl.User'
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 保存用户
-      tags:
-      - 系统
-  /mgt/sys/users/{id}:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.User'
-      summary: 获取用户
-      tags:
-      - 系统
-  /mgt/sys/users/{id}/roles:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              type: integer
-            type: array
-      summary: 获取用户角色集合
-      tags:
-      - 系统
-    post:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 保存用户角色集合
-      tags:
-      - 系统
-  /mgt/sys/users/{ids}:
-    delete:
-      parameters:
-      - description: 编码集合
-        in: path
-        name: ids
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: boolean
-      summary: 移除用户集合
-      tags:
-      - 系统
-  /mgt/upgrades/{ver}:
-    get:
-      parameters:
-      - description: 版本
-        in: path
-        name: ver
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              type: integer
-            type: array
-      summary: 升级
-      tags:
-      - 系统
+      - 视频
   /mgt/videowalls:
     get:
       parameters:
@@ -840,8 +583,24 @@ paths:
         "200":
           description: OK
           schema:
-            type: boolean
+            type: integer
       summary: 保存视频墙
+      tags:
+      - 视频墙
+  /mgt/videowalls/{id}:
+    get:
+      parameters:
+      - description: 编码
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mdl.VideoWall'
+      summary: 获取视频墙
       tags:
       - 视频墙
   /mgt/videowalls/{ids}:
