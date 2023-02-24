@@ -26,7 +26,7 @@
             <el-button type="primary" icon="VideoCamera" title="录像"
               @click="open(scope.row.id, 'Record', { code: scope.row.code })">
             </el-button>
-            <el-button type="warning" icon="VideoPlay" title="实况"
+            <el-button type="warning" icon="VideoPlay" title="直播"
               @click="open(scope.row.id, 'Live', { code: scope.row.code })">
             </el-button>
           </el-button-group>

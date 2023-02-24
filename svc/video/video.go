@@ -20,8 +20,8 @@ func NewVideoSvc() *VideoSvc {
 	}
 }
 
-// 开始视频
-func (s *VideoSvc) StartVideo(id int64) (int, error) {
+// 开始虚拟流
+func (s *VideoSvc) StartVirtualStream(id int64) (int, error) {
 	video, err := s.Get(id)
 	if err != nil {
 		return 0, err
@@ -52,8 +52,8 @@ func (s *VideoSvc) StartVideo(id int64) (int, error) {
 	return video.Process, err
 }
 
-// 停止视频
-func (s *VideoSvc) StopVideo(id int64) error {
+// 停止虚拟流
+func (s *VideoSvc) StopVirtualStream(id int64) error {
 	video, err := s.Get(id)
 	if err != nil {
 		return err

@@ -57,22 +57,22 @@ func SaveVideo(c *gin.Context) {
 	r.J(c, video.GetId(), err)
 }
 
-// @summary 开始视频
+// @summary 开始虚拟流
 // @tags 视频
 // @param id path int true "编码"
 // @success 200 {object} int
 // @router /mgt/videos/{id}/start [post]
-func StartVideo(c *gin.Context) {
-	process, err := svc.VideoSvc.StartVideo(cast.ToInt64(c.Param("id")))
+func StartVirtualStream(c *gin.Context) {
+	process, err := svc.VideoSvc.StartVirtualStream(cast.ToInt64(c.Param("id")))
 	r.J(c, process, err)
 }
 
-// @summary 停止视频
+// @summary 停止虚拟流
 // @tags 视频
 // @param id path int true "编码"
 // @success 200 {object} bool
 // @router /mgt/videos/{id}/stop [post]
-func StopVideo(c *gin.Context) {
-	err := svc.VideoSvc.StopVideo(cast.ToInt64(c.Param("id")))
+func StopVirtualStream(c *gin.Context) {
+	err := svc.VideoSvc.StopVirtualStream(cast.ToInt64(c.Param("id")))
 	r.J(c, true, err)
 }

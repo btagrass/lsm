@@ -3,9 +3,7 @@
     <div class="row">
       <el-button type="warning" icon="Search" @click="list">查询</el-button>
     </div>
-    <el-table ref="table" :data="data.records" border @selection-change="select">
-      <el-table-column type="selection"></el-table-column>
-      <el-table-column label="编码" prop="id" width="120"></el-table-column>
+    <el-table ref="table" :data="data.records" border>
       <el-table-column label="应用名称" prop="appName"></el-table-column>
       <el-table-column label="名称" prop="name"></el-table-column>
       <el-table-column label="音频" prop="audioCodec" align="center"></el-table-column>
@@ -24,7 +22,8 @@
       <el-table-column label="操作" width="150">
         <template #default="scope">
           <el-button-group>
-            <el-button type="primary" icon="View" title="查看" @click="open(scope.row.id, 'View')"></el-button>
+            <el-button type="primary" icon="VideoPlay" title="直播"
+              @click="open(scope.row.id, 'Live', { code: scope.row.name })"></el-button>
             <el-button type="warning" icon="RefreshRight" title="转推"
               @click="open(scope.row.id, 'Push', { streamName: scope.row.name })"></el-button>
           </el-button-group>
@@ -45,19 +44,18 @@ import { useComponent, useList } from "@/crud"
 
 export default {
   components: {
+    Live: defineAsyncComponent(() => import("./Live.vue")),
     Push: defineAsyncComponent(() => import("./Push.vue")),
-    View: defineAsyncComponent(() => import("./View.vue")),
   },
   setup() {
     const { component, open, close } = useComponent()
-    const { state, select, list } = useList("/mgt/streams")
+    const { state, list } = useList("/mgt/streams")
 
     return {
       component,
       open,
       close,
       ...toRefs(state),
-      select,
       list,
     }
   },

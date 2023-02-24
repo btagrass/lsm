@@ -17,8 +17,9 @@
           <el-button-group>
             <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
-            <el-button type="warning" icon="VideoPlay" title="开始" @click="start(scope.row.id)"></el-button>
-            <el-button type="info" icon="VideoPause" title="停止" @click="stop(scope.row.id)"></el-button>
+            <el-button type="warning" icon="VideoPlay" title="开始虚拟流"
+              @click="startVirtualStream(scope.row.id)"></el-button>
+            <el-button type="info" icon="VideoPause" title="停止虚拟流" @click="stopVirtualStream(scope.row.id)"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -44,11 +45,11 @@ export default {
     const { component, open, close } = useComponent()
     const { state, select, list, remove } = useList("/mgt/videos")
 
-    const start = async (id) => {
+    const startVirtualStream = async (id) => {
       await usePost(`/mgt/videos/${id}/start`)
       await list()
     }
-    const stop = async (id) => {
+    const stopVirtualStream = async (id) => {
       await usePost(`/mgt/videos/${id}/stop`)
       await list()
     }
@@ -61,8 +62,8 @@ export default {
       select,
       list,
       remove,
-      start,
-      stop,
+      startVirtualStream,
+      stopVirtualStream,
     }
   },
 }

@@ -42,8 +42,8 @@ func Mgt() *gin.Engine {
 		m.GET("/videos", ListVideos)
 		m.DELETE("/videos/:ids", RemoveVideos)
 		m.POST("/videos", SaveVideo)
-		m.POST("/videos/:id/start", StartVideo)
-		m.POST("/videos/:id/stop", StopVideo)
+		m.POST("/videos/:id/start", StartVirtualStream)
+		m.POST("/videos/:id/stop", StopVirtualStream)
 		// 视频墙
 		m.GET("/videowalls/:id", func(c *gin.Context) {
 			if c.Param("id") == "default" {
