@@ -513,7 +513,7 @@ paths:
           description: OK
           schema:
             type: integer
-      summary: 开始视频
+      summary: 开始虚拟流
       tags:
       - 视频
   /mgt/videos/{id}/stop:
@@ -529,7 +529,7 @@ paths:
           description: OK
           schema:
             type: boolean
-      summary: 停止视频
+      summary: 停止虚拟流
       tags:
       - 视频
   /mgt/videos/{ids}:

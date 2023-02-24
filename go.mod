@@ -2,11 +2,11 @@ module lsm
 
 go 1.20
 
-replace github.com/btagrass/go.core v0.9.6 => ../go.core
+replace github.com/btagrass/go.core v0.9.7 => ../go.core
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/btagrass/go.core v0.9.6
+	github.com/btagrass/go.core v0.9.7
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-resty/resty/v2 v2.7.0
@@ -32,7 +32,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.207 // indirect
+	github.com/aws/aws-sdk-go v1.44.208 // indirect
 	github.com/bytedance/sonic v1.8.1 // indirect
 	github.com/casbin/casbin/v2 v2.63.0 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
@@ -86,7 +86,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	github.com/spf13/afero v1.9.3 // indirect
+	github.com/spf13/afero v1.9.4 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect

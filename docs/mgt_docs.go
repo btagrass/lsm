@@ -550,7 +550,7 @@ const docTemplatemgt = `{
                 "tags": [
                     "视频"
                 ],
-                "summary": "开始视频",
+                "summary": "开始虚拟流",
                 "parameters": [
                     {
                         "type": "integer",
@@ -575,7 +575,7 @@ const docTemplatemgt = `{
                 "tags": [
                     "视频"
                 ],
-                "summary": "停止视频",
+                "summary": "停止虚拟流",
                 "parameters": [
                     {
                         "type": "integer",
