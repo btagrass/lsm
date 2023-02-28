@@ -199,7 +199,7 @@ func (s *StreamSvc) SaveStream(stream mdl.Stream) error {
 
 // 获取流推送
 func (s *StreamSvc) GetStreamPush(name string) (*mdl.StreamPush, error) {
-	streamPush, err := s.streamPushSvc.Get("stream_name = ?", name)
+	streamPush, err := s.streamPushSvc.Get("name = ?", name)
 
 	return streamPush, err
 }
