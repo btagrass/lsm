@@ -1,6 +1,6 @@
 <template>
   <el-form>
-    <el-form-item label="实况">
+    <el-form-item label="直播">
       <div id="player"></div>
     </el-form-item>
     <el-form-item label="云台">
@@ -34,53 +34,39 @@
   </el-form>
 </template>
 
-<script>
-import { inject, reactive, toRefs, onMounted, onUnmounted } from "vue"
+<script setup>
+import { inject, defineProps, reactive, onMounted, onUnmounted } from "vue"
 import { usePost } from "@/http"
 
-export default {
-  props: {
-    code: {
-      type: String,
-      required: true,
-    },
+const api = inject("api")
+const props = defineProps({
+  values: Object
+})
+const state = reactive({
+  code: props.values.code,
+  data: {
+    url: "",
   },
-  setup(props, context) {
-    const api = inject("api")
+  player: null,
+})
 
-    const state = reactive({
-      code: props.code,
-      data: {
-        url: "",
-      },
-      player: null,
-    })
-
-    const start = async () => {
-      state.data.url = await usePost(`${api}/${state.code}/streams/1/start`)
-    }
-    const control = async (command) => {
-      await usePost(`${api}/${state.code}/ptz/${command}/2`)
-    }
-    const snapshot = async () => {
-      window.open(await usePost(`${api}/${state.code}/streams/1/snapshot`), "_blank")
-    }
-    onMounted(async () => {
-      await start()
-      state.player = new WasmPlayer(null, "player")
-      state.player.play(state.data.url, 1)
-    })
-    onUnmounted(async () => {
-      state.player.pause()
-      state.player.destroy()
-      state.player = null
-    })
-
-    return {
-      ...toRefs(state),
-      control,
-      snapshot,
-    }
-  },
+const start = async () => {
+  state.data.url = await usePost(`${api}/${state.code}/streams/1/start`)
 }
+const control = async (command) => {
+  await usePost(`${api}/${state.code}/ptz/${command}/2`)
+}
+const snapshot = async () => {
+  window.open(await usePost(`${api}/${state.code}/streams/1/snapshot`), "_blank")
+}
+onMounted(async () => {
+  await start()
+  state.player = new WasmPlayer(null, "player")
+  state.player.play(state.data.url, 1)
+})
+onUnmounted(async () => {
+  state.player.pause()
+  state.player.destroy()
+  state.player = null
+})
 </script>

@@ -6,45 +6,33 @@
   </el-form>
 </template>
 
-<script>
-import { inject, reactive, toRefs, onMounted, onUnmounted } from "vue"
+<script setup>
+import { inject, defineProps, reactive, onMounted, onUnmounted } from "vue"
 import { usePost } from "@/http"
 
-export default {
-  props: {
-    code: {
-      type: String,
-      required: true,
-    },
+const api = inject("api")
+const props = defineProps({
+  values: Object
+})
+const state = reactive({
+  name: props.values.name,
+  data: {
+    url: "",
   },
-  setup(props, context) {
-    const api = inject("api")
+  player: null,
+})
 
-    const state = reactive({
-      code: props.code,
-      data: {
-        url: "",
-      },
-      player: null,
-    })
-
-    const start = async () => {
-      state.data.url = await usePost(`${api}/${state.code}/streams/1/start`)
-    }
-    onMounted(async () => {
-      await start()
-      state.player = new WasmPlayer(null, "player")
-      state.player.play(state.data.url, 1)
-    })
-    onUnmounted(async () => {
-      state.player.pause()
-      state.player.destroy()
-      state.player = null
-    })
-
-    return {
-      ...toRefs(state),
-    }
-  },
+const start = async () => {
+  state.data.url = await usePost(`${api}/${state.code}/streams/1/start`)
 }
+onMounted(async () => {
+  await start()
+  state.player = new WasmPlayer(null, "player")
+  state.player.play(state.data.url, 1)
+})
+onUnmounted(async () => {
+  state.player.pause()
+  state.player.destroy()
+  state.player = null
+})
 </script>

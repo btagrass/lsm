@@ -29,6 +29,7 @@ func NewStreamSvc() *StreamSvc {
 
 // 获取流集合
 func (s *StreamSvc) ListStreams(cond map[string]any) ([]mdl.Stream, int, error) {
+	var streams []mdl.Stream
 	var r struct {
 		Data struct {
 			Groups []struct {
@@ -73,9 +74,8 @@ func (s *StreamSvc) ListStreams(cond map[string]any) ([]mdl.Stream, int, error) 
 	}
 	_, err := htp.Get(fmt.Sprintf("http://%s:8083/api/stat/all_group", htp.Ip), &r)
 	if err != nil {
-		return nil, 0, err
+		return streams, 0, err
 	}
-	var streams []mdl.Stream
 	for _, g := range r.Data.Groups {
 		stream := mdl.Stream{
 			AppName:     g.AppName,

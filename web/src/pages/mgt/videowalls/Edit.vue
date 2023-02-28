@@ -20,42 +20,29 @@
   </el-form>
 </template>
 
-<script>
-import { toRefs } from "vue"
+<script setup>
+import { defineEmits, defineProps, ref } from "vue"
 import { useEdit } from "@/crud"
 import { useGet } from "@/http"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+var cameras = ref(null)
+const { form, data, save } = useEdit(props.values, emits, async () => {
+  cameras.value = await useGet("/mgt/cameras")
+})
+const rules = ref({
+  name: {
+    required: true,
+    message: "请输入名称",
+    trigger: "blur",
   },
-  setup(props, context) {
-    const { state, save } = useEdit(context, {
-      id: props.id,
-      rules: {
-        name: {
-          required: true,
-          message: "请输入名称",
-          trigger: "blur",
-        },
-        cameras: {
-          required: true,
-          message: "请选择摄像头",
-          trigger: "blur",
-        },
-      },
-      cameras: [],
-    }, async () => {
-      state.cameras = await useGet("/mgt/cameras")
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-    }
+  cameras: {
+    required: true,
+    message: "请选择摄像头",
+    trigger: "blur",
   },
-}
+})
 </script>

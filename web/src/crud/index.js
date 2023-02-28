@@ -2,25 +2,22 @@ import { provide, inject, reactive, toRefs, watch, onMounted } from "vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { useGet, usePost, useDelete } from "@/http"
 
-export function useComponent() {
+export function useComp() {
   const state = reactive({
-    component: {
-      id: 0,
-      name: null,
-      visible: false,
-    },
+    name: null,
+    values: null,
+    visible: false,
   })
 
-  const open = (id, name, props) => {
-    Object.assign(state.component, props)
-    state.component.id = id
-    state.component.name = name
-    state.component.visible = true
+  const open = (name, values) => {
+    state.name = name
+    state.values = values
+    state.visible = true
   }
   const close = () => {
-    state.component.id = 0
-    state.component.name = null
-    state.component.visible = false
+    state.name = null
+    state.values = null
+    state.visible = false
   }
 
   return {
@@ -33,7 +30,7 @@ export function useComponent() {
 export function useList(api, state, mounted) {
   provide("api", api)
 
-  var o = {
+  let o = {
     table: null,
     ids: [],
     params: {
@@ -48,18 +45,6 @@ export function useList(api, state, mounted) {
   Object.assign(o, state)
   const s = reactive(o)
 
-  const select = (selection) => {
-    if (selection instanceof Array) {
-      s.ids = selection.map((i) => i.id)
-    } else if (selection instanceof Object) {
-      if (selection.children) {
-        selection.children.forEach((s) => {
-          select(s)
-        })
-      }
-      s.ids.push(selection.id)
-    }
-  }
   const list = async () => {
     s.data = await useGet(api, {
       params: s.params,
@@ -84,6 +69,18 @@ export function useList(api, state, mounted) {
       ElMessage.error("请选择记录")
     }
   }
+  const select = (selection) => {
+    if (selection instanceof Array) {
+      s.ids = selection.map((i) => i.id)
+    } else if (selection instanceof Object) {
+      if (selection.children) {
+        selection.children.forEach((s) => {
+          select(s)
+        })
+      }
+      s.ids.push(selection.id)
+    }
+  }
   watch(s.params, list)
   onMounted(async () => {
     await list()
@@ -93,17 +90,17 @@ export function useList(api, state, mounted) {
   })
 
   return {
-    state: s,
-    select,
+    ...toRefs(s),
     list,
     remove,
+    select,
   }
 }
 
-export function useEdit(context, state, mounted) {
+export function useEdit(state, emits, mounted) {
   const api = inject("api")
 
-  var o = {
+  let o = {
     form: null,
     id: 0,
     data: {},
@@ -127,7 +124,7 @@ export function useEdit(context, state, mounted) {
       if (valid) {
         await usePost(api, s.data)
         if (id instanceof PointerEvent) {
-          context.emit("close")
+          emits("close")
         } else {
           edit(id)
         }
@@ -143,7 +140,7 @@ export function useEdit(context, state, mounted) {
 
   return {
     api,
-    state: s,
+    ...toRefs(s),
     save,
   }
 }

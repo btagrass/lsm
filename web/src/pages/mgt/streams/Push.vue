@@ -3,8 +3,8 @@
     <el-form-item label="编码" prop="id">
       <el-input v-model="data.id" disabled></el-input>
     </el-form-item>
-    <el-form-item label="流名称" prop="streamName">
-      <el-input v-model="data.streamName" disabled></el-input>
+    <el-form-item label="流名称" prop="name">
+      <el-input v-model="data.name" disabled></el-input>
     </el-form-item>
     <el-form-item label="远程地址" prop="remoteAddr">
       <el-input v-model="data.remoteAddr" clearable maxlength="50" placeholder="rtsp://localhost:5544/live/test"
@@ -26,16 +26,13 @@ import { useGet, usePost } from "@/http"
 
 export default {
   props: {
-    streamName: {
-      type: String,
-      required: true,
-    },
+    v: Object,
   },
   setup(props, context) {
     const api = inject("api")
 
     const { state } = useEdit(context, {
-      streamName: props.streamName,
+      ...props.v,
       rules: {
         remoteAddr: {
           required: true,
@@ -44,11 +41,10 @@ export default {
         },
       },
     }, async () => {
-      state.data = await useGet(`${api}/${props.streamName}/push`)
+      state.data = await useGet(`${api}/${props.v.name}/push`)
       if (!state.data) {
-        state.data = {...state}
+        state.data = { ...state }
       }
-      console.log(state)
     })
 
     const start = async () => {

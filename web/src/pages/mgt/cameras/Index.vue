@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
-      <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
+      <el-button type="primary" icon="DocumentAdd" @click="open(Edit)">增加</el-button>
       <el-button type="warning" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
@@ -21,49 +21,30 @@
       <el-table-column label="操作" width="170">
         <template #default="scope">
           <el-button-group>
-            <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
+            <el-button type="primary" icon="Edit" title="编辑" @click="open(Edit, { id: scope.row.id })"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
             <el-button type="primary" icon="VideoCamera" title="录像"
-              @click="open(scope.row.id, 'Record', { code: scope.row.code })">
-            </el-button>
+              @click="open(Record, { code: scope.row.code })"></el-button>
             <el-button type="warning" icon="VideoPlay" title="直播"
-              @click="open(scope.row.id, 'Live', { code: scope.row.code })">
-            </el-button>
+              @click="open(Live, { code: scope.row.code })"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="params.current" v-model:page-size="params.size" :total="data.total" background
       layout="total,prev,pager,next,sizes"></el-pagination>
-    <el-drawer v-model="component.visible" destroy-on-close @close="list">
-      <component :id="component.id" :code="component.code" :is="component.name" @close="close"></component>
+    <el-drawer v-model="visible" destroy-on-close @close="list">
+      <component :is="name" :values="values" @close="close"></component>
     </el-drawer>
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent, toRefs } from "vue"
-import { useComponent, useList } from "@/crud"
+<script setup>
+import { useComp, useList } from "@/crud"
+import Edit from "./Edit.vue"
+import Live from "./Live.vue"
+import Record from "./Record.vue"
 
-export default {
-  components: {
-    Edit: defineAsyncComponent(() => import("./Edit.vue")),
-    Live: defineAsyncComponent(() => import("./Live.vue")),
-    Record: defineAsyncComponent(() => import("./Record.vue")),
-  },
-  setup() {
-    const { component, open, close } = useComponent()
-    const { state, select, list, remove } = useList("/mgt/cameras")
-
-    return {
-      component,
-      open,
-      close,
-      ...toRefs(state),
-      select,
-      list,
-      remove,
-    }
-  },
-}
+const { name, values, visible, open, close } = useComp()
+const { table, params, data, select, list, remove } = useList("/mgt/cameras")
 </script>

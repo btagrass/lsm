@@ -23,41 +23,26 @@
         <template #default="scope">
           <el-button-group>
             <el-button type="primary" icon="VideoPlay" title="直播"
-              @click="open(scope.row.id, 'Live', { code: scope.row.name })"></el-button>
+              @click="open(Live, { name: scope.row.name })"></el-button>
             <el-button type="warning" icon="RefreshRight" title="转推"
-              @click="open(scope.row.id, 'Push', { streamName: scope.row.name })"></el-button>
+              @click="open(Push, { name: scope.row.name })"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="params.current" v-model:page-size="params.size" :total="data.total" background
       layout="total,prev,pager,next,sizes"></el-pagination>
-    <el-drawer v-model="component.visible" destroy-on-close @close="list">
-      <component :id="component.id" :streamName="component.streamName" :is="component.name" @close="close"></component>
+    <el-drawer v-model="visible" destroy-on-close @close="list">
+      <component :is="name" :values="values" @close="close"></component>
     </el-drawer>
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent, toRefs } from "vue"
-import { useComponent, useList } from "@/crud"
+<script setup>
+import { useComp, useList } from "@/crud"
+import Live from "./Live.vue"
+import Push from "./Push.vue"
 
-export default {
-  components: {
-    Live: defineAsyncComponent(() => import("./Live.vue")),
-    Push: defineAsyncComponent(() => import("./Push.vue")),
-  },
-  setup() {
-    const { component, open, close } = useComponent()
-    const { state, list } = useList("/mgt/streams")
-
-    return {
-      component,
-      open,
-      close,
-      ...toRefs(state),
-      list,
-    }
-  },
-}
+const { name, values, visible, open, close } = useComp()
+const { table, params, data, list } = useList("/mgt/streams")
 </script>

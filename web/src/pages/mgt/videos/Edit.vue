@@ -9,7 +9,7 @@
     <el-form-item label="来源" prop="source">
       <el-input v-model="data.source" clearable maxlength="100" show-word-limit>
         <template #append>
-          <el-upload :action="`${VITE_MGT_URL}/mgt/sys/files/videos`" :headers="{ Authorization: `${user.token}` }"
+          <el-upload :action="`${env.VITE_MGT_URL}/mgt/sys/files/videos`" :headers="{ Authorization: `${user.token}` }"
             accept="video/*" :on-success="(response) => (data.source = response)">
             <el-icon size="20">
               <UploadFilled />
@@ -27,46 +27,29 @@
   </el-form>
 </template>
 
-<script>
-import { toRefs } from "vue"
-import { useStore } from "vuex";
+<script setup>
+import { defineEmits, defineProps, toRefs } from "vue"
+import { useStore } from "vuex"
 import { useEdit } from "@/crud"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const { form, data, save } = useEdit(props.values, emits)
+const rules = {
+  name: {
+    required: true,
+    message: "请输入名称",
+    trigger: "blur",
   },
-  setup(props, context) {
-    const { state, save } = useEdit(context, {
-      id: props.id,
-      rules: {
-        name: {
-          required: true,
-          message: "请输入名称",
-          trigger: "blur",
-        },
-        protocol: {
-          required: true,
-          message: "请选择协议",
-          trigger: "blur",
-        },
-        source: {
-          required: true,
-          message: "请输入来源或上传来源文件",
-          trigger: "blur",
-        },
-      },
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-      ...toRefs(import.meta.env),
-      ...toRefs(useStore().state),
-    }
+  source: {
+    required: true,
+    message: "请输入来源或上传来源文件",
+    trigger: "blur",
   },
 }
+
+const { user } = useStore().state
+const env = import.meta.env
 </script>
