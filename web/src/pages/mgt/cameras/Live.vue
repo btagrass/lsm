@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { inject, defineProps, reactive, onMounted, onUnmounted } from "vue"
+import { inject, reactive, onMounted, onUnmounted } from "vue"
 import { usePost } from "@/http"
 
 const api = inject("api")

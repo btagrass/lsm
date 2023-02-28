@@ -14,46 +14,28 @@
         <template #default="scope">
           <el-button-group>
             <el-button type="primary" icon="Edit" title="编辑"
-              @click="open(scope.row.id, 'Edit', { parentId: scope.row.parentId })"></el-button>
+              @click="open(Edit, { id: scope.row.id, parentId: scope.row.parentId })"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
             <el-button type="primary" icon="DocumentAdd" title="增加同级"
-              @click="open(0, 'Edit', { parentId: scope.row.parentId })">
-            </el-button>
+              @click="open(Edit, { parentId: scope.row.parentId })"></el-button>
             <el-button type="warning" icon="DocumentAdd" title="增加下级"
-              @click="open(0, 'Edit', { parentId: scope.row.id })">
-            </el-button>
+              @click="open(Edit, { parentId: scope.row.id })"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="params.current" v-model:page-size="params.size" :total="data.total" background
       layout="total,prev,pager,next,sizes"></el-pagination>
-    <el-drawer v-model="component.visible" destroy-on-close @close="list">
-      <component :id="component.id" :parentId="component.parentId" :is="component.name" @close="close"></component>
+    <el-drawer v-model="visible" destroy-on-close @close="list">
+      <component :is="name" :values="values" @close="close"></component>
     </el-drawer>
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent, toRefs } from "vue"
-import { useComponent, useList } from "@/crud"
+<script setup>
+import { useComp, useList } from "@/crud"
+import Edit from "./Edit.vue"
 
-export default {
-  components: {
-    Edit: defineAsyncComponent(() => import("./Edit.vue")),
-  },
-  setup() {
-    const { component, open, close } = useComponent()
-    const { state, list, remove } = useList("/mgt/sys/depts")
-
-    return {
-      component,
-      open,
-      close,
-      ...toRefs(state),
-      list,
-      remove,
-    }
-  },
-}
+const { name, values, visible, open, close } = useComp()
+const { table, params, data, list, remove } = useList("/mgt/sys/depts")
 </script>

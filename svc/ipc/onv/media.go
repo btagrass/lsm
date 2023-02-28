@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/btagrass/go.core/htp"
 	"github.com/btagrass/go.core/utl"
@@ -66,10 +65,10 @@ func (s *OnvSvc) TakeSnapshot(code string, typ int) (string, error) {
 	}
 	element := doc.FindElement("//trt:GetSnapshotUriResponse/trt:MediaUri/tt:Uri")
 	if element == nil {
-		return url, fmt.Errorf("device %s 's snapshotUri is not found", code)
+		return url, fmt.Errorf("摄像头 %s 的快照地址不存在", code)
 	}
 	url = element.Text()
-	fileName := fmt.Sprintf("data/cameras/%s_%s.jpg", code, time.Now().Format("20060102150405.999999999"))
+	fileName := fmt.Sprintf("data/cameras/%s_%s.jpg", code, utl.TimeId())
 	req := resty.New().
 		SetTimeout(htp.Timeout).
 		SetTLSClientConfig(&tls.Config{

@@ -32,53 +32,40 @@
   </el-form>
 </template>
 
-<script>
-import { toRefs } from "vue"
+<script setup>
+import { ref } from "vue"
 import { useEdit } from "@/crud"
 import { useGet } from "@/http"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const depts = ref([])
+const { form, data, save } = useEdit(props.values, emits, async () => {
+  depts.value = await useGet("/mgt/sys/depts")
+})
+const rules = {
+  deptId: {
+    required: true,
+    message: "请选择部门",
+    trigger: "blur",
   },
-  setup(props, context) {
-    const { state, save } = useEdit(context, {
-      id: props.id,
-      rules: {
-        deptId: {
-          required: true,
-          message: "请选择部门",
-          trigger: "blur",
-        },
-        userName: {
-          required: true,
-          message: "请输入用户名",
-          trigger: "blur",
-        },
-        mobile: {
-          required: true,
-          pattern: "^[1][3-9][0-9]{9}$",
-          message: "请输入正确的手机号码",
-          trigger: "blur",
-        },
-        password: {
-          required: true,
-          message: "请输入密码",
-          trigger: "blur",
-        },
-      },
-      depts: [],
-    }, async () => {
-      state.depts = await useGet("/mgt/sys/depts")
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-    }
+  userName: {
+    required: true,
+    message: "请输入用户名",
+    trigger: "blur",
+  },
+  mobile: {
+    required: true,
+    pattern: "^[1][3-9][0-9]{9}$",
+    message: "请输入正确的手机号码",
+    trigger: "blur",
+  },
+  password: {
+    required: true,
+    message: "请输入密码",
+    trigger: "blur",
   },
 }
 </script>

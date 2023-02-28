@@ -13,38 +13,29 @@
   </el-form>
 </template>
 
-<script>
-import { reactive, toRefs, onMounted } from "vue"
+<script setup>
+import { inject, reactive, toRefs, onMounted } from "vue"
 import { useGet, usePost } from "@/http"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    const state = reactive({
-      data: {},
-      roles: [],
-    })
-    const list = async () => {
-      state.roles = await useGet("/mgt/sys/roles")
-    }
-    const save = async () => {
-      await usePost(`/mgt/sys/users/${props.id}/roles`, state.data)
-      context.emit("close")
-    }
-    onMounted(async () => {
-      await list()
-      state.data = await useGet(`/mgt/sys/users/${props.id}/roles`)
-    })
+const api = inject("api")
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const state = reactive({
+  id: props.values.id,
+  data: {},
+  roles: [],
+})
 
-    return {
-      ...toRefs(state),
-      save,
-    }
-  },
+const save = async () => {
+  await usePost(`${api}/${state.id}/roles`, state.data)
+  context.emit("close")
 }
+onMounted(async () => {
+  state.roles = await useGet("/mgt/sys/roles")
+  state.data = await useGet(`${api}/${state.id}/roles`)
+})
+
+const { data, roles } = toRefs(state)
 </script>

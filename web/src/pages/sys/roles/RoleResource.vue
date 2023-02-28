@@ -12,39 +12,29 @@
   </el-form>
 </template>
 
-<script>
-import { reactive, toRefs, onMounted } from "vue"
+<script setup>
+import { inject, reactive, toRefs, onMounted } from "vue"
 import { useGet, usePost } from "@/http"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup(props, context) {
-    const state = reactive({
-      tree: null,
-      resources: [],
-    })
+const api = inject("api")
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const state = reactive({
+  tree: null,
+  id: props.values.id,
+  resources: [],
+})
 
-    const list = async () => {
-      state.resources = await useGet("/mgt/sys/resources")
-    }
-    const save = async () => {
-      await usePost(`/mgt/sys/roles/${props.id}/resources`, state.tree.getCheckedNodes())
-      context.emit("close")
-    }
-    onMounted(async () => {
-      await list()
-      state.tree.setCheckedKeys(await useGet(`/mgt/sys/roles/${props.id}/resources`))
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-    }
-  },
+const save = async () => {
+  await usePost(`${api}/${state.id}/resources`, state.tree.getCheckedNodes())
+  emits("close")
 }
+onMounted(async () => {
+  state.resources = await useGet("/mgt/sys/resources")
+  state.tree.setCheckedKeys(await useGet(`${api}/${state.id}/resources`))
+})
+
+const { tree, resources } = toRefs(state)
 </script>

@@ -28,7 +28,6 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, toRefs } from "vue"
 import { useStore } from "vuex"
 import { useEdit } from "@/crud"
 

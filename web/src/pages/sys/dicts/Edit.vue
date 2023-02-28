@@ -24,43 +24,29 @@
   </el-form>
 </template>
 
-<script>
-import { toRefs } from "vue"
+<script setup>
 import { useEdit } from "@/crud"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const { form, data, save } = useEdit(props.values, emits)
+const rules = {
+  type: {
+    required: true,
+    message: "请输入类型",
+    trigger: "blur",
   },
-  setup(props, context) {
-    const { state, save } = useEdit(context, {
-      id: props.id,
-      rules: {
-        type: {
-          required: true,
-          message: "请输入类型",
-          trigger: "blur",
-        },
-        code: {
-          required: true,
-          message: "请输入代码",
-          trigger: "blur",
-        },
-        name: {
-          required: true,
-          message: "请输入名称",
-          trigger: "blur",
-        },
-      },
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-    }
+  code: {
+    required: true,
+    message: "请输入代码",
+    trigger: "blur",
+  },
+  name: {
+    required: true,
+    message: "请输入名称",
+    trigger: "blur",
   },
 }
 </script>

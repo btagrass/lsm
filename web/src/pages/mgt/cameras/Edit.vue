@@ -46,7 +46,6 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref } from "vue"
 import { useEdit } from "@/crud"
 
 const props = defineProps({
@@ -54,11 +53,11 @@ const props = defineProps({
 })
 const emits = defineEmits(["close"])
 const { form, data, save } = useEdit(props.values, emits)
-const rules = ref({
+const rules = {
   code: {
     required: true,
     message: "请输入代码",
     trigger: "blur",
   },
-})
+}
 </script>

@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { inject, defineProps, reactive, toRefs, onMounted, onUnmounted } from "vue"
+import { inject, reactive, toRefs, onMounted, onUnmounted } from "vue"
 import { useGet } from "@/http"
 
 const api = inject("api")

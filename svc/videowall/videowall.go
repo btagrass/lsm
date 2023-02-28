@@ -24,7 +24,7 @@ func NewVideoWallSvc(ipcSvc ipc.IIpcSvc) *VideoWallSvc {
 
 // 默认视频墙
 func (s *VideoWallSvc) DefaultVideoWall() ([]string, error) {
-	var urls []string = []string{}
+	urls := make([]string, 0)
 	videoWall, err := s.Get()
 	if err != nil || videoWall == nil {
 		return urls, err

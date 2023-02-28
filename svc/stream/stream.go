@@ -29,7 +29,7 @@ func NewStreamSvc() *StreamSvc {
 
 // 获取流集合
 func (s *StreamSvc) ListStreams(cond map[string]any) ([]mdl.Stream, int, error) {
-	var streams []mdl.Stream
+	streams := make([]mdl.Stream, 0)
 	var r struct {
 		Data struct {
 			Groups []struct {
@@ -137,13 +137,13 @@ func (s *StreamSvc) ListStreams(cond map[string]any) ([]mdl.Stream, int, error) 
 
 // 开始转推流
 func (s *StreamSvc) StartPushStream(streamPush mdl.StreamPush) error {
-	key := fmt.Sprintf("%s:pushs:%s", s.Prefix, streamPush.StreamName)
+	key := fmt.Sprintf("%s:pushs:%s", s.Prefix, streamPush.Name)
 	_, ok := s.Cache.Get(key)
 	if ok {
 		return nil
 	}
 	rtspTunnel := NewRtspTunnel(
-		fmt.Sprintf("rtsp://%s:5544/live/%s", htp.Ip, streamPush.StreamName),
+		fmt.Sprintf("rtsp://%s:5544/live/%s", htp.Ip, streamPush.Name),
 		streamPush.RemoteAddr,
 		false,
 		false,
@@ -160,7 +160,7 @@ func (s *StreamSvc) StartPushStream(streamPush mdl.StreamPush) error {
 
 // 停止转推流
 func (s *StreamSvc) StopPushStream(streamPush mdl.StreamPush) error {
-	key := fmt.Sprintf("%s:pushs:%s", s.Prefix, streamPush.StreamName)
+	key := fmt.Sprintf("%s:pushs:%s", s.Prefix, streamPush.Name)
 	value, ok := s.Cache.Get(key)
 	if !ok {
 		return nil
@@ -173,7 +173,7 @@ func (s *StreamSvc) StopPushStream(streamPush mdl.StreamPush) error {
 	if err != nil {
 		return err
 	}
-	err = s.streamPushSvc.Remove("stream_name = ?", streamPush.StreamName)
+	err = s.streamPushSvc.Remove("name = ?", streamPush.Name)
 
 	return err
 }

@@ -27,7 +27,7 @@ type Stream struct {
 // 流推送
 type StreamPush struct {
 	mdl.Mdl
-	StreamName string `gorm:"size:50;not null;comment:流名称" json:"streamName"`   // 流名称
+	Name       string `gorm:"size:50;not null;comment:名称" json:"name"`          // 名称
 	RemoteAddr string `gorm:"size:100;not null;comment:远程地址" json:"remoteAddr"` // 远程地址
 	State      int    `gorm:"comment:状态" json:"state"`                          // 状态
 }

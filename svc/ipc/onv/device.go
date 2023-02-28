@@ -72,8 +72,11 @@ func (s *OnvSvc) getDevice(code string) (*Device, error) {
 		return v.(*Device), nil
 	}
 	camera, err := s.CameraSvc.GetCameraByCode(code)
-	if err != nil || camera == nil {
+	if err != nil {
 		return nil, err
+	}
+	if camera == nil {
+		return nil, fmt.Errorf("摄像头 %s 不存在", code)
 	}
 	device := &Device{
 		code:     code,

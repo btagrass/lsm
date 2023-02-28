@@ -46,5 +46,5 @@ import Live from "./Live.vue"
 import Record from "./Record.vue"
 
 const { name, values, visible, open, close } = useComp()
-const { table, params, data, select, list, remove } = useList("/mgt/cameras")
+const { table, params, data, list, remove, select } = useList("/mgt/cameras")
 </script>

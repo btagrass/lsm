@@ -41,47 +41,29 @@
   </el-form>
 </template>
 
-<script>
-import { toRefs } from "vue"
+<script setup>
+import { ref } from "vue"
 import { useEdit } from "@/crud"
 import { useGet } from "@/http"
 
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    parentId: {
-      type: Number,
-      required: false,
-    },
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const dicts = ref([])
+const { form, data, save } = useEdit(props.values, emits, async () => {
+  dicts.value = await useGet("/mgt/sys/dicts?type=Resource")
+})
+const rules = {
+  name: {
+    required: true,
+    message: "请输入名称",
+    trigger: "blur",
   },
-  setup(props, context) {
-    const { state, save } = useEdit(context, {
-      id: props.id,
-      parentId: props.parentId,
-      rules: {
-        name: {
-          required: true,
-          message: "请输入名称",
-          trigger: "blur",
-        },
-        uri: {
-          required: true,
-          message: "请输入统一资源标识符",
-          trigger: "blur",
-        },
-      },
-      dicts: [],
-    }, async () => {
-      state.dicts = await useGet("/mgt/sys/dicts?type=Resource")
-    })
-
-    return {
-      ...toRefs(state),
-      save,
-    }
+  uri: {
+    required: true,
+    message: "请输入统一资源标识符",
+    trigger: "blur",
   },
 }
 </script>

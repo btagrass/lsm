@@ -38,7 +38,7 @@ import { usePost } from "@/http"
 import Edit from "./Edit.vue"
 
 const { name, values, visible, open, close } = useComp()
-const { table, params, data, select, list, remove } = useList("/mgt/videos")
+const { table, params, data, list, remove, select } = useList("/mgt/videos")
 
 const startVirtualStream = async (id) => {
   await usePost(`/mgt/videos/${id}/start`)

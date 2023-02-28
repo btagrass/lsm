@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
-      <el-button type="primary" icon="DocumentAdd" @click="open(0, 'Edit')">增加</el-button>
+      <el-button type="primary" icon="DocumentAdd" @click="open(Edit)">增加</el-button>
       <el-button type="warning" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
@@ -21,44 +21,26 @@
       <el-table-column label="操作" width="150">
         <template #default="scope">
           <el-button-group>
-            <el-button type="primary" icon="Edit" title="编辑" @click="open(scope.row.id, 'Edit')"></el-button>
+            <el-button type="primary" icon="Edit" title="编辑" @click="open(Edit, { id: scope.row.id })"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
-            <el-button type="warning" icon="Setting" title="角色" @click="open(scope.row.id, 'UserRole')">
-            </el-button>
+            <el-button type="warning" icon="Setting" title="角色" @click="open(UserRole, { id: scope.row.id })"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="params.current" v-model:page-size="params.size" :total="data.total" background
       layout="total,prev,pager,next,sizes"></el-pagination>
-    <el-drawer v-model="component.visible" destroy-on-close @close="list">
-      <component :id="component.id" :is="component.name" @close="close"></component>
+    <el-drawer v-model="visible" destroy-on-close @close="list">
+      <component :is="name" :values="values" @close="close"></component>
     </el-drawer>
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent, toRefs } from "vue"
-import { useComponent, useList } from "@/crud"
+<script setup>
+import { useComp, useList } from "@/crud"
+import Edit from "./Edit.vue"
+import UserRole from "./UserRole.vue"
 
-export default {
-  components: {
-    Edit: defineAsyncComponent(() => import("./Edit.vue")),
-    UserRole: defineAsyncComponent(() => import("./UserRole.vue")),
-  },
-  setup() {
-    const { component, open, close } = useComponent()
-    const { state, select, list, remove } = useList("/mgt/sys/users")
-
-    return {
-      component,
-      open,
-      close,
-      ...toRefs(state),
-      select,
-      list,
-      remove,
-    }
-  },
-}
+const { name, values, visible, open, close } = useComp()
+const { table, params, data, list, remove, select } = useList("/mgt/sys/users")
 </script>

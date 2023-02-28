@@ -19,7 +19,55 @@
   </el-form>
 </template>
 
-<script>
+<script setup>
+import { inject, reactive, toRefs, onMounted } from "vue"
+import { useGet, usePost } from "@/http"
+
+const api = inject("api")
+const props = defineProps({
+  values: Object
+})
+const emits = defineEmits(["close"])
+const state = reactive({
+  form: null,
+  name: props.values.name,
+  data: {},
+})
+const rules = {
+  remoteAddr: {
+    required: true,
+    message: "请输入远程地址",
+    trigger: "blur",
+  },
+}
+
+const start = async () => {
+  state.form.validate(async (valid) => {
+    if (valid) {
+      await usePost(`${api}/start`, data)
+      emits("close")
+    }
+  })
+}
+const stop = async () => {
+  state.form.validate(async (valid) => {
+    if (valid) {
+      await usePost(`${api}/stop`, data)
+      emits("close")
+    }
+  })
+}
+onMounted(async () => {
+  state.data = await useGet(`${api}/${state.name}/push`)
+  if (!state.data) {
+    state.data = { ...state }
+  }
+})
+
+const { form, data } = toRefs(state)
+</script>
+
+<!-- <script>
 import { inject, toRefs } from "vue"
 import { useEdit } from "@/crud"
 import { useGet, usePost } from "@/http"
@@ -71,4 +119,4 @@ export default {
     }
   },
 }
-</script>
+</script> -->

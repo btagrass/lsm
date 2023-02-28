@@ -21,7 +21,6 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, ref } from "vue"
 import { useEdit } from "@/crud"
 import { useGet } from "@/http"
 
@@ -29,11 +28,11 @@ const props = defineProps({
   values: Object
 })
 const emits = defineEmits(["close"])
-var cameras = ref(null)
+const cameras = ref([])
 const { form, data, save } = useEdit(props.values, emits, async () => {
   cameras.value = await useGet("/mgt/cameras")
 })
-const rules = ref({
+const rules = {
   name: {
     required: true,
     message: "请输入名称",
@@ -44,5 +43,5 @@ const rules = ref({
     message: "请选择摄像头",
     trigger: "blur",
   },
-})
+}
 </script>
