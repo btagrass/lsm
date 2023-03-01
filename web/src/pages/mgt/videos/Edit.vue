@@ -9,7 +9,7 @@
     <el-form-item label="来源" prop="source">
       <el-input v-model="data.source" clearable maxlength="100" show-word-limit>
         <template #append>
-          <el-upload :action="`${env.VITE_MGT_URL}/mgt/sys/files/videos`" :headers="{ Authorization: `${user.token}` }"
+          <el-upload :action="`${env.MGT_URL}/mgt/sys/files/videos`" :headers="{ Authorization: `${user.token}` }"
             accept="video/*" :on-success="(response) => (data.source = response)">
             <el-icon size="20">
               <UploadFilled />

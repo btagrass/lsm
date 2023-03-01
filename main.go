@@ -49,25 +49,16 @@ func main() {
 				}
 				group.Go(mgt.ListenAndServe)
 				// 界面服务
-				we := gin.Default()
-				wf, _ := fs.Sub(dist, "web/dist")
-				we.StaticFS("/", http.FS(wf))
+				dist, _ := fs.Sub(dist, "web/dist")
+				engine := gin.Default()
+				engine.StaticFS("/", http.FS(dist))
 				web := &http.Server{
 					Addr:    fmt.Sprintf(":%d", htp.Port+2),
-					Handler: we,
+					Handler: engine,
 				}
 				group.Go(web.ListenAndServe)
 				// 作业服务
 				group.Go(job.Run)
-
-				// loc, _ := time.LoadLocation("Asia/Shanghai")
-				// beginDateTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2022-12-22 12:00:00", loc)
-				// endDateTime := beginDateTime.Add(10 * time.Second)
-				// url, err := svc.IpcSvc.TakeRecord("1", beginDateTime, endDateTime)
-				// if err != nil {
-				// 	fmt.Println(err, url)
-				// }
-
 				if err := group.Wait(); err != nil {
 					logrus.Fatal(err)
 				}

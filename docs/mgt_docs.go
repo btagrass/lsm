@@ -857,6 +857,10 @@ const docTemplatemgt = `{
                     "description": "编码",
                     "type": "integer"
                 },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
                 "remoteAddr": {
                     "description": "远程地址",
                     "type": "string"
@@ -864,10 +868,6 @@ const docTemplatemgt = `{
                 "state": {
                     "description": "状态",
                     "type": "integer"
-                },
-                "streamName": {
-                    "description": "流名称",
-                    "type": "string"
                 }
             }
         },
