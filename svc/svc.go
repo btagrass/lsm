@@ -51,8 +51,8 @@ func init() {
 		logrus.Fatal(err)
 	}
 	// 服务
-	IpcSvc = ipc.NewIpcSvc()
 	StreamSvc = stream.NewStreamSvc()
+	IpcSvc = ipc.NewIpcSvc(StreamSvc)
 	VideoSvc = video.NewVideoSvc()
 	VideoWallSvc = videowall.NewVideoWallSvc(IpcSvc)
 }

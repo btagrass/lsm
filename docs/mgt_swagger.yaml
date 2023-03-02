@@ -379,22 +379,6 @@ paths:
       summary: 获取流集合
       tags:
       - 流
-  /mgt/streams/{id}:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.Stream'
-      summary: 获取流
-      tags:
-      - 流
   /mgt/streams/{name}/push:
     get:
       parameters:

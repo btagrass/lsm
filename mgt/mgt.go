@@ -32,7 +32,6 @@ func Mgt() *gin.Engine {
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)
 		// 流
-		m.GET("/streams/:id", GetStream)
 		m.GET("/streams", ListStreams)
 		m.POST("/streams/start", StartPushStream)
 		m.POST("/streams/stop", StopPushStream)

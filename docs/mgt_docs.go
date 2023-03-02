@@ -385,31 +385,6 @@ const docTemplatemgt = `{
                 }
             }
         },
-        "/mgt/streams/{id}": {
-            "get": {
-                "tags": [
-                    "流"
-                ],
-                "summary": "获取流",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "编码",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/mdl.Stream"
-                        }
-                    }
-                }
-            }
-        },
         "/mgt/streams/{name}/push": {
             "get": {
                 "tags": [

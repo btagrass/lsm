@@ -8,16 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @summary 获取流
-// @tags 流
-// @param id path int true "编码"
-// @success 200 {object} mdl.Stream
-// @router /mgt/streams/{id} [get]
-func GetStream(c *gin.Context) {
-	stream, err := svc.StreamSvc.Get(c.Param("id"))
-	r.J(c, stream, err)
-}
-
 // @summary 获取流集合
 // @tags 流
 // @param current query int false "当前页" default(1)

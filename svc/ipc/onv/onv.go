@@ -2,6 +2,7 @@ package onv
 
 import (
 	"lsm/svc/ipc/internal"
+	"lsm/svc/stream"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -10,14 +11,14 @@ import (
 // 开放网络视频服务
 type OnvSvc struct {
 	*internal.CameraSvc
-	*internal.LalSvc
+	*stream.StreamSvc
 }
 
 // 构造函数
-func NewOnvSvc(cameraSvc *internal.CameraSvc, lalSvc *internal.LalSvc) *OnvSvc {
+func NewOnvSvc(cameraSvc *internal.CameraSvc, StreamSvc *stream.StreamSvc) *OnvSvc {
 	s := &OnvSvc{
 		CameraSvc: cameraSvc,
-		LalSvc:    lalSvc,
+		StreamSvc: StreamSvc,
 	}
 	go func() {
 		delay := 30 * time.Second

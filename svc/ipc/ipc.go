@@ -4,6 +4,7 @@ import (
 	"lsm/mdl"
 	"lsm/svc/ipc/internal"
 	"lsm/svc/ipc/onv"
+	"lsm/svc/stream"
 	"time"
 
 	"github.com/spf13/viper"
@@ -27,13 +28,12 @@ type IIpcSvc interface {
 }
 
 // 构造函数
-func NewIpcSvc() IIpcSvc {
+func NewIpcSvc(streamSvc *stream.StreamSvc) IIpcSvc {
 	cameraSvc := internal.NewCameraSvc()
-	lalSvc := internal.NewLalSvc()
 	var s IIpcSvc
 	typ := viper.GetString("svc.ipc.type")
 	if typ == "onv" {
-		s = onv.NewOnvSvc(cameraSvc, lalSvc)
+		s = onv.NewOnvSvc(cameraSvc, streamSvc)
 	}
 
 	return s
