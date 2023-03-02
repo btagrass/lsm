@@ -16,61 +16,55 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs } from "vue"
 import { useRouter } from "vue-router"
-import { useStore } from "vuex"
 import { ElMessage } from "element-plus"
 import { useGet, usePost } from "@/http"
+import { useStore } from "@/store"
 
-export default {
-  setup() {
-    const router = useRouter()
-    const store = useStore()
-
-    const state = reactive({
-      form: null,
-      data: {
-        userName: "admin",
-        password: "",
-      },
-      rules: {
-        userName: {
-          required: true,
-          message: "请输入用户名",
-          trigger: "blur",
-        },
-        password: {
-          required: true,
-          message: "请输入密码",
-          trigger: "blur",
-        },
-      },
-    })
-    const login = () => {
-      state.form.validate(async (valid) => {
-        if (valid) {
-          const user = await usePost("/mgt/login", state.data)
-          if (user) {
-            store.commit("saveUser", {
-              userName: user.userName,
-              token: user.token,
-            })
-            store.commit("saveResources", await useGet("/mgt/sys/resources/menu"))
-            router.push("/")
-          } else {
-            ElMessage.error("用户名或密码错误")
-          }
-        } else {
-          ElMessage.error("请输入用户名或密码")
-        }
-      })
-    }
-
-    return {
-      ...toRefs(state),
-      login,
-    }
+const state = reactive({
+  form: null,
+  data: {
+    userName: "admin",
+    password: "",
+  }
+})
+const rules = {
+  userName: {
+    required: true,
+    message: "请输入用户名",
+    trigger: "blur",
+  },
+  password: {
+    required: true,
+    message: "请输入密码",
+    trigger: "blur",
   },
 }
+const router = useRouter()
+const store = useStore()
+const { saveResources, saveUser } = store
+
+const login = () => {
+  state.form.validate(async (valid) => {
+    if (valid) {
+      const user = await usePost("/mgt/login", state.data)
+      if (user) {
+        saveUser({
+          userName: user.userName,
+          token: user.token,
+        })
+        saveResources(await useGet("/mgt/sys/resources/menu"))
+        router.push("/")
+      } else {
+        ElMessage.error("用户名或密码错误")
+      }
+    } else {
+      ElMessage.error("请输入用户名或密码")
+    }
+  })
+}
+
+const { form, data } = toRefs(state)
 </script>

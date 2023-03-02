@@ -1,13 +1,14 @@
 import axios from "axios"
 import { ElMessage } from "element-plus"
-import store from "@/store"
+import { useStore } from "@/store"
 
 const http = axios.create({
-  baseURL: import.meta.env.MGT_URL,
+  baseURL: import.meta.env.VITE_MGT_URL,
   timeout: 15000,
 })
 http.interceptors.request.use((config) => {
-  config.headers.Authorization = store.state.user.token
+  const { user } = useStore()
+  config.headers.Authorization = user.token
 
   return config
 })

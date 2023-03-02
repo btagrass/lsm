@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { reactive, toRefs, onMounted, onUnmounted } from "vue"
+import { reactive, toRefs, onMounted, onUpdated, onUnmounted } from "vue"
 import { useGet } from "@/http"
 
 const state = reactive({
@@ -39,42 +39,3 @@ onUnmounted(async () => {
 
 const { rows, cols } = toRefs(state)
 </script>
-
-<!-- <script>
-import { reactive, toRefs, onMounted, onUpdated, onUnmounted } from "vue"
-import { useGet } from "@/http"
-
-export default {
-    setup() {
-        const state = reactive({
-            urls: [],
-            rows: 0,
-            cols: 0,
-            players: [],
-        })
-
-        onMounted(async () => {
-            state.urls = await useGet("/mgt/videowalls/default")
-            state.rows = Math.round(Math.sqrt(state.urls.length))
-            state.cols = Math.ceil(Math.sqrt(state.urls.length))
-        })
-        onUpdated(async () => {
-            for (let i = 0; i < state.urls.length; i++) {
-                const player = new WasmPlayer("", `player${i}`)
-                player.play(state.urls[i], 1)
-                state.players.push(player)
-            }
-        })
-        onUnmounted(async () => {
-            for (player of state.players) {
-                player.pause()
-                player.destroy()
-            }
-        })
-
-        return {
-            ...toRefs(state),
-        }
-    },
-}
-</script> -->

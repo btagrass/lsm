@@ -14,7 +14,7 @@
           <span>Lsm</span>
         </div>
         <div class="row-center">
-          <div class="hover" @click="clearPages">
+          <div class="hover" @click="clearTabs">
             <el-tooltip content="清空">
               <el-icon>
                 <FolderDelete />
@@ -46,7 +46,7 @@
     </el-header>
     <el-container>
       <el-aside :width="collapse ? '75px' : '302px'">
-        <el-menu :collapse="collapse" :default-active="fullPath" unique-opened router>
+        <el-menu :collapse="collapse" :default-active="route.fullPath" unique-opened router>
           <template v-for="r in resources" :key="r.id">
             <el-sub-menu v-if="r.children.length" :index="r.uri">
               <template #title>
@@ -72,7 +72,7 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <el-tabs v-model="fullPath" type="card" @tab-click="clickTab" @tab-remove="removeTab">
+        <el-tabs v-model="route.fullPath" type="card" @tab-click="clickTab" @tab-remove="removeTab">
           <el-tab-pane v-for="page in pages" :key="page.path" :label="page.title" :name="page.path"
             :closable="page.path != '/'"></el-tab-pane>
         </el-tabs>
@@ -88,48 +88,32 @@
   </el-container>
 </template>
 
-<script>
+<script setup>
 import { toRefs } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { useStore } from "vuex"
 import screenfull from "screenfull"
+import { useStore } from "@/store"
 
-export default {
-  setup() {
-    const router = useRouter()
-    const route = useRoute()
-    const store = useStore()
+const router = useRouter()
+const route = useRoute()
+const { collapse, pages, resources, user, toggleCollapse, clearPages, removePage, clearUser, clearResources } = useStore()
 
-    const toggleCollapse = () => store.commit("toggleCollapse")
-    const clearPages = () => {
-      store.commit("clearPages")
-      router.push("/")
-    }
-    const toggleScreen = () => screenfull.toggle()
-    const commandUser = (command) => {
-      if (command == "logout") {
-        store.commit("clearUser")
-        store.commit("clearPages")
-        store.commit("clearResources")
-        router.push("/login")
-      }
-    }
-    const clickTab = (tab) => router.push(tab.paneName)
-    const removeTab = (name) => {
-      store.commit("removePage", name)
-      router.push("/")
-    }
-
-    return {
-      ...toRefs(route),
-      ...toRefs(store.state),
-      toggleCollapse,
-      clearPages,
-      toggleScreen,
-      commandUser,
-      clickTab,
-      removeTab,
-    }
-  },
+const toggleScreen = () => screenfull.toggle()
+const commandUser = (command) => {
+  if (command == "logout") {
+    clearUser()
+    clearPages()
+    clearResources()
+    router.push("/login")
+  }
+}
+const clearTabs = () => {
+  clearPages()
+  router.push("/")
+}
+const clickTab = (tab) => router.push(tab.paneName)
+const removeTab = (name) => {
+  removePage(name)
+  router.push("/")
 }
 </script>
