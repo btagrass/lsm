@@ -12,7 +12,7 @@ require (
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/q191201771/lal v0.33.0
-	github.com/q191201771/naza v0.30.10
+	github.com/q191201771/naza v0.30.11
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cast v1.5.0
@@ -32,8 +32,8 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.211 // indirect
-	github.com/bytedance/sonic v1.8.2 // indirect
+	github.com/aws/aws-sdk-go v1.44.212 // indirect
+	github.com/bytedance/sonic v1.8.3 // indirect
 	github.com/casbin/casbin/v2 v2.64.0 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
