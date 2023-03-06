@@ -1,33 +1,34 @@
 package isc
 
 import (
+	"lsm/mdl"
 	"strings"
 	"time"
 )
 
 func (s *IscSvc) ControlPtz(code string, command string, speed int) error {
-	var c string
+	var cmd string
 	switch strings.ToUpper(command) {
 	case "LEFT":
-		c = "LEFT"
+		cmd = "LEFT"
 	case "RIGHT":
-		c = "RIGHT"
+		cmd = "RIGHT"
 	case "UP":
-		c = "UP"
+		cmd = "UP"
 	case "DOWN":
-		c = "DOWN"
+		cmd = "DOWN"
 	case "LEFTUP":
-		c = "LEFT_UP"
+		cmd = "LEFT_UP"
 	case "LEFTDOWN":
-		c = "LEFT_DOWN"
+		cmd = "LEFT_DOWN"
 	case "RIGHTUP":
-		c = "RIGHT_UP"
+		cmd = "RIGHT_UP"
 	case "RIGHTDOWN":
-		c = "RIGHT_DOWN"
+		cmd = "RIGHT_DOWN"
 	case "ZOOMIN":
-		c = "ZOOM_IN"
+		cmd = "ZOOM_IN"
 	case "ZOOMOUT":
-		c = "ZOOM_OUT"
+		cmd = "ZOOM_OUT"
 	}
 	var spd int
 	if speed == 1 {
@@ -42,7 +43,7 @@ func (s *IscSvc) ControlPtz(code string, command string, speed int) error {
 		map[string]any{
 			"cameraIndexCode": code,
 			"action":          0,
-			"command":         c,
+			"command":         cmd,
 			"speed":           spd,
 		},
 		nil,
@@ -56,11 +57,23 @@ func (s *IscSvc) ControlPtz(code string, command string, speed int) error {
 		map[string]any{
 			"cameraIndexCode": code,
 			"action":          1,
-			"command":         c,
+			"command":         cmd,
 			"speed":           spd,
 		},
 		nil,
 	)
 
 	return err
+}
+
+func (s *IscSvc) ListPresets(code string) ([]mdl.Preset, error) {
+	return nil, nil
+}
+
+func (s *IscSvc) RemovePreset(code string, index int) error {
+	return nil
+}
+
+func (s *IscSvc) SavePreset(preset mdl.Preset) error {
+	return nil
 }

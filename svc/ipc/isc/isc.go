@@ -30,7 +30,7 @@ type IscSvc struct {
 
 // 构造函数
 func NewIsc(cameraSvc *internal.CameraSvc, addr, appKey, appSecret string) *IscSvc {
-	is := &IscSvc{
+	s := &IscSvc{
 		CameraSvc: cameraSvc,
 		addr:      addr,
 		appKey:    appKey,
@@ -42,7 +42,7 @@ func NewIsc(cameraSvc *internal.CameraSvc, addr, appKey, appSecret string) *IscS
 		defer t.Stop()
 		for {
 			<-t.C
-			err := is.keepaliveCameras()
+			err := s.keepaliveCameras()
 			if err != nil {
 				logrus.Error(err)
 			}
@@ -50,13 +50,13 @@ func NewIsc(cameraSvc *internal.CameraSvc, addr, appKey, appSecret string) *IscS
 		}
 	}()
 
-	return is
+	return s
 }
 
 // 提交
-func (is *IscSvc) post(url string, data any, r ...any) (string, error) {
+func (s *IscSvc) post(url string, data any, r ...any) (string, error) {
 	req := resty.New().
-		SetBaseURL(fmt.Sprintf("https://%s", is.addr)).
+		SetBaseURL(fmt.Sprintf("https://%s", s.addr)).
 		SetTimeout(htp.Timeout).
 		SetTLSClientConfig(&tls.Config{
 			InsecureSkipVerify: true,
@@ -86,7 +86,7 @@ func (is *IscSvc) post(url string, data any, r ...any) (string, error) {
 				builder.WriteString("\n")
 			}
 			builder.WriteString(url)
-			req.SetHeader("X-Ca-Signature", utl.HmacSha256(builder.String(), is.appSecret))
+			req.SetHeader("X-Ca-Signature", utl.HmacSha256(builder.String(), s.appSecret))
 
 			return nil
 		}).
@@ -117,7 +117,7 @@ func (is *IscSvc) post(url string, data any, r ...any) (string, error) {
 		SetHeader("Accept", "*/*").
 		SetHeader("Content-Type", "application/json").
 		SetHeader("Date", time.Now().Format(http.TimeFormat)).
-		SetHeader("X-Ca-Key", is.appKey).
+		SetHeader("X-Ca-Key", s.appKey).
 		SetBody(data).
 		ForceContentType("application/json")
 	if len(r) > 0 {

@@ -3,6 +3,7 @@ package ipc
 import (
 	"lsm/mdl"
 	"lsm/svc/ipc/internal"
+	"lsm/svc/ipc/ivs"
 	"lsm/svc/ipc/onv"
 	"lsm/svc/stream"
 	"time"
@@ -19,12 +20,16 @@ type IIpcSvc interface {
 	RemoveCameras(ids []string) error                      // 移除摄像头集合
 	SaveCamera(camera mdl.Camera) error                    // 保存摄像头
 	// 媒体
-	GetRecordUrl(code string, date time.Time) (string, error)          // 获取录像网址
-	StartStream(code string, typ int, protocol string) (string, error) // 开始流
-	StopStream(code string, typ int) error                             // 停止流
-	TakeSnapshot(code string, typ int) (string, error)                 // 抓取快照
+	StartStream(code string, typ int, protocol string) (string, error)            // 开始流
+	StopStream(code string, typ int) error                                        // 停止流
+	GetRecordUrl(code string, date time.Time) (string, error)                     // 获取录像网址
+	TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) // 抓取录像
+	TakeSnapshot(code string, typ int) (string, error)                            // 抓取快照
 	// 云台
 	ControlPtz(code string, command string, speed int) error // 控制云台
+	ListPresets(code string) ([]mdl.Preset, error)           // 获取预置位集合
+	RemovePreset(code string, index int) error               // 移除预置位
+	SavePreset(preset mdl.Preset) error                      // 保存预置位
 }
 
 // 构造函数
@@ -34,6 +39,15 @@ func NewIpcSvc(streamSvc *stream.StreamSvc) IIpcSvc {
 	typ := viper.GetString("svc.ipc.type")
 	if typ == "onv" {
 		s = onv.NewOnvSvc(cameraSvc, streamSvc)
+	} else if typ == "ivs" {
+		s = ivs.NewIvs(
+			cameraSvc,
+			streamSvc,
+			viper.GetString("svc.ipc.isc.addr"),
+			viper.GetString("svc.ipc.isc.appKey"),
+			viper.GetString("svc.ipc.isc.appSecret"),
+			viper.GetString("svc.ipc.isc.eventCallback"),
+		)
 	}
 
 	return s

@@ -10,22 +10,22 @@ import (
 	"github.com/btagrass/go.core/utl"
 )
 
-func (is *IscSvc) GetRecordUrl(code string, date time.Time) (string, error) {
+func (s *IscSvc) GetRecordUrl(code string, date time.Time) (string, error) {
 	return "", fmt.Errorf("录像网址不存在")
 }
 
-func (is *IscSvc) StartStream(code string, streamType int, protocol string) (string, error) {
+func (s *IscSvc) StartStream(code string, typ int, protocol string) (string, error) {
 	var r struct {
 		r.R
 		Data struct {
 			Url string `json:"url"` // 网址
 		} `json:"data"` // 数据
 	}
-	resp, err := is.post(
+	resp, err := s.post(
 		"/artemis/api/video/v2/cameras/previewURLs",
 		map[string]any{
 			"cameraIndexCode": code,
-			"streamType":      streamType - 1,
+			"streamType":      typ - 1,
 			"protocol":        protocol,
 			"expand":          "transcode=1&videotype=h264",
 		},
@@ -36,18 +36,18 @@ func (is *IscSvc) StartStream(code string, streamType int, protocol string) (str
 	return r.Data.Url, err
 }
 
-func (is *IscSvc) StopStream(code string, typ int) error {
+func (s *IscSvc) StopStream(code string, typ int) error {
 	return nil
 }
 
-func (is *IscSvc) TakeSnapshot(code string, streamType int) (string, error) {
+func (s *IscSvc) TakeSnapshot(code string, streamType int) (string, error) {
 	var r struct {
 		r.R
 		Data struct {
 			Url string `json:"picUrl"` // 网址
 		} `json:"data"` // 数据
 	}
-	_, err := is.post(
+	_, err := s.post(
 		"/artemis/api/video/v1/manualCapture",
 		map[string]string{
 			"cameraIndexCode": code,
@@ -58,9 +58,9 @@ func (is *IscSvc) TakeSnapshot(code string, streamType int) (string, error) {
 	return r.Data.Url, err
 }
 
-func (is *IscSvc) TakeSnapshots(code string, cntSecs ...int) ([]string, error) {
+func (s *IscSvc) TakeSnapshots(code string, cntSecs ...int) ([]string, error) {
 	var imageUrls []string
-	streamUrl, err := is.StartStream(code, 1, "rtsp")
+	streamUrl, err := s.StartStream(code, 1, "rtsp")
 	if err != nil {
 		return imageUrls, err
 	}
@@ -92,6 +92,6 @@ func (is *IscSvc) TakeSnapshots(code string, cntSecs ...int) ([]string, error) {
 	return imageUrls, nil
 }
 
-func (is *IscSvc) TakeRecord(code string, beginTime, endTime time.Time) (string, error) {
+func (s *IscSvc) TakeRecord(code string, beginTime, endTime time.Time) (string, error) {
 	return "", nil
 }

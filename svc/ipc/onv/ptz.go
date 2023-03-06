@@ -2,6 +2,7 @@ package onv
 
 import (
 	"fmt"
+	"lsm/mdl"
 	"strings"
 
 	"github.com/use-go/onvif/ptz"
@@ -65,5 +66,17 @@ func (s *OnvSvc) ControlPtz(code string, command string, speed int) error {
 		return fmt.Errorf("device %s 's command %s is failed", code, command)
 	}
 
+	return nil
+}
+
+func (s *OnvSvc) ListPresets(code string) ([]mdl.Preset, error) {
+	return nil, nil
+}
+
+func (s *OnvSvc) RemovePreset(code string, index int) error {
+	return nil
+}
+
+func (s *OnvSvc) SavePreset(preset mdl.Preset) error {
 	return nil
 }

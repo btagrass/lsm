@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"lsm/mdl"
 	"math"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -298,6 +299,58 @@ func (s *LalSvc) StopRtpStream(code string) error {
 	})
 
 	return err
+}
+
+// 抓取录像
+func (l *LalSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) {
+	var files []string
+	inf := gjson.Get(l.conf, "hls.fragment_duration_ms").Int()
+	beginTimestamp := beginDateTime.UnixMilli() - inf
+	endTimestamp := endDateTime.UnixMilli() + inf
+	recordFile, err := l.getRecordFile(code, beginDateTime)
+	if err != nil {
+		return "", err
+	}
+	data, err := os.ReadFile(recordFile)
+	if err != nil {
+		return "", err
+	}
+	lines := utl.Split(string(data), '\n')
+	for _, ln := range lines {
+		if filepath.Ext(ln) != ".ts" {
+			continue
+		}
+		ms := utl.Split(ln, '-')
+		if len(ms) != 3 {
+			continue
+		}
+		timestamp := cast.ToInt64(ms[1])
+		if timestamp < beginTimestamp {
+			continue
+		}
+		if timestamp > endTimestamp {
+			break
+		}
+		files = append(files, fmt.Sprintf("%s/%s", gjson.Get(l.conf, "hls.out_path").String(), ln))
+	}
+	input := fmt.Sprintf("concat:%s", strings.Join(files, "|"))
+	output := fmt.Sprintf(
+		"%s/%s-%d-%d.mp4",
+		gjson.Get(l.conf, "hls.out_path").String(),
+		code,
+		beginTimestamp,
+		endTimestamp,
+	)
+	err = utl.TakeStream(input, map[string]map[string]any{
+		output: {
+			"c:v": "libx264",
+		},
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return htp.GetUrl(output), nil
 }
 
 // 获取录像文件
