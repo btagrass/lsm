@@ -47,12 +47,30 @@ func (s *IvsSvc) StopStream(code string, typ int) error {
 }
 
 func (s *IvsSvc) GetRecordUrl(code string, date time.Time) (string, error) {
-	return "", fmt.Errorf("录像网址不存在")
+	var r struct {
+		RecordInfos struct {
+			RecordInfoList []struct {
+				RecordFileName string `json:"recordFileName"` // 录像文件名
+			} `json:"recordInfoList"` // 录像信息列表
+		} `json:"recordInfos"` // 录像信息集合
+		Total int64 `json:"total"` // 总数
+	}
+	startTime := date.Format("20060102000000")
+	endTime := date.Format("20060102235959")
+	_, err := s.get(fmt.Sprintf("/platform/recordlist/0/%s//%s/%s/1/1", code, startTime, endTime), &r)
+	if err != nil {
+		return "", err
+	}
+	if r.Total == 0 {
+		return "", fmt.Errorf("录像网址不存在")
+	}
+
+	return r.RecordInfos.RecordInfoList[0].RecordFileName, nil
 }
 
 func (s *IvsSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) {
 	var r struct {
-		Uri string `json:"rtspURL"` // 地址
+		RtspUrl string `json:"rtspURL"` // Rtsp地址
 	}
 	_, err := s.post("/video/rtspurl/v1.0", map[string]any{
 		"cameraCode": code,
@@ -72,16 +90,16 @@ func (s *IvsSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (
 		return "", err
 	}
 
-	return r.Uri, nil
+	return r.RtspUrl, nil
 }
 
 func (s *IvsSvc) TakeSnapshot(code string, typ int) (string, error) {
-	streamUri, err := s.StartStream(code, typ, "rtsp")
+	streamUrl, err := s.StartStream(code, typ, "rtsp")
 	if err != nil {
 		return "", err
 	}
 	fileName := fmt.Sprintf("data/cameras/%s_%s.jpg", code, utl.TimeId())
-	err = utl.TakeStream(streamUri, map[string]map[string]any{
+	err = utl.TakeStream(streamUrl, map[string]map[string]any{
 		fileName: {
 			"s":       "1920*1080",
 			"vframes": 1,
@@ -96,7 +114,7 @@ func (s *IvsSvc) TakeSnapshot(code string, typ int) (string, error) {
 
 func (s *IvsSvc) TakeSnapshots(code string, cntSecs ...int) ([]string, error) {
 	var imageUrls []string
-	streamUri, err := s.StartStream(code, 1, "rtsp")
+	streamUrl, err := s.StartStream(code, 1, "rtsp")
 	if err != nil {
 		return imageUrls, err
 	}
@@ -110,7 +128,7 @@ func (s *IvsSvc) TakeSnapshots(code string, cntSecs ...int) ([]string, error) {
 		cnt = cntSecs[0]
 		secs = cntSecs[1]
 	}
-	err = utl.TakeStream(streamUri, map[string]map[string]any{
+	err = utl.TakeStream(streamUrl, map[string]map[string]any{
 		fileName: {
 			"r":  fmt.Sprintf("1/%d", cnt),
 			"s":  "1920*1080",
