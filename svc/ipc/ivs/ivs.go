@@ -10,7 +10,6 @@ import (
 
 	"github.com/btagrass/go.core/htp"
 	"github.com/go-resty/resty/v2"
-	"github.com/patrickmn/go-cache"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )
@@ -147,7 +146,7 @@ func (s *IvsSvc) request(c *resty.Client, req *resty.Request) error {
 	key := fmt.Sprintf("%s:users:token", s.Prefix)
 	v, ok := s.Cache.Get(key)
 	if !ok {
-		return fmt.Errorf("令牌不存在")
+		return fmt.Errorf("用户令牌不存在")
 	}
 	req.SetHeader("JSESSIONID", cast.ToString(v))
 
@@ -158,32 +157,16 @@ func (s *IvsSvc) request(c *resty.Client, req *resty.Request) error {
 func (s *IvsSvc) respond(c *resty.Client, resp *resty.Response) error {
 	if resp.StatusCode() != http.StatusOK {
 		return fmt.Errorf(resp.Status())
+	} else {
+		r := cast.ToStringMapInt(resp.String())
+		code, ok := r["resultCode"]
+		if !ok {
+			return fmt.Errorf("ivs接口代码不存在")
+		}
+		if code != 0 {
+			return fmt.Errorf("ivs接口调用异常 -> %d", code)
+		}
 	}
-
-	return nil
-}
-
-// 保活
-func (s *IvsSvc) keepalive() error {
-	var r struct {
-		Code int `json:"resultCode"` // 代码
-	}
-	_, err := s.get("/common/keepAlive", &r)
-	if err == nil && r.Code == 0 {
-		return nil
-	}
-	resp, err := s.post("/loginInfo/login/v1.0", map[string]any{
-		"userName": s.appKey,
-		"password": s.appSecret,
-	}, &r)
-	if err != nil {
-		return err
-	}
-	if r.Code != 0 {
-		return fmt.Errorf("保活失败：%d", r.Code)
-	}
-	key := fmt.Sprintf("%s:users:token", s.Prefix)
-	s.Cache.Set(key, resp.Header.Get("JSESSIONID"), cache.NoExpiration)
 
 	return nil
 }

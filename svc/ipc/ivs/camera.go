@@ -10,7 +10,6 @@ import (
 func (s *IvsSvc) ListCameras(conds ...any) ([]mdl.Camera, int64, error) {
 	cameras := make([]mdl.Camera, 0)
 	var r struct {
-		Code             int `json:"resultCode"` // 代码
 		CameraBriefInfos struct {
 			CameraBriefInfoList []struct {
 				Code            string `json:"code"`            // 代码
@@ -23,7 +22,7 @@ func (s *IvsSvc) ListCameras(conds ...any) ([]mdl.Camera, int64, error) {
 			Total int64 `json:"total"` // 总数
 		} `json:"cameraBriefInfos"` // 摄像头简介信息
 	}
-	fromIndex, toIndex := 1, 100
+	fromIndex, toIndex := 1, 10
 	if len(conds) > 0 {
 		cond, ok := conds[0].(map[string]any)
 		if ok {
@@ -41,9 +40,6 @@ func (s *IvsSvc) ListCameras(conds ...any) ([]mdl.Camera, int64, error) {
 	if err != nil {
 		return cameras, 0, err
 	}
-	if r.Code != 0 {
-		return cameras, 0, fmt.Errorf("获取摄像头集合失败：%d", r.Code)
-	}
 	for _, c := range r.CameraBriefInfos.CameraBriefInfoList {
 		camera := mdl.Camera{
 			Code:  c.Code,
@@ -52,15 +48,16 @@ func (s *IvsSvc) ListCameras(conds ...any) ([]mdl.Camera, int64, error) {
 			Model: c.DeviceModelType,
 			State: c.Status,
 		}
-		if c.Type == 0 {
+		switch c.Type {
+		case 0:
 			camera.Type = "枪机"
-		} else if c.Type == 1 {
+		case 1:
 			camera.Type = "云台枪机"
-		} else if c.Type == 2 {
+		case 2:
 			camera.Type = "球机"
-		} else if c.Type == 3 {
+		case 3:
 			camera.Type = "半球机"
-		} else if c.Type == 4 {
+		case 4:
 			camera.Type = "筒机"
 		}
 		cameras = append(cameras, camera)

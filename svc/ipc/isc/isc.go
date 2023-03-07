@@ -97,17 +97,12 @@ func (s *IscSvc) post(url string, data any, r ...any) (string, error) {
 				r := cast.ToStringMap(resp.String())
 				code, ok := r["code"]
 				if !ok {
-					code, ok = r["error_code"]
+					return fmt.Errorf("isc接口代码不存在")
 				}
-				if ok {
-					code = cast.ToInt(code)
-					if code != 0 && code != http.StatusOK {
-						msg, ok := r["msg"]
-						if !ok {
-							msg = r["desp"]
-						}
-						return fmt.Errorf(cast.ToString(msg))
-					}
+				code = cast.ToInt(code)
+				if code != 0 {
+					msg := r["msg"]
+					return fmt.Errorf("isc接口调用异常 %s -> %d", msg, code)
 				}
 			}
 

@@ -43,8 +43,7 @@ const rules = {
   },
 }
 const router = useRouter()
-const store = useStore()
-const { saveResources, saveUser } = store
+const { saveResources, saveUser } = useStore()
 
 const login = () => {
   state.form.validate(async (valid) => {

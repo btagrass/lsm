@@ -17,8 +17,7 @@ func (s *IvsSvc) StartStream(code string, typ int, protocol string) (string, err
 		return v.(string), nil
 	}
 	var r struct {
-		Code int    `json:"resultCode"` // 代码
-		Uri  string `json:"rtspURL"`    // 地址
+		RtspUrl string `json:"rtspURL"` // Rtsp地址
 	}
 	_, err := s.post("/video/rtspurl/v1.0", map[string]any{
 		"cameraCode": code,
@@ -33,7 +32,7 @@ func (s *IvsSvc) StartStream(code string, typ int, protocol string) (string, err
 	if err != nil {
 		return "", err
 	}
-	err = s.StartPullStream(code, r.Uri)
+	err = s.StartPullStream(code, r.RtspUrl)
 	if err != nil {
 		return "", err
 	}
@@ -53,8 +52,7 @@ func (s *IvsSvc) GetRecordUrl(code string, date time.Time) (string, error) {
 
 func (s *IvsSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) {
 	var r struct {
-		Code int    `json:"resultCode"` // 代码
-		Uri  string `json:"rtspURL"`    // 地址
+		Uri string `json:"rtspURL"` // 地址
 	}
 	_, err := s.post("/video/rtspurl/v1.0", map[string]any{
 		"cameraCode": code,
@@ -74,7 +72,7 @@ func (s *IvsSvc) TakeRecord(code string, beginDateTime, endDateTime time.Time) (
 		return "", err
 	}
 
-	return "", nil
+	return r.Uri, nil
 }
 
 func (s *IvsSvc) TakeSnapshot(code string, typ int) (string, error) {

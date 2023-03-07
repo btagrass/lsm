@@ -89,7 +89,6 @@
 </template>
 
 <script setup>
-import { toRefs } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import screenfull from "screenfull"
 import { useStore } from "@/store"

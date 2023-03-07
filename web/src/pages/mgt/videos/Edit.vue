@@ -28,8 +28,8 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex"
 import { useEdit } from "@/crud"
+import { useStore } from "@/store"
 
 const props = defineProps({
   values: Object
@@ -49,6 +49,6 @@ const rules = {
   },
 }
 
-const { user } = useStore().state
+const { user } = useStore()
 const env = import.meta.env
 </script>

@@ -38,42 +38,69 @@ func (s *IscSvc) ControlPtz(code string, command string, speed int) error {
 	} else if speed == 3 {
 		spd = 90
 	}
-	_, err := s.post(
-		"/artemis/api/video/v1/ptzs/controlling",
-		map[string]any{
-			"cameraIndexCode": code,
-			"action":          0,
-			"command":         cmd,
-			"speed":           spd,
-		},
-		nil,
-	)
+	_, err := s.post("/artemis/api/video/v1/ptzs/controlling", map[string]any{
+		"cameraIndexCode": code,
+		"action":          0,
+		"command":         cmd,
+		"speed":           spd,
+	})
 	if err != nil {
 		return err
 	}
 	time.Sleep(time.Second)
-	_, err = s.post(
-		"/artemis/api/video/v1/ptzs/controlling",
-		map[string]any{
-			"cameraIndexCode": code,
-			"action":          1,
-			"command":         cmd,
-			"speed":           spd,
-		},
-		nil,
-	)
+	_, err = s.post("/artemis/api/video/v1/ptzs/controlling", map[string]any{
+		"cameraIndexCode": code,
+		"action":          1,
+		"command":         cmd,
+		"speed":           spd,
+	})
 
 	return err
 }
 
 func (s *IscSvc) ListPresets(code string) ([]mdl.Preset, error) {
-	return nil, nil
+	presets := make([]mdl.Preset, 0)
+	var r struct {
+		Data struct {
+			List []struct {
+				PresetPointIndex int    `json:"presetPointIndex"` // 预置位索引
+				PresetPointName  string `json:"presetPointName"`  // 预置位名称
+			} `json:"list"` // 列表
+		} `json:"data"` // 数据
+	}
+	_, err := s.post("/artemis/api/video/v1/presets/searches", map[string]any{
+		"cameraIndexCode": code,
+	}, &r)
+	if err != nil {
+		return presets, err
+	}
+	for _, r := range r.Data.List {
+		preset := mdl.Preset{
+			Index: r.PresetPointIndex,
+			Name:  r.PresetPointName,
+		}
+		preset.Id = int64(preset.Index)
+		presets = append(presets, preset)
+	}
+
+	return presets, nil
 }
 
 func (s *IscSvc) RemovePreset(code string, index int) error {
-	return nil
+	_, err := s.post("/artemis/api/video/v1/presets/deletion", map[string]any{
+		"cameraIndexCode": code,
+		"presetIndex":     index,
+	})
+
+	return err
 }
 
 func (s *IscSvc) SavePreset(preset mdl.Preset) error {
-	return nil
+	_, err := s.post("/artemis/api/video/v1/presets/addition", map[string]any{
+		"cameraIndexCode": preset.CameraCode,
+		"presetIndex":     preset.Index,
+		"presetName":      preset.Name,
+	})
+
+	return err
 }

@@ -9,6 +9,8 @@ import (
 	"github.com/beevik/etree"
 	"github.com/use-go/onvif"
 	"github.com/use-go/onvif/media"
+	"github.com/use-go/onvif/ptz"
+	onvid "github.com/use-go/onvif/xsd/onvif"
 	"golang.org/x/net/html/charset"
 )
 
@@ -46,6 +48,27 @@ func (d *Device) call(data any) (*etree.Document, error) {
 	return doc, nil
 }
 
+// 获取预置位令牌
+func (d *Device) getPresetToken(index int) (string, error) {
+	var token string
+	doc, err := d.call(ptz.GetPresets{
+		ProfileToken: onvid.ReferenceToken(d.profileTokens[0]),
+	})
+	if err != nil {
+		return token, err
+	}
+	element := doc.FindElement(fmt.Sprintf("//tptz:GetPresetsResponse/tptz:Preset[@token='%d']", index))
+	if element == nil {
+		element = doc.FindElement(fmt.Sprintf("//tptz:GetPresetsResponse/tptz:Preset[@token='Preset_%d']", index))
+	}
+	if element == nil {
+		return token, fmt.Errorf("device %s 's presetToken %d is not found", d.code, index)
+	}
+	token = element.SelectAttrValue("token", "")
+
+	return token, nil
+}
+
 // 获取配置令牌集合
 func (d *Device) getProfileTokens() ([]string, error) {
 	var tokens []string
@@ -66,8 +89,8 @@ func (d *Device) getProfileTokens() ([]string, error) {
 
 // 获取设备
 func (s *OnvSvc) getDevice(code string) (*Device, error) {
-	deviceKey := fmt.Sprintf("%s:devices:%s", s.Prefix, code)
-	v, ok := s.Cache.Get(deviceKey)
+	key := fmt.Sprintf("%s:devices:%s", s.Prefix, code)
+	v, ok := s.Cache.Get(key)
 	if ok {
 		return v.(*Device), nil
 	}
@@ -95,7 +118,7 @@ func (s *OnvSvc) getDevice(code string) (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	s.Cache.Set(deviceKey, device, 5*time.Minute)
+	s.Cache.Set(key, device, 5*time.Minute)
 
 	return device, nil
 }

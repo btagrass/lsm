@@ -27,6 +27,7 @@ type IIpcSvc interface {
 	TakeSnapshot(code string, typ int) (string, error)                            // 抓取快照
 	// 云台
 	ControlPtz(code string, command string, speed int) error // 控制云台
+	GotoPreset(code string, index int) error                 // 转到预置位
 	ListPresets(code string) ([]mdl.Preset, error)           // 获取预置位集合
 	RemovePreset(code string, index int) error               // 移除预置位
 	SavePreset(preset mdl.Preset) error                      // 保存预置位
