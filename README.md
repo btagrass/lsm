@@ -18,10 +18,6 @@
 3. 用户管理
 4. 部门管理
 5. 字典管理
-## 准备
-```bash
-go install github.com/swaggo/swag/cmd/swag@latest
-```
 ## 编译
 ```bash
 bash build.sh
