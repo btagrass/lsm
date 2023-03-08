@@ -26,7 +26,7 @@ echo [i] Cleaning dirs...
 rm -rf build/$os-$arch
 echo [i] Building binary...
 sed -i "s/\\/[^:]*/\\/\\/$ip/g" web/.env.production
-# echo "VITE_MGT_URL=http://localhost:3081" > web/.env.production
+# echo "VITE_MGT_URL=http://$ip:3081" > web/.env.production
 yarn --cwd web install
 yarn --cwd web build
 for dir in {api,mgt}; do
