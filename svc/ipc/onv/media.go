@@ -46,9 +46,7 @@ func (s *OnvSvc) StartStream(code string, typ int, protocol string) (string, err
 }
 
 func (s *OnvSvc) StopStream(code string, typ int) error {
-	err := s.StopPullStream(code)
-
-	return err
+	return s.StopPullStream(code)
 }
 
 func (s *OnvSvc) TakeSnapshot(code string, typ int) (string, error) {

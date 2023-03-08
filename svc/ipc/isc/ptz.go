@@ -58,6 +58,17 @@ func (s *IscSvc) ControlPtz(code string, command string, speed int) error {
 	return err
 }
 
+func (s *IscSvc) GotoPreset(code string, index int) error {
+	_, err := s.post("/artemis/api/video/v1/ptzs/controlling", map[string]any{
+		"cameraIndexCode": code,
+		"action":          0,
+		"command":         "GOTO_PRESET",
+		"presetIndex":     index,
+	})
+
+	return err
+}
+
 func (s *IscSvc) ListPresets(code string) ([]mdl.Preset, error) {
 	presets := make([]mdl.Preset, 0)
 	var r struct {

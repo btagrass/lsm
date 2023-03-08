@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"lsm/svc/ipc/internal"
+	"lsm/svc/stream"
 	"net/http"
 	"sort"
 	"strings"
@@ -23,15 +24,17 @@ var (
 // 海康综合安防服务
 type IscSvc struct {
 	*internal.CameraSvc
+	*stream.StreamSvc
 	addr      string // 地址
 	appKey    string // 应用标识
 	appSecret string // 应用密钥
 }
 
 // 构造函数
-func NewIsc(cameraSvc *internal.CameraSvc, addr, appKey, appSecret string) *IscSvc {
+func NewIsc(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, appKey, appSecret string) *IscSvc {
 	s := &IscSvc{
 		CameraSvc: cameraSvc,
+		StreamSvc: streamSvc,
 		addr:      addr,
 		appKey:    appKey,
 		appSecret: appSecret,

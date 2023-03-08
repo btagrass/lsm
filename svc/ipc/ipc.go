@@ -3,6 +3,7 @@ package ipc
 import (
 	"lsm/mdl"
 	"lsm/svc/ipc/internal"
+	"lsm/svc/ipc/isc"
 	"lsm/svc/ipc/ivs"
 	"lsm/svc/ipc/onv"
 	"lsm/svc/stream"
@@ -20,11 +21,10 @@ type IIpcSvc interface {
 	RemoveCameras(ids []string) error                      // 移除摄像头集合
 	SaveCamera(camera mdl.Camera) error                    // 保存摄像头
 	// 媒体
-	StartStream(code string, typ int, protocol string) (string, error)            // 开始流
-	StopStream(code string, typ int) error                                        // 停止流
-	GetRecordUrl(code string, date time.Time) (string, error)                     // 获取录像网址
-	TakeRecord(code string, beginDateTime, endDateTime time.Time) (string, error) // 抓取录像
-	TakeSnapshot(code string, typ int) (string, error)                            // 抓取快照
+	StartStream(code string, typ int, protocol string) (string, error) // 开始流
+	StopStream(code string, typ int) error                             // 停止流
+	GetRecordUrl(code string, date time.Time) (string, error)          // 获取录像网址
+	TakeSnapshot(code string, typ int) (string, error)                 // 抓取快照
 	// 云台
 	ControlPtz(code string, command string, speed int) error // 控制云台
 	GotoPreset(code string, index int) error                 // 转到预置位
@@ -40,6 +40,14 @@ func NewIpcSvc(streamSvc *stream.StreamSvc) IIpcSvc {
 	typ := viper.GetString("svc.ipc.type")
 	if typ == "onv" {
 		s = onv.NewOnvSvc(cameraSvc, streamSvc)
+	} else if typ == "isc" {
+		s = isc.NewIsc(
+			cameraSvc,
+			streamSvc,
+			viper.GetString("svc.ipc.isc.addr"),
+			viper.GetString("svc.ipc.isc.appKey"),
+			viper.GetString("svc.ipc.isc.appSecret"),
+		)
 	} else if typ == "ivs" {
 		s = ivs.NewIvs(
 			cameraSvc,
