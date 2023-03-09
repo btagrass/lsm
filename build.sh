@@ -1,12 +1,23 @@
 #!/bin/sh
-read -p "Please enter the ip: " ip
+read -p "Please enter the os(Linux / Windows), arch(aMd64 / aRm64) and ip: " os arch ip
+if [[ ! $os ]]; then
+    os=`uname | tr "A-Z" "a-z"`
+fi
+if [[ $os == "w" || $os =~ "win" ]]; then
+    os="windows"
+else
+    os="linux"
+fi
+if [[ ! $arch ]]; then
+    arch=`uname -m`
+fi
+if [[ $arch == "r" || $arch =~ "arm" ]]; then
+    arch="arm64"
+else
+    arch="amd64"
+fi
 if [[ ! $ip ]]; then
     ip="localhost"
-fi
-os=`uname | tr "A-Z" "a-z"`
-arch=`uname -m`
-if [[ $arch == "x86_64" ]]; then
-    arch="amd64"
 fi
 name=${PWD##*/}
 
