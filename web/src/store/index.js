@@ -3,7 +3,7 @@ import { defineStore } from "pinia"
 
 export const useStore = defineStore("store", () => {
     const state = reactive({
-        collapse: false,
+        collapsed: false,
         pages: [{
             path: "/",
             title: "首页",
@@ -14,8 +14,8 @@ export const useStore = defineStore("store", () => {
         },
     })
 
-    const toggleCollapse = () => {
-        state.collapse = !state.collapse
+    const toggleCollapsed = () => {
+        state.collapsed = !state.collapsed
     }
     const clearPages = () => {
         state.pages.splice(1, state.pages.length)
@@ -51,7 +51,7 @@ export const useStore = defineStore("store", () => {
 
     return {
         ...toRefs(state),
-        toggleCollapse,
+        toggleCollapse: toggleCollapsed,
         clearPages,
         removePage,
         savePage,

@@ -23,7 +23,7 @@ onMounted(async () => {
     state.cols = Math.ceil(Math.sqrt(state.urls.length))
 })
 onUpdated(async () => {
-    for (let i = 0; i < state.urls.length; i++) {
+    for (var i = 0; i < state.urls.length; i++) {
         const player = new WasmPlayer("", `player${i}`)
         player.play(state.urls[i], 1)
         state.players.push(player)

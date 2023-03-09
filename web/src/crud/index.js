@@ -30,7 +30,7 @@ export function useComp() {
 export function useList(api, state, mounted) {
   provide("api", api)
 
-  let o = {
+  var o = {
     table: null,
     ids: [],
     params: {
@@ -100,17 +100,17 @@ export function useList(api, state, mounted) {
 export function useEdit(state, emits, mounted) {
   const api = inject("api")
 
-  let o = {
+  var o = {
     form: null,
     id: 0,
     data: {},
   }
   Object.assign(o, state)
   const s = reactive(o)
-console.log(state, state.length)
+
   const edit = async (id) => {
     id = id ?? s.id
-    if (id > 0) {
+    if (id) {
       s.data = await useGet(`${api}/${id}`)
       if (!s.data) {
         ElMessage.error("该记录不存在")

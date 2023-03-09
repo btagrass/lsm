@@ -3,8 +3,8 @@
     <el-header>
       <div class="row-side">
         <div class="row-center">
-          <div class="hover" @click="toggleCollapse">
-            <el-icon v-if="collapse">
+          <div class="hover" @click="toggleCollapsed">
+            <el-icon v-if="collapsed">
               <expand></expand>
             </el-icon>
             <el-icon v-else>
@@ -45,8 +45,8 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside :width="collapse ? '75px' : '302px'">
-        <el-menu :collapse="collapse" :default-active="route.fullPath" unique-opened router>
+      <el-aside :width="collapsed ? '75px' : '302px'">
+        <el-menu :collapse="collapsed" :default-active="route.fullPath" unique-opened router>
           <template v-for="r in resources" :key="r.id">
             <el-sub-menu v-if="r.children.length" :index="r.uri">
               <template #title>
@@ -95,7 +95,7 @@ import { useStore } from "@/store"
 
 const router = useRouter()
 const route = useRoute()
-const { collapse, pages, resources, user, toggleCollapse, clearPages, removePage, clearUser, clearResources } = useStore()
+const { collapsed, pages, resources, user, toggleCollapsed, clearPages, removePage, clearUser, clearResources } = useStore()
 
 const toggleScreen = () => screenfull.toggle()
 const commandUser = (command) => {

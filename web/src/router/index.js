@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import { useStore } from "@/store"
 
-const pages = import.meta.glob("/src/pages/**/**.vue")
+var refreshed = true
+const pages = import.meta.glob("/src/pages/**/*.vue")
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [{
@@ -28,16 +29,15 @@ const router = createRouter({
     ],
   }],
 })
-router.beforeEach((to, from, next) => {
-  const { user } = useStore()
+router.beforeEach((to, _, next) => {
+  const { resources, user } = useStore()
   if (user.token == null) {
     if (to.fullPath.startsWith("/login")) {
       next()
     } else {
       next("/login")
     }
-  } else {
-    const { resources } = useStore()
+  } else if (refreshed) {
     resources.forEach((r) => {
       r.children.forEach((c) => {
         router.addRoute("index", {
@@ -50,6 +50,12 @@ router.beforeEach((to, from, next) => {
         })
       })
     })
+    refreshed = false
+    next({
+      ...to,
+      replace: true,
+    })
+  } else {
     if (to.fullPath.startsWith("/http")) {
       window.open(to.fullPath.substring(1), "_blank")
     } else {
@@ -57,7 +63,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-router.afterEach((to, from) => {
+router.afterEach((to, _) => {
   const { savePage } = useStore()
   if (!to.fullPath.startsWith("/login")) {
     savePage({
