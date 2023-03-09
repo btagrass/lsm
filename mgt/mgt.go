@@ -22,12 +22,12 @@ func Mgt() *gin.Engine {
 	m.Use(cmw.Auth(svc.UserSvc.Perm, svc.UserSvc.SignedKey))
 	{
 		// 摄像头
-		m.GET("/cameras/:id", GetCamera)
+		m.GET("/cameras/:code", GetCamera)
 		m.GET("/cameras", ListCameras)
 		m.DELETE("/cameras/:ids", RemoveCameras)
 		m.POST("/cameras", SaveCamera)
 		m.POST("/cameras/:code/ptz/:command/:speed", ControlPtz)
-		m.GET("/cameras/:id/records/:date", GetRecordUrl)
+		m.GET("/cameras/:code/records/:date", GetRecordUrl)
 		m.POST("/cameras/:code/streams/:type/start", StartStream)
 		m.POST("/cameras/:code/streams/:type/stop", StopStream)
 		m.POST("/cameras/:code/streams/:type/snapshot", TakeSnapshot)

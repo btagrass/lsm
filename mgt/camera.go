@@ -8,16 +8,15 @@ import (
 	"github.com/btagrass/go.core/r"
 	"github.com/btagrass/go.core/utl"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // @summary 获取摄像头
 // @tags 摄像头
-// @param id path int true "编码"
+// @param code path int true "代码"
 // @success 200 {object} mdl.Camera
-// @router /mgt/cameras/{id} [get]
+// @router /mgt/cameras/{code} [get]
 func GetCamera(c *gin.Context) {
-	camera, err := svc.IpcSvc.GetCamera(cast.ToInt64(c.Param("id")))
+	camera, err := svc.IpcSvc.GetCamera(c.Param("code"))
 	r.J(c, camera, err)
 }
 
@@ -60,13 +59,13 @@ func SaveCamera(c *gin.Context) {
 
 // @summary 获取录像网址
 // @tags 摄像头
-// @param code path string true "摄像头代码"
+// @param code path string true "代码"
 // @param date path string true "日期"
 // @success 200 {object} string
 // @router /mgt/cameras/{code}/records/{date} [get]
 func GetRecordUrl(c *gin.Context) {
 	var p struct {
-		Code string `uri:"id" binding:"required"`   // 摄像头代码
+		Code string `uri:"code" binding:"required"` // 代码
 		Date string `uri:"date" binding:"required"` // 日期
 	}
 	err := c.ShouldBindUri(&p)
@@ -85,13 +84,13 @@ func GetRecordUrl(c *gin.Context) {
 
 // @summary 开始流
 // @tags 摄像头
-// @param code path string true "摄像头代码"
+// @param code path string true "代码"
 // @param type path int true "类型: 1-主码流, 2-子码流" default(2)
 // @success 200 {object} string
 // @router /mgt/cameras/{code}/streams/{type}/start [post]
 func StartStream(c *gin.Context) {
 	var p struct {
-		Code string `uri:"code" binding:"required"` // 摄像头代码
+		Code string `uri:"code" binding:"required"` // 代码
 		Type int    `uri:"type" binding:"required"` // 类型
 	}
 	err := c.ShouldBindUri(&p)
@@ -105,13 +104,13 @@ func StartStream(c *gin.Context) {
 
 // @summary 停止流
 // @tags 摄像头
-// @param code path string true "摄像头代码"
+// @param code path string true "代码"
 // @param type path int true "类型: 1-主码流, 2-子码流" default(2)
 // @success 200 {object} bool
 // @router /mgt/cameras/{code}/streams/{type}/stop [post]
 func StopStream(c *gin.Context) {
 	var p struct {
-		Code string `uri:"code" binding:"required"` // 摄像头代码
+		Code string `uri:"code" binding:"required"` // 代码
 		Type int    `uri:"type" binding:"required"` // 类型
 	}
 	err := c.ShouldBindUri(&p)
@@ -125,14 +124,14 @@ func StopStream(c *gin.Context) {
 
 // @summary 控制云台
 // @tags 摄像头
-// @param code path string true "摄像头代码"
+// @param code path string true "代码"
 // @param command path string true "命令: Left-左, Right-右, Up-上, Down-下, LeftUp-左上, LeftDown-左下, RightUp-右上, RightDown-右下, ZoomIn-放大, ZoomOut-缩小"
 // @param speed path int true "速度: 1-慢, 2-中, 3-快" default(2)
 // @success 200 {object} bool
 // @router /mgt/cameras/{code}/ptz/{command}/{speed} [post]
 func ControlPtz(c *gin.Context) {
 	var p struct {
-		Code    string `uri:"code" binding:"required"`    // 摄像头代码
+		Code    string `uri:"code" binding:"required"`    // 代码
 		Command string `uri:"command" binding:"required"` // 命令
 		Speed   int    `uri:"speed" binding:"required"`   // 速度
 	}
@@ -147,13 +146,13 @@ func ControlPtz(c *gin.Context) {
 
 // @summary 抓取快照
 // @tags 摄像头
-// @param code path string true "摄像头代码"
+// @param code path string true "代码"
 // @param type path int true "类型: 1-主码流, 2-子码流" default(2)
 // @success 200 {object} string
 // @router /mgt/cameras/{code}/streams/{type}/snapshot [post]
 func TakeSnapshot(c *gin.Context) {
 	var p struct {
-		Code string `uri:"code" binding:"required"` // 摄像头代码
+		Code string `uri:"code" binding:"required"` // 代码
 		Type int    `uri:"type" binding:"required"` // 类型
 	}
 	err := c.ShouldBindUri(&p)

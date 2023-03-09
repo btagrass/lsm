@@ -75,6 +75,31 @@ const docTemplatemgt = `{
                 }
             }
         },
+        "/mgt/cameras/{code}": {
+            "get": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "获取摄像头",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mdl.Camera"
+                        }
+                    }
+                }
+            }
+        },
         "/mgt/cameras/{code}/ptz/{command}/{speed}": {
             "post": {
                 "tags": [
@@ -84,7 +109,7 @@ const docTemplatemgt = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "摄像头代码",
+                        "description": "代码",
                         "name": "code",
                         "in": "path",
                         "required": true
@@ -124,7 +149,7 @@ const docTemplatemgt = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "摄像头代码",
+                        "description": "代码",
                         "name": "code",
                         "in": "path",
                         "required": true
@@ -156,7 +181,7 @@ const docTemplatemgt = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "摄像头代码",
+                        "description": "代码",
                         "name": "code",
                         "in": "path",
                         "required": true
@@ -189,7 +214,7 @@ const docTemplatemgt = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "摄像头代码",
+                        "description": "代码",
                         "name": "code",
                         "in": "path",
                         "required": true
@@ -222,7 +247,7 @@ const docTemplatemgt = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "摄像头代码",
+                        "description": "代码",
                         "name": "code",
                         "in": "path",
                         "required": true
@@ -266,31 +291,6 @@ const docTemplatemgt = `{
                         "description": "OK",
                         "schema": {
                             "type": "boolean"
-                        }
-                    }
-                }
-            }
-        },
-        "/mgt/cameras/{id}": {
-            "get": {
-                "tags": [
-                    "摄像头"
-                ],
-                "summary": "获取摄像头",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "编码",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/mdl.Camera"
                         }
                     }
                 }

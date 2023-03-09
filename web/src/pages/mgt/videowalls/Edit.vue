@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue"
 import { useEdit } from "@/crud"
 import { useGet } from "@/http"
 

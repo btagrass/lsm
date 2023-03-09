@@ -19,12 +19,7 @@ func NewCameraSvc() *CameraSvc {
 }
 
 // 获取摄像头
-func (s *CameraSvc) GetCamera(id int64) (*mdl.Camera, error) {
-	return s.Get(id)
-}
-
-// 获取摄像头
-func (s *CameraSvc) GetCameraByCode(code string) (*mdl.Camera, error) {
+func (s *CameraSvc) GetCamera(code string) (*mdl.Camera, error) {
 	camera, err := s.Get("code = ?", code)
 
 	return camera, err

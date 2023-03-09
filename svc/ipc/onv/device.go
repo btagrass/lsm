@@ -94,7 +94,7 @@ func (s *OnvSvc) getDevice(code string) (*Device, error) {
 	if ok {
 		return v.(*Device), nil
 	}
-	camera, err := s.CameraSvc.GetCameraByCode(code)
+	camera, err := s.CameraSvc.GetCamera(code)
 	if err != nil {
 		return nil, err
 	}

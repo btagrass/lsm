@@ -209,10 +209,26 @@ paths:
       summary: 保存摄像头
       tags:
       - 摄像头
+  /mgt/cameras/{code}:
+    get:
+      parameters:
+      - description: 代码
+        in: path
+        name: code
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mdl.Camera'
+      summary: 获取摄像头
+      tags:
+      - 摄像头
   /mgt/cameras/{code}/ptz/{command}/{speed}:
     post:
       parameters:
-      - description: 摄像头代码
+      - description: 代码
         in: path
         name: code
         required: true
@@ -240,7 +256,7 @@ paths:
   /mgt/cameras/{code}/records/{date}:
     get:
       parameters:
-      - description: 摄像头代码
+      - description: 代码
         in: path
         name: code
         required: true
@@ -261,7 +277,7 @@ paths:
   /mgt/cameras/{code}/streams/{type}/snapshot:
     post:
       parameters:
-      - description: 摄像头代码
+      - description: 代码
         in: path
         name: code
         required: true
@@ -283,7 +299,7 @@ paths:
   /mgt/cameras/{code}/streams/{type}/start:
     post:
       parameters:
-      - description: 摄像头代码
+      - description: 代码
         in: path
         name: code
         required: true
@@ -305,7 +321,7 @@ paths:
   /mgt/cameras/{code}/streams/{type}/stop:
     post:
       parameters:
-      - description: 摄像头代码
+      - description: 代码
         in: path
         name: code
         required: true
@@ -322,22 +338,6 @@ paths:
           schema:
             type: boolean
       summary: 停止流
-      tags:
-      - 摄像头
-  /mgt/cameras/{id}:
-    get:
-      parameters:
-      - description: 编码
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/mdl.Camera'
-      summary: 获取摄像头
       tags:
       - 摄像头
   /mgt/cameras/{ids}:

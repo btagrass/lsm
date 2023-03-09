@@ -21,7 +21,7 @@
       <el-table-column label="操作" width="170">
         <template #default="scope">
           <el-button-group>
-            <el-button type="primary" icon="Edit" title="编辑" @click="open(Edit, { id: scope.row.id })"></el-button>
+            <el-button type="primary" icon="Edit" title="编辑" @click="open(Edit, { id: scope.row.code })"></el-button>
             <el-button type="danger" icon="Delete" title="删除" @click="remove(scope.row)"></el-button>
             <el-button type="primary" icon="VideoCamera" title="录像"
               @click="open(Record, { code: scope.row.code })"></el-button>

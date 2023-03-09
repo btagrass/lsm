@@ -19,7 +19,7 @@
       <el-input v-model="data.model" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="固件" prop="firmware">
-      <el-input v-model="data.firmwate" clearable maxlength="50" show-word-limit></el-input>
+      <el-input v-model="data.firmware" clearable maxlength="50" show-word-limit></el-input>
     </el-form-item>
     <el-form-item label="地址" prop="addr">
       <el-input v-model="data.addr" clearable maxlength="50" show-word-limit></el-input>

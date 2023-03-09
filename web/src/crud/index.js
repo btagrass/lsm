@@ -107,7 +107,7 @@ export function useEdit(state, emits, mounted) {
   }
   Object.assign(o, state)
   const s = reactive(o)
-
+console.log(state, state.length)
   const edit = async (id) => {
     id = id ?? s.id
     if (id > 0) {
