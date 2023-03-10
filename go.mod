@@ -33,7 +33,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.217 // indirect
+	github.com/aws/aws-sdk-go v1.44.218 // indirect
 	github.com/bytedance/sonic v1.8.3 // indirect
 	github.com/casbin/casbin/v2 v2.65.1 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
