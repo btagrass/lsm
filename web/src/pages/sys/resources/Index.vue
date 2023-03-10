@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <el-button type="warning" icon="Search" @click="list">查询</el-button>
+      <el-button type="primary" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" :tree-props="{ children: 'children' }" border default-expand-all
       row-key="id">

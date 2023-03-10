@@ -19,6 +19,7 @@ type IIpcSvc interface {
 	ListCameras(conds ...any) ([]mdl.Camera, int64, error) // 获取摄像头集合
 	RemoveCameras(ids []string) error                      // 移除摄像头集合
 	SaveCamera(camera mdl.Camera) error                    // 保存摄像头
+	SyncCameras() error                                    // 同步摄像头集合
 	// 媒体
 	StartStream(code string, typ int, protocol string) (string, error) // 开始流
 	StopStream(code string, typ int) error                             // 停止流
@@ -30,6 +31,8 @@ type IIpcSvc interface {
 	ListPresets(code string) ([]mdl.Preset, error)           // 获取预置位集合
 	RemovePreset(code string, index int) error               // 移除预置位
 	SavePreset(preset mdl.Preset) error                      // 保存预置位
+	// 事件
+	NotifyEvent(content string) error // 通知事件
 }
 
 // 构造函数
@@ -38,7 +41,12 @@ func NewIpcSvc(streamSvc *stream.StreamSvc) IIpcSvc {
 	var s IIpcSvc
 	typ := viper.GetString("svc.ipc.type")
 	if typ == "onv" {
-		s = onv.NewOnvSvc(cameraSvc, streamSvc)
+		s = onv.NewOnvSvc(
+			cameraSvc,
+			streamSvc,
+			viper.GetString("svc.ipc.onv.userName"),
+			viper.GetString("svc.ipc.onv.password"),
+		)
 	} else if typ == "isc" {
 		s = isc.NewIsc(
 			cameraSvc,
@@ -46,15 +54,18 @@ func NewIpcSvc(streamSvc *stream.StreamSvc) IIpcSvc {
 			viper.GetString("svc.ipc.isc.addr"),
 			viper.GetString("svc.ipc.isc.appKey"),
 			viper.GetString("svc.ipc.isc.appSecret"),
+			viper.GetString("svc.ipc.isc.eventCallback"),
+			viper.GetString("svc.ipc.isc.eventType"),
 		)
 	} else if typ == "ivs" {
 		s = ivs.NewIvs(
 			cameraSvc,
 			streamSvc,
-			viper.GetString("svc.ipc.isc.addr"),
-			viper.GetString("svc.ipc.isc.appKey"),
-			viper.GetString("svc.ipc.isc.appSecret"),
-			viper.GetString("svc.ipc.isc.eventCallback"),
+			viper.GetString("svc.ipc.ivs.addr"),
+			viper.GetString("svc.ipc.ivs.appKey"),
+			viper.GetString("svc.ipc.ivs.appSecret"),
+			viper.GetString("svc.ipc.ivs.eventCallback"),
+			viper.GetString("svc.ipc.ivs.eventType"),
 		)
 	}
 

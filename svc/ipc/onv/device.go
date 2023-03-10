@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/beevik/etree"
@@ -119,6 +120,26 @@ func (s *OnvSvc) getDevice(code string) (*Device, error) {
 		return nil, err
 	}
 	s.Cache.Set(key, device, 5*time.Minute)
+
+	return device, nil
+}
+
+// 新建设备
+func (s *OnvSvc) newDevice(addr, userName, password string) (*Device, error) {
+	device := &Device{
+		code:     strings.ReplaceAll(addr, ".", ""),
+		userName: userName,
+		password: password,
+	}
+	var err error
+	device.device, err = onvif.NewDevice(onvif.DeviceParams{
+		Xaddr:    addr,
+		Username: userName,
+		Password: password,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	return device, nil
 }

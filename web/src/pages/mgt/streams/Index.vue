@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <el-button type="warning" icon="Search" @click="list">查询</el-button>
+      <el-button type="primary" icon="Search" @click="list">查询</el-button>
     </div>
     <el-table ref="table" :data="data.records" border>
       <el-table-column label="应用名称" prop="appName"></el-table-column>

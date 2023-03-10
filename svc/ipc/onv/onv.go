@@ -12,13 +12,17 @@ import (
 type OnvSvc struct {
 	*internal.CameraSvc
 	*stream.StreamSvc
+	userName string // 用户名
+	password string // 密码
 }
 
 // 构造函数
-func NewOnvSvc(cameraSvc *internal.CameraSvc, StreamSvc *stream.StreamSvc) *OnvSvc {
+func NewOnvSvc(cameraSvc *internal.CameraSvc, StreamSvc *stream.StreamSvc, userName, password string) *OnvSvc {
 	s := &OnvSvc{
 		CameraSvc: cameraSvc,
 		StreamSvc: StreamSvc,
+		userName:  userName,
+		password:  password,
 	}
 	go func() {
 		delay := 30 * time.Second
@@ -26,7 +30,7 @@ func NewOnvSvc(cameraSvc *internal.CameraSvc, StreamSvc *stream.StreamSvc) *OnvS
 		defer t.Stop()
 		for {
 			<-t.C
-			err := s.keepaliveCameras()
+			err := s.startStreams()
 			if err != nil {
 				logrus.Error(err)
 			}

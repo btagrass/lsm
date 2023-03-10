@@ -9,3 +9,18 @@ log:
 svc:
   ipc:
     type: onv
+    isc:
+      addr: 
+      appKey: 
+      appSecret: 
+      eventCallback: http://192.168.3.42/api/events
+      eventType: 889196545
+    ivs:
+      addr: 
+      appKey: 
+      appSecret: 
+      eventCallback: http://192.168.3.42/api/events
+      eventType: 10310
+    onv:
+      userName: admin
+      password: admin

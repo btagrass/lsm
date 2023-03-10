@@ -13,7 +13,6 @@ import (
 	"github.com/btagrass/go.core/htp"
 	"github.com/btagrass/go.core/utl"
 	"github.com/go-resty/resty/v2"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )
 
@@ -25,33 +24,24 @@ var (
 type IscSvc struct {
 	*internal.CameraSvc
 	*stream.StreamSvc
-	addr      string // 地址
-	appKey    string // 应用标识
-	appSecret string // 应用密钥
+	addr          string // 地址
+	appKey        string // 应用标识
+	appSecret     string // 应用密钥
+	eventCallback string // 事件回调
+	eventType     string // 事件类型
 }
 
 // 构造函数
-func NewIsc(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, appKey, appSecret string) *IscSvc {
+func NewIsc(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, appKey, appSecret, eventCallback, eventType string) *IscSvc {
 	s := &IscSvc{
-		CameraSvc: cameraSvc,
-		StreamSvc: streamSvc,
-		addr:      addr,
-		appKey:    appKey,
-		appSecret: appSecret,
+		CameraSvc:     cameraSvc,
+		StreamSvc:     streamSvc,
+		addr:          addr,
+		appKey:        appKey,
+		appSecret:     appSecret,
+		eventCallback: eventCallback,
+		eventType:     eventType,
 	}
-	go func() {
-		delay := 30 * time.Second
-		t := time.NewTimer(delay)
-		defer t.Stop()
-		for {
-			<-t.C
-			err := s.keepaliveCameras()
-			if err != nil {
-				logrus.Error(err)
-			}
-			t.Reset(delay)
-		}
-	}()
 
 	return s
 }

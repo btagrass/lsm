@@ -22,10 +22,11 @@ type IvsSvc struct {
 	appKey        string // 应用标识
 	appSecret     string // 应用密钥
 	eventCallback string // 事件回调
+	eventType     string // 事件类型
 }
 
 // 构造函数
-func NewIvs(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, appKey, appSecret, eventCallback string) *IvsSvc {
+func NewIvs(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, appKey, appSecret, eventCallback, eventType string) *IvsSvc {
 	s := &IvsSvc{
 		CameraSvc:     cameraSvc,
 		StreamSvc:     streamSvc,
@@ -33,6 +34,7 @@ func NewIvs(cameraSvc *internal.CameraSvc, streamSvc *stream.StreamSvc, addr, ap
 		appKey:        appKey,
 		appSecret:     appSecret,
 		eventCallback: eventCallback,
+		eventType:     eventType,
 	}
 	go func() {
 		delay := time.Minute

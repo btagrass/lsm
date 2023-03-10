@@ -26,6 +26,7 @@ func Mgt() *gin.Engine {
 		m.GET("/cameras", ListCameras)
 		m.DELETE("/cameras/:ids", RemoveCameras)
 		m.POST("/cameras", SaveCamera)
+		m.POST("/cameras/sync", SyncCameras)
 		m.POST("/cameras/:code/ptz/:command/:speed", ControlPtz)
 		m.GET("/cameras/:code/records/:date", GetRecordUrl)
 		m.POST("/cameras/:code/streams/:type/start", StartStream)

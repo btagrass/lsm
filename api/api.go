@@ -23,8 +23,12 @@ func Api() *gin.Engine {
 		c.InstanceName = "api"
 		c.Title = viper.GetString("name")
 	}))
-	// 资源
-	e.Static("/data", "data")
+	// 业务
+	a := e.Group("/api")
+	{
+		// 事件
+		a.POST("/events", NotifyEvent)
+	}
 
 	return e
 }

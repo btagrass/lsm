@@ -3,9 +3,9 @@ package video
 import (
 	"lsm/mdl"
 	"os/exec"
-	"syscall"
 
 	"github.com/btagrass/go.core/svc"
+	"github.com/shirou/gopsutil/v3/process"
 )
 
 // 视频服务
@@ -61,10 +61,15 @@ func (s *VideoSvc) StopVirtualStream(id int64) error {
 	if video.Process == 0 {
 		return nil
 	}
-	err = syscall.Kill(video.Process, syscall.SIGQUIT)
+	ps, err := process.NewProcess(int32(video.Process))
 	if err != nil {
 		return err
 	}
+	err = ps.Kill()
+	if err != nil {
+		return err
+	}
+	// err = syscall.Kill(video.Process, syscall.SIGQUIT)
 	video.Process = 0
 	err = s.Save(*video)
 

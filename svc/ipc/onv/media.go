@@ -9,6 +9,7 @@ import (
 	"github.com/btagrass/go.core/htp"
 	"github.com/btagrass/go.core/utl"
 	"github.com/go-resty/resty/v2"
+	"github.com/sirupsen/logrus"
 	"github.com/use-go/onvif/media"
 	onvid "github.com/use-go/onvif/xsd/onvif"
 	"github.com/yitter/idgenerator-go/idgen"
@@ -98,4 +99,20 @@ func (s *OnvSvc) TakeSnapshot(code string, typ int) (string, error) {
 	}
 
 	return htp.GetUrl(fileName), nil
+}
+
+// 开始流集合
+func (s *OnvSvc) startStreams() error {
+	cameras, _, err := s.ListCameras()
+	if err != nil {
+		return err
+	}
+	for _, c := range cameras {
+		_, err = s.StartStream(c.Code, 1, "rtsp")
+		if err != nil {
+			logrus.Error(err)
+		}
+	}
+
+	return nil
 }

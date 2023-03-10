@@ -3,7 +3,8 @@
     <div class="row">
       <el-button type="danger" icon="Delete" @click="remove">删除</el-button>
       <el-button type="primary" icon="DocumentAdd" @click="open(Edit)">增加</el-button>
-      <el-button type="warning" icon="Search" @click="list">查询</el-button>
+      <el-button type="primary" icon="Search" @click="list">查询</el-button>
+      <el-button type="warning" icon="Refresh" @click="sync">同步</el-button>
     </div>
     <el-table ref="table" :data="data.records" border @selection-change="select">
       <el-table-column type="selection"></el-table-column>
@@ -41,10 +42,16 @@
 
 <script setup>
 import { useComp, useList } from "@/crud"
+import { usePost } from "@/http"
 import Edit from "./Edit.vue"
 import Live from "./Live.vue"
 import Record from "./Record.vue"
 
 const { name, values, visible, open, close } = useComp()
 const { table, params, data, list, remove, select } = useList("/mgt/cameras")
+
+const sync = async () => {
+  await usePost("/mgt/cameras/sync")
+  await list()
+}
 </script>

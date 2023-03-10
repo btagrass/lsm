@@ -57,6 +57,15 @@ func SaveCamera(c *gin.Context) {
 	r.J(c, camera.GetId(), err)
 }
 
+// @summary 同步摄像头集合
+// @tags 摄像头
+// @success 200 {object} bool
+// @router /mgt/cameras/sync [post]
+func SyncCameras(c *gin.Context) {
+	err := svc.IpcSvc.SyncCameras()
+	r.J(c, err)
+}
+
 // @summary 获取录像网址
 // @tags 摄像头
 // @param code path string true "代码"
