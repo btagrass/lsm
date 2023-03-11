@@ -2,11 +2,11 @@ module lsm
 
 go 1.20
 
-replace github.com/btagrass/go.core v0.9.7 => ../go.core
+replace github.com/btagrass/go.core v0.9.8 => ../go.core
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/btagrass/go.core v0.9.7
+	github.com/btagrass/go.core v0.9.8
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-resty/resty/v2 v2.7.0
@@ -27,13 +27,13 @@ require (
 	github.com/yitter/idgenerator-go v1.3.2
 	golang.org/x/net v0.8.0
 	golang.org/x/sync v0.1.0
-	gorm.io/gorm v1.24.6
+	gorm.io/gorm v1.24.7-0.20230306060331-85eaf9eeda11
 )
 
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.44.218 // indirect
+	github.com/aws/aws-sdk-go v1.44.219 // indirect
 	github.com/bytedance/sonic v1.8.3 // indirect
 	github.com/casbin/casbin/v2 v2.65.1 // indirect
 	github.com/casbin/gorm-adapter/v3 v3.14.0 // indirect
@@ -112,7 +112,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.4.7 // indirect
-	gorm.io/driver/postgres v1.4.8 // indirect
+	gorm.io/driver/postgres v1.5.0 // indirect
 	gorm.io/driver/sqlserver v1.4.2 // indirect
 	gorm.io/plugin/dbresolver v1.4.1 // indirect
 	modernc.org/libc v1.22.3 // indirect

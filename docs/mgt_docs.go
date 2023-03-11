@@ -75,6 +75,22 @@ const docTemplatemgt = `{
                 }
             }
         },
+        "/mgt/cameras/sync": {
+            "post": {
+                "tags": [
+                    "摄像头"
+                ],
+                "summary": "同步摄像头集合",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
         "/mgt/cameras/{code}": {
             "get": {
                 "tags": [

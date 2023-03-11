@@ -14,7 +14,24 @@ const docTemplateapi = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/api/events": {
+            "post": {
+                "tags": [
+                    "事件"
+                ],
+                "summary": "通知事件",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }`
 
 // SwaggerInfoapi holds exported Swagger Info so clients can modify it

@@ -356,6 +356,16 @@ paths:
       summary: 移除摄像头集合
       tags:
       - 摄像头
+  /mgt/cameras/sync:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+      summary: 同步摄像头集合
+      tags:
+      - 摄像头
   /mgt/streams:
     get:
       parameters:

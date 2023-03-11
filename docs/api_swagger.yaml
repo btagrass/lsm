@@ -3,5 +3,15 @@ info:
   description: '通用数据格式: {"code": "200", msg: "", data: object}, 其中 data 对应接口调用成功时数据格式.'
   title: 应用接口
   version: "1.0"
-paths: {}
+paths:
+  /api/events:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+      summary: 通知事件
+      tags:
+      - 事件
 swagger: "2.0"
