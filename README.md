@@ -1,4 +1,4 @@
-# [直播流媒体服务系统](https://github.com/btagrass/lsm)
+# [直播流媒体管理系统](https://github.com/btagrass/lsm)
 免费的基于 [Lal](https://pengrl.com/) 直播流媒体服务管理系统，支持Onvif协议，海康Isc平台（开发中），华为S200平台（开发中）和国标GB28181（待开发）。
 ## 简介
 ### 业务系统

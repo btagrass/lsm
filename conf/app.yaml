@@ -1,4 +1,4 @@
-name: 直播流媒体系统
+name: 直播流媒体管理系统
 dsn:
   type: sqlite
   name: data/lsm.db

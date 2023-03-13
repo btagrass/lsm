@@ -2,11 +2,11 @@ module lsm
 
 go 1.20
 
-replace github.com/btagrass/go.core v0.9.8 => ../go.core
+// replace github.com/btagrass/go.core v0.9.9 => ../go.core
 
 require (
 	github.com/beevik/etree v1.1.0
-	github.com/btagrass/go.core v0.9.8
+	github.com/btagrass/go.core v0.9.9
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-resty/resty/v2 v2.7.0
