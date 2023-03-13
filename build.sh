@@ -1,4 +1,5 @@
 #!/bin/sh
+
 read -p "Please enter the os(Linux / Windows) and arch(aMd64 / aRm64): " os arch
 if [[ ! $os ]]; then
     os=("linux" "windows")
