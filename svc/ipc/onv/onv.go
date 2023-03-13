@@ -25,7 +25,7 @@ func NewOnvSvc(cameraSvc *internal.CameraSvc, StreamSvc *stream.StreamSvc, userN
 		password:  password,
 	}
 	go func() {
-		delay := 30 * time.Second
+		delay := 3 * time.Second
 		t := time.NewTimer(delay)
 		defer t.Stop()
 		for {

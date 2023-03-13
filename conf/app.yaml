@@ -1,8 +1,7 @@
 name: 直播流媒体系统
 dsn:
-  # name: root:123456@(localhost:3306)/lsm?charset=utf8mb4&parseTime=True&loc=Local
   type: sqlite
-  name: data/lsm.db3
+  name: data/lsm.db
 http:
   port: 3080
   timeout: 15s

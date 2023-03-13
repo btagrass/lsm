@@ -45,6 +45,7 @@ func (d *Device) call(data any) (*etree.Document, error) {
 	if err != nil {
 		return doc, err
 	}
+	fmt.Println(string(bytes))
 
 	return doc, nil
 }
